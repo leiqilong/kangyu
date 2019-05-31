@@ -25,7 +25,7 @@
     },
     methods: {
       handleClick(tab, event) {
-        this.$router.push(tagRouter[tab.name].path);
+        this.$router.push('/tag_warehouse/message_push_tag');
       }
     },
     components: {

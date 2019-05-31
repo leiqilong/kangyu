@@ -1,9 +1,9 @@
 const tagRouter = {
   customForm: {
-    path: '/tag_warehouse'
+    path: 'tag_warehouse'
   },
   messagePush: {
-    path: '/tag_warehouse/message_push_tag'
+    path: 'tag_warehouse/message_push_tag'
   }
 }
 
