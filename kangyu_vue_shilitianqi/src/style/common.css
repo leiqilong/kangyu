@@ -1,0 +1,150 @@
+/****************公共样式****************/
+.el-col-pull-0, .el-col-pull-1, .el-col-pull-2, .el-col-pull-3, .el-col-pull-4, .el-col-pull-5, .el-col-pull-6, .el-col-pull-7, .el-col-pull-8, .el-col-pull-9, .el-col-pull-10, .el-col-pull-11, .el-col-pull-13, .el-col-pull-14, .el-col-pull-15, .el-col-pull-16, .el-col-pull-17, .el-col-pull-18, .el-col-pull-19, .el-col-pull-20, .el-col-pull-21, .el-col-pull-22, .el-col-pull-23, .el-col-pull-24, .el-col-push-0, .el-col-push-1, .el-col-push-2, .el-col-push-3, .el-col-push-4, .el-col-push-5, .el-col-push-6, .el-col-push-7, .el-col-push-8, .el-col-push-9, .el-col-push-10, .el-col-push-11, .el-col-push-12, .el-col-push-13, .el-col-push-14, .el-col-push-15, .el-col-push-16, .el-col-push-17, .el-col-push-18, .el-col-push-19, .el-col-push-20, .el-col-push-21, .el-col-push-22, .el-col-push-23, .el-col-push-24, .el-row {
+  position: inherit;
+}
+
+.fa {
+  margin-bottom: 4px;
+}
+
+.el-button {
+  padding: 7.7px 15px;
+}
+
+.el-button--mini {
+  padding: 2px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.el-button--primary {
+  color: #fff;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+  color: #fff;
+}
+
+/****************list样式****************/
+.comm_container {
+  padding: 15px;
+}
+
+.list-head {
+  font-size: 16px;
+  font-weight: 550;
+  width: 100%;
+  height: 30px;
+  border-bottom: 1px solid #cdd0d4;
+  margin-bottom: 10px;
+}
+
+.list-query {
+  margin-bottom: 20px;
+}
+
+/****************form样式****************/
+.el-form-item {
+  margin-bottom: 18.5px;
+}
+
+/* .el-input__inner{
+    height:36px;
+    line-height:36px;
+} */
+.el-button--danger {
+
+}
+
+/****************侧栏导航样式************/
+.el-submenu .el-menu-item {
+  min-width: 0
+}
+
+.el-menu {
+  border-right: none;
+  border-top-right-radius: 10px;
+}
+
+.el-menu-item:first-child {
+  border-top-right-radius: 10px;
+}
+
+/**************表格样式***************/
+.el-table th {
+  background: #ecf0f3
+}
+
+.el-table td, .el-table th {
+
+}
+
+.el-table__body-wrapper::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-track {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #f6f6f6;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-corner {
+  background: #f6f6f6;
+}
+
+.croll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.croll::-webkit-scrollbar-track {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.croll::-webkit-scrollbar-thumb {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.croll::-webkit-scrollbar-thumb:hover {
+  background: #f6f6f6;
+}
+
+.croll::-webkit-scrollbar-corner {
+  background: #f6f6f6;
+}
+
+
+.el-cascader-menu::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.el-cascader-menu::-webkit-scrollbar-track {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.el-cascader-menu::-webkit-scrollbar-thumb {
+  background: #f6f6f6;
+  border-radius: 2px;
+}
+
+.el-cascader-menu::-webkit-scrollbar-thumb:hover {
+  background: #f6f6f6;
+}
+
+.el-cascader-menu::-webkit-scrollbar-corner {
+  background: #f6f6f6;
+}

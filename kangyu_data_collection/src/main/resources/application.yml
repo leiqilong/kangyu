@@ -1,0 +1,22 @@
+server:
+  port: 8088
+  servlet:
+    context-path: '/data_collection'
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://db_kangyu:db_kangyu_11@localhost:27017/test?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+  aop:
+    proxy-target-class: true
+
+#spring.data.mongodb.uri=mongodb://user:pwd@ip1:port1,ip2:port2/database  多个节点集群配置
+logging:
+  file: D:/data_collection_logs/dataCollectionLogs.log
+  level:
+    root: info
+    org:
+      springframework:
+        data:
+          mongodb:
+            core: debug
