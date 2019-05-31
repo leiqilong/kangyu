@@ -22,4 +22,20 @@ public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTag
         return this.pageQuery(new BasicQuery(queryDoc), CustomFormTag.class,
                 pageParam.getPageSize(), pageParam.getPageNum());
     }
+
+    @Override
+    public boolean isExists(Document queryDoc) {
+        return this.mongoTemplate.exists(new BasicQuery(queryDoc), CustomFormTag.class);
+    }
+
+    @Override
+    public long deleteCustomFormTagById(String id) {
+        return this.mongoTemplate.remove(new BasicQuery(new Document("id", id)), CustomFormTag.class)
+                .getDeletedCount();
+    }
+
+    @Override
+    public CustomFormTag selectCustomFormTagById(String id) {
+        return null;
+    }
 }

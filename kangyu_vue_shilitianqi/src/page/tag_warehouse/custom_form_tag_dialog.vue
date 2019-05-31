@@ -1,18 +1,27 @@
 <template>
   <div class="dialog-container doctor-edit-form">
     <el-dialog :title="title" :visible.sync="visible" @close="closeForm('formData')" :show="show">
-      <el-form :model="formData" :rules="rules" ref="formData">
+      <el-form :model="formData" :rules="rules" ref="formData" label-width="100px">
         <el-form-item label="标签名称" prop="tagName">
           <el-input v-model="formData.tagName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="对应表单">
-          <el-select v-model="formData.correspondingForms" placeholder="请选择" style="width: 100%" :multiple="true">
-            <el-option v-for="item in customeFromList" :label="item.lable" :value="item.value"
-                       :key="item.value"></el-option>
+        <el-form-item label="标签代码" prop="tagCode">
+          <el-input v-model="formData.tagCode" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="对应表单" prop="correspondingForms">
+          <el-select v-model="formData.correspondingForms" placeholder="请选择" :multiple="true" style="width: 100%">
+            <el-option v-for="item in customFromList" :label="item.label" :value="item.value" :key="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="附加信息">
-          <el-input v-model.number="formData.additionalInformation"></el-input>
+        <el-form-item label="附加标签" prop="additionalInformation">
+          <el-input v-model="formData.additionalInformation"></el-input>
+        </el-form-item>
+        <el-form-item label="标签类型" prop="tagType">
+          <el-select v-model="formData.tagType" placeholder="请选择" style="width: 100%">
+            <el-option v-for="item in tagTypeList" :label="item.label" :value="item.value" :key="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('formData')">确定</el-button>
@@ -23,7 +32,8 @@
   </div>
 </template>
 <script>
-  import {addCustomeFormTag} from '@/api/tag_warehouse'
+  import {addCustomFormTag} from '@/api/tag_warehouse'
+  import {tagTypeList} from './js/tag_list_data.js'
 
   export default {
     data() {
@@ -31,14 +41,17 @@
         visible: false,
         formData: {
           tagName: '',
+          tagCode: '',
           correspondingForms: '',
-          additionalInformation: ''
+          additionalInformation: '',
+          tagType: ''
         },
-        customeFromList: [
-          {lable: '表单1', value: '789447944244'},
-          {lable: '表单2', value: '578964789475'},
-          {lable: '表单3', value: '587654894656'}
+        customFromList: [
+          {label: '表单1', value: '789447944244'},
+          {label: '表单2', value: '578964789475'},
+          {label: '表单3', value: '587654894656'}
         ],
+        tagTypeList: tagTypeList,
         rules: {
           tagName: [
             {required: true, message: '请输入标签名称', trigger: 'blur'}
@@ -62,16 +75,17 @@
     },
     watch: {
       show() {
-        var self = this;
+        let self = this;
         self.visible = self.show;
+        self.formData = self.data;
       }
     },
     methods: {
       submitForm(formName) {
-        var self = this;
+        let self = this;
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            addCustomeFormTag(self.formData)
+            addCustomFormTag(self.formData)
               .then(res => {
                 if (!res) {
                   return;
@@ -92,7 +106,6 @@
           }
         })
       },
-
       /**
        * 关闭弹窗
        * @param formName

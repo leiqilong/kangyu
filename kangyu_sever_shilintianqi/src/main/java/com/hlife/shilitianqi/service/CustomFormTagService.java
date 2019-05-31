@@ -9,4 +9,6 @@ public interface CustomFormTagService {
     CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag);
 
     PageResult<CustomFormTag> getCustomFormTagList(JSONObject jsonObject);
+
+    String deleteCustomFormTagById(String id);
 }

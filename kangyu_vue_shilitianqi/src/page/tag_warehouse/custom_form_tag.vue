@@ -1,23 +1,25 @@
 <template>
   <div>
     <div class="list-query">
-      <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="3">
+      <el-form :inline="true" :model="queryData" label-width="100px" class="demo-form-inline">
+        <el-form-item label="标签名称" size="queryData">
           <el-input v-model="queryData.tagName" placeholder="标签名称"></el-input>
-        </el-col>
-        <el-col :span="8">
+        </el-form-item>
+        <el-form-item>
           <el-button type="primary" @click="initData">查询</el-button>
-        </el-col>
-        <el-col :span="3">
           <el-button type="primary" @click="handleAdd">创建</el-button>
-        </el-col>
-      </el-row>
+        </el-form-item>
+      </el-form>
     </div>
+
     <div class="list-table">
       <el-table v-loading="loading" :data="tableData" :height="tableHeight">
+        <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column sortable label="标签名称" prop="tagName"></el-table-column>
+        <el-table-column sortable label="标签代码" prop="tagCode"></el-table-column>
         <el-table-column label="对应表单" prop="correspondingFormNames"></el-table-column>
-        <el-table-column label="附加标签" prop="additionalInformation"></el-table-column>
+        <el-table-column label="附加标签" prop="additionalTags"></el-table-column>
+        <el-table-column label="标签类别" prop="tagType" :formatter="formatTagType"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -42,7 +44,8 @@
 
 <script>
   import elDialog from './custom_form_tag_dialog'
-  import {getCustomeFormTagList} from '@/api/tag_warehouse.js'
+  import {getCustomeFormTagList, deleteCustomFormTagById} from '@/api/tag_warehouse.js'
+  import {tagTypeList} from './js/tag_list_data.js'
 
   export default {
     name: 'customFormTag',
@@ -54,6 +57,7 @@
           pageSize: 15,
           pageNum: 1
         },
+        tagTypeList: tagTypeList,
         handleEditProp: {
           dialogFormVisible: false,
           title: '',
@@ -84,6 +88,7 @@
             this.queryData.total = res.page.total;
           })
       },
+
       /**
        * 新增
        */
@@ -92,34 +97,75 @@
         this.handleEditProp.title = '新增标签';
         this.handleEditProp.data = {};
       },
+
       /**
        * 编辑
        */
       handleEdit(index, row) {
-
+        this.handleEditProp.dialogFormVisible = true;
+        this.handleEditProp.title = '编辑标签';
+        this.handleEditProp.data = row;
       },
+
       /**
        * 删除
        */
       handleDelete(index, row) {
-        console.log('id:', row.id);
+        const self = this
+        self.$confirm('是否删除?', '提示', {type: 'warning'})
+          .then(() => {
+            deleteCustomFormTagById(row.id)
+              .then(res => {
+                if (!res) {
+                  return
+                }
+                self.$message({
+                  type: 'success',
+                  message: '删除成功'
+                })
+                self.initData()
+              })
+          })
+          .catch(() => {
+            self.$message('已取消删除')
+          })
       },
+
       /**
-       * 分页插件大小改变
+       * 分页插件每页大小改变
        */
       handleSizeChange() {
 
       },
+
       /**
        * 分页插件当前页改变
        */
       handleCurrentChange() {
 
       },
+
+      /**
+       * 弹窗关闭
+       */
       showMessageFormChild() {
         this.handleEditProp.dialogFormVisible = false;
         this.handleEditProp.title = '';
-        this.handleEditProp.data = {};
+        this.handleEditProp.data = null;
+        this.initData();
+      },
+
+      formatTagType(row, column, cellValue, index) {
+        console.log('cellValue', cellValue);
+
+        let tagTypeList = this.tagTypeList;
+        for (let type of tagTypeList) {
+          console.log('type', type);
+          if (type.value == cellValue) {
+            console.log('type.label', type.label);
+            return type.label
+          }
+        }
       }
     },
     computed: {

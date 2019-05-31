@@ -24,11 +24,16 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     @Override
     public CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag) {
         if (StringUtil.stringIsNotNull(customFormTag.getId())) {
-
+            String id = customFormTag.getId();
+            CustomFormTag record = this.customFormTagMapper.selectCustomFormTagById(id);
+            this.deleteCustomFormTagById(id);
+            customFormTag.setCreateTime(record.getCreateTime());
         } else {
             customFormTag.setId(GuidUtil.generateGuid())
                     .setCreateTime(new Date());
         }
+        CustomFormTag newCustomFormTag = this.customFormTagMapper.addCustomFormTag(customFormTag);
+
         return customFormTagMapper.addCustomFormTag(customFormTag);
     }
 
@@ -43,5 +48,20 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         PageParam pageParam = new PageParam(jsonObject.getInteger(PageParam.PAGE_SIZE),
                 jsonObject.getInteger(PageParam.PAGE_NUM));
         return customFormTagMapper.getCustomFormTagList(queryDoc, pageParam);
+    }
+
+    @Override
+    public String deleteCustomFormTagById(String id) {
+        if (StringUtil.stringIsNull(id)) {
+            throw new IllegalArgumentException("传入标签id为空");
+        }
+        Document queryDoc = new Document("id", id);
+        if (!this.customFormTagMapper.isExists(queryDoc)) {
+            throw new RuntimeException("该数据不存在");
+        }
+        if (this.customFormTagMapper.deleteCustomFormTagById(id) < 1) {
+            throw new RuntimeException("操作失败");
+        }
+        return "操作成功";
     }
 }

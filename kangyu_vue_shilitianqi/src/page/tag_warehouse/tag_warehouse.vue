@@ -3,7 +3,7 @@
     <head-top></head-top>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="自定义表单标签" name="customForm"></el-tab-pane>
-      <!--<el-tab-pane label="消息推送类标签" name="messagePush"></el-tab-pane>-->
+      <el-tab-pane label="消息推送类标签" name="messagePush"></el-tab-pane>
     </el-tabs>
     <div>
       <keep-alive>
