@@ -33,32 +33,30 @@ export const constantRoutes = [
       {
         name: '标签库管理',
         path: '/tag_warehouse',
-        component: () => import('@/page/tag_warehouse/tag_warehouse'),
         meta: {
           show: true,
           role: '1',
-          routeList: ['标签库管理']
-        },
-        children: [
-          {
-            path: '/',
-            component: () => import('@/page/tag_warehouse/custom_form_tag'),
-            meta: {
-              routeList: ['标签库管理', '自定义表单标签'],
-              keepAlive: false,
-              role: '1'
+          children: [
+            {
+              path: '/tag_warehouse/custom_form_tag',
+              name: '自定义表单标签',
+              component: () => import('@/page/tag_warehouse/custom_form_tag'),
+              meta: {
+                routeList: ['标签库管理', '自定义表单标签'],
+                keepAlive: false
+              },
             },
-          },
-          {
-            path: '/message_push_tag',
-            component: () => import('@/page/tag_warehouse/message_push_tag'),
-            meta: {
-              routeList: ['标签库管理', '消息推送类标签'],
-              keepAlive: false,
-              role: '1'
-            },
-          }
-        ]
+            {
+              path: '/tag_warehouse/message_push_tag',
+              name: '消息推送类标签',
+              component: () => import('@/page/tag_warehouse/message_push_tag'),
+              meta: {
+                routeList: ['标签库管理', '消息推送类标签'],
+                keepAlive: false
+              }
+            }
+          ]
+        }
       }
     ]
   }

@@ -8,6 +8,7 @@ import com.hlife.framework.util.StringUtil;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
 import com.hlife.shilitianqi.model.CustomFormTag;
 import com.hlife.shilitianqi.service.CustomFormTagService;
+import com.hlife.shilitianqi.service.MatchCustomFormAndTagService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
     @Autowired
     private CustomFormTagMapper customFormTagMapper;
+    @Autowired
+    private MatchCustomFormAndTagService matchCustomFormAndTagService;
 
     @Override
     public CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag) {
@@ -27,11 +30,13 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
             String id = customFormTag.getId();
             CustomFormTag record = this.customFormTagMapper.selectCustomFormTagById(id);
             this.deleteCustomFormTagById(id);
+            this.matchCustomFormAndTagService.deleteMatchCustomFormAndTagByTagId(id);
             customFormTag.setCreateTime(record.getCreateTime());
         } else {
             customFormTag.setId(GuidUtil.generateGuid())
                     .setCreateTime(new Date());
         }
+
         CustomFormTag newCustomFormTag = this.customFormTagMapper.addCustomFormTag(customFormTag);
 
         return customFormTagMapper.addCustomFormTag(customFormTag);

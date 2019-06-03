@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="list-query">
+    <head-top></head-top>
+    <div class="comm_container">
       <el-form :inline="true" :model="queryData" label-width="100px" class="demo-form-inline">
         <el-form-item label="标签名称" size="queryData">
           <el-input v-model="queryData.tagName" placeholder="标签名称"></el-input>
@@ -10,9 +11,7 @@
           <el-button type="primary" @click="handleAdd">创建</el-button>
         </el-form-item>
       </el-form>
-    </div>
 
-    <div class="list-table">
       <el-table v-loading="loading" :data="tableData" :height="tableHeight">
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column sortable label="标签名称" prop="tagName"></el-table-column>
@@ -36,7 +35,6 @@
         :total="queryData.total">
       </el-pagination>
     </div>
-
     <el-dialog :show.sync="handleEditProp.dialogFormVisible" :title="handleEditProp.title" :data="handleEditProp.data"
                @listenToChildEvent="showMessageFormChild"></el-dialog>
   </div>
@@ -44,6 +42,7 @@
 
 <script>
   import elDialog from './custom_form_tag_dialog'
+  import headTop from '@/components/headTop'
   import {getCustomeFormTagList, deleteCustomFormTagById} from '@/api/tag_warehouse.js'
   import {tagTypeList} from './js/tag_list_data.js'
 
@@ -67,6 +66,7 @@
       }
     },
     components: {
+      headTop,
       'el-dialog': elDialog
     },
     mounted() {
@@ -174,7 +174,7 @@
        * @returns {number}
        */
       tableHeight: () => {
-        return document.body.clientHeight - 280
+        return document.body.clientHeight - 235
       }
     }
   }

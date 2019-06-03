@@ -1,5 +1,0 @@
-<root>
-    <item name='org.springframework.data.mongodb.core.query.Query'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-</root>

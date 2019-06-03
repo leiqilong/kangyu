@@ -35,7 +35,7 @@ public class LoginController {
      *              password 密码
      * @return resultVO.resultData 医院信息
      */
-    @PostMapping(value = "login")
+    @PostMapping(value = "/login")
     public ResultVO<Doctor> login(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(loginService.login(jsonObject));
     }

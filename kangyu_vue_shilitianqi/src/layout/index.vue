@@ -55,7 +55,6 @@
       }
     },
     mounted() {
-      console.log('newrouter[0]:', this.newrouter[0]);
       this.doctorName = this.$store.getters.username;
       this.hospitalname = this.$store.getters.hospitalname;
     },

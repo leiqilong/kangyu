@@ -27,6 +27,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    //@Transactional(readOnly = true)
     public PageResult<Doctor> getDoctorList(JSONObject jsonObject) {
         Document queryDoc = new Document();
 
@@ -55,6 +56,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    //@Transactional
     public String deleteDoctorById(String id) {
         if (StringUtil.stringIsNull(id)) {
             throw new RuntimeException("传入主键id为空");
@@ -66,7 +68,8 @@ public class DoctorServiceImpl implements DoctorService {
         if (this.doctorMapper.deleteDoctorById(id) < 1) {
             throw new RuntimeException("删除操作失败");
         }
-        return "删除操作成功";
+        throw new RuntimeException("删除操作失败");
+        //return "删除操作成功";
     }
 
     @Override

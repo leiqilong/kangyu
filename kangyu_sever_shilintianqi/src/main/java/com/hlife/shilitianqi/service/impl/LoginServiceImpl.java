@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
 
         Doctor doctor = this.doctorService.selectByPhone(phone);
         if (doctor == null) {
-            throw new RuntimeException("系统里没有改用户！");
+            throw new RuntimeException("系统里没有该用户！");
         }
 
         if (!password.trim().equals(doctor.getPassword())) {

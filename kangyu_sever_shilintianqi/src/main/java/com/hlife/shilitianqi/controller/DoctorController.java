@@ -6,6 +6,7 @@ import com.hlife.framework.base.ResultVO;
 import com.hlife.shilitianqi.model.Doctor;
 import com.hlife.shilitianqi.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -35,6 +36,7 @@ public class DoctorController {
      * @return resultVO.resultData 操作成功
      */
     @DeleteMapping(value = "/deleteDoctor/{id}/{rand}")
+    @Transactional
     public ResultVO<String> deleteDoctor(@PathVariable(value = "id") String id) {
         return new ResultVO<>(doctorService.deleteDoctorById(id));
     }
