@@ -16,10 +16,16 @@
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column sortable label="标签名称" prop="tagName"></el-table-column>
         <el-table-column sortable label="标签代码" prop="tagCode"></el-table-column>
-        <el-table-column label="对应表单" prop="correspondingFormNames"></el-table-column>
-        <el-table-column label="附加标签" prop="additionalTags"></el-table-column>
-        <el-table-column label="标签类别" prop="tagType" :formatter="formatTagType"></el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="对应表单" prop="correspondingForms"
+                         :formatter="formatCorrespondingForms">
+        </el-table-column>
+        <el-table-column label="附加标签" prop="additionalTags"
+                         :formatter="formatAdditionalTags">
+        </el-table-column>
+        <el-table-column label="标签类别" prop="tagType"
+                         :formatter="formatTagType">
+        </el-table-column>
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -32,7 +38,7 @@
         :page-sizes="[15, 20, 50, 100]"
         :page-size="queryData.pageSize"
         layout="total, sizes, prev, pager, next"
-        :total="queryData.total">
+        :total="total">
       </el-pagination>
     </div>
     <el-dialog :show.sync="handleEditProp.dialogFormVisible" :title="handleEditProp.title" :data="handleEditProp.data"
@@ -43,8 +49,8 @@
 <script>
   import elDialog from './custom_form_tag_dialog'
   import headTop from '@/components/headTop'
-  import {getCustomeFormTagList, deleteCustomFormTagById} from '@/api/tag_warehouse.js'
-  import {tagTypeList} from './js/tag_list_data.js'
+  import {getCustomFormTagPageResult, deleteCustomFormTagById} from '@/api/tag_warehouse.js'
+  import {tagTypeList, customFromList} from './js/tag_list_data.js'
 
   export default {
     name: 'customFormTag',
@@ -56,13 +62,17 @@
           pageSize: 15,
           pageNum: 1
         },
-        tagTypeList: tagTypeList,
+
         handleEditProp: {
           dialogFormVisible: false,
           title: '',
           data: {}
         },
-        loading: false
+        loading: false,
+        total: 0,
+
+        tagTypeList: tagTypeList,
+        customFromList: customFromList
       }
     },
     components: {
@@ -78,14 +88,14 @@
        */
       initData() {
         let self = this;
-        getCustomeFormTagList(self.queryData)
+        getCustomFormTagPageResult(self.queryData)
           .then(res => {
             if (!res) {
               return;
             }
 
             this.tableData = res.list;
-            this.queryData.total = res.page.total;
+            this.total = res.page.total;
           })
       },
 
@@ -104,7 +114,7 @@
       handleEdit(index, row) {
         this.handleEditProp.dialogFormVisible = true;
         this.handleEditProp.title = '编辑标签';
-        this.handleEditProp.data = row;
+        this.handleEditProp.data = JSON.parse(JSON.stringify(row));
       },
 
       /**
@@ -134,35 +144,68 @@
       /**
        * 分页插件每页大小改变
        */
-      handleSizeChange() {
-
+      handleSizeChange(pageSize) {
+        this.queryData.pageSize = pageSize
+        this.initData()
       },
 
       /**
        * 分页插件当前页改变
        */
-      handleCurrentChange() {
-
+      handleCurrentChange(currentPage) {
+        this.queryData.pageNum = currentPage
+        this.initData()
       },
 
       /**
        * 弹窗关闭
        */
       showMessageFormChild() {
-        this.handleEditProp.dialogFormVisible = false;
-        this.handleEditProp.title = '';
-        this.handleEditProp.data = null;
-        this.initData();
+        this.handleEditProp.dialogFormVisible = false
+        this.handleEditProp.title = ''
+        this.handleEditProp.data = null
+        this.initData()
       },
 
-      formatTagType(row, column, cellValue, index) {
-        console.log('cellValue', cellValue);
+      /**
+       * 格式化对应表
+       */
+      formatCorrespondingForms(row, column, cellValue, index) {
+        let customFromList = this.customFromList;
+        let customFromNames = [];
+        for (let value of cellValue) {
+          for (let customFrom of customFromList) {
+            if (customFrom.value === value) {
+              customFromNames.push(customFrom.label);
+            }
+          }
+        }
+        return customFromNames.join(',');
+      },
 
+      /**
+       * 格式化附加标签
+       */
+      formatAdditionalTags(row, column, cellValue, index) {
+        let allTags = this.tableData;
+        let tagNames = [];
+        for (let value of cellValue) {
+          for (let tag of allTags) {
+            if (tag.id === value) {
+              tagNames.push(tag.tagName);
+            }
+          }
+        }
+        return tagNames.join(',');
+      },
+
+      /**
+       * 格式化标签类型
+       */
+      formatTagType(row, column, cellValue, index) {
         let tagTypeList = this.tagTypeList;
         for (let type of tagTypeList) {
-          console.log('type', type);
           if (type.value == cellValue) {
-            console.log('type.label', type.label);
             return type.label
           }
         }

@@ -4,6 +4,7 @@ import com.hlife.framework.util.StringUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -96,4 +97,20 @@ public abstract class BaseMapper {
         return pageResult;
     }
 
+    /**
+     * 批量保存
+     * @param list 要存入的集合
+     * @param entityClass Mongo collection定义的entity class 用来确定查询哪个集合.
+     * @param <T> 泛型
+     */
+    protected <T> void saveBatch(List<T> list, Class<T> entityClass) {
+        if (list == null || list.isEmpty() || entityClass == null) {
+            return;
+        }
+        BulkOperations bulkOperations = this.mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, entityClass);
+        for (T t: list) {
+            bulkOperations.insert(t);
+        }
+        bulkOperations.execute();
+    }
 }

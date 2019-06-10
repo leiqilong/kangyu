@@ -9,6 +9,11 @@ import org.bson.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+/**
+ * 自定义表单标签持久层实现
+ */
 @Repository
 public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTagMapper {
 
@@ -18,9 +23,14 @@ public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTag
     }
 
     @Override
-    public PageResult<CustomFormTag> getCustomFormTagList(Document queryDoc, PageParam pageParam) {
+    public PageResult<CustomFormTag> getCustomFormTagPageResult(Document queryDoc, PageParam pageParam) {
         return this.pageQuery(new BasicQuery(queryDoc), CustomFormTag.class,
                 pageParam.getPageSize(), pageParam.getPageNum());
+    }
+
+    @Override
+    public List<CustomFormTag> getCustomFormTagList(Document queryDoc) {
+        return this.mongoTemplate.find(new BasicQuery(queryDoc), CustomFormTag.class);
     }
 
     @Override
@@ -36,6 +46,6 @@ public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTag
 
     @Override
     public CustomFormTag selectCustomFormTagById(String id) {
-        return null;
+        return this.mongoTemplate.findOne(new BasicQuery(new Document("id", id)), CustomFormTag.class);
     }
 }

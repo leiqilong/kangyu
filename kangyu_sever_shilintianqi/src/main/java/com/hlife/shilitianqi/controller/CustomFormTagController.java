@@ -8,6 +8,8 @@ import com.hlife.shilitianqi.service.CustomFormTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 自定义表单标签控制器
  */
@@ -30,17 +32,30 @@ public class CustomFormTagController {
     }
 
     /**
-     * 获取自定义表单标签列表
+     * 获取自定义表单标签列表（分页查询）
      *
      * @param jsonObject 查询条件 <br/>
-     *               tagName 标签名称
+     *                    tagName 标签名称 <br/>
+     *                   pageSize [必传] 每页条数 <br/>
+     *                   pageNum [必传] 当前页 <br/>
+     * @return resultVO.resultData 自定义表单标签列表
+     */
+    @PostMapping(value = "/getCustomFormTagPageResult")
+    public ResultVO<PageResult<CustomFormTag>> getCustomFormTagPageResult(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(customFormTagService.getCustomFormTagPageResult(jsonObject));
+    }
+
+    /**
+     * 获取自定义表单标签列表（不分页）
+     *
+     * @param jsonObject 查询条件 <br/>
+     *                     tagType 标签类别 <br/>
      * @return resultVO.resultData 自定义表单标签列表
      */
     @PostMapping(value = "/getCustomFormTagList")
-    public ResultVO<PageResult<CustomFormTag>> getCustomFormTagList(@RequestBody JSONObject jsonObject) {
+    public ResultVO<List<CustomFormTag>> getCustomFormTagList(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(customFormTagService.getCustomFormTagList(jsonObject));
     }
-
     /**
      * 根据id 删除标签
      * @param id 标签 id

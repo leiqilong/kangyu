@@ -14,8 +14,11 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="附加标签" prop="additionalInformation">
-          <el-input v-model="formData.additionalInformation"></el-input>
+        <el-form-item label="附加标签" prop="additionalTags">
+          <el-select v-model="formData.additionalTags" placeholder="请选择" :multiple="true" style="width: 100%">
+            <el-option v-for="item in otherTypeTags" :label="item.tagName" :value="item.id" :key="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="标签类型" prop="tagType">
           <el-select v-model="formData.tagType" placeholder="请选择" style="width: 100%">
@@ -32,8 +35,8 @@
   </div>
 </template>
 <script>
-  import {addCustomFormTag} from '@/api/tag_warehouse'
-  import {tagTypeList} from './js/tag_list_data.js'
+  import {addOrEditCustomFormTag, getCustomFormTagList} from '@/api/tag_warehouse'
+  import {tagTypeList, customFromList} from './js/tag_list_data.js'
 
   export default {
     data() {
@@ -42,19 +45,22 @@
         formData: {
           tagName: '',
           tagCode: '',
-          correspondingForms: '',
-          additionalInformation: '',
+          correspondingForms: [],
+          additionalTags: [],
           tagType: ''
         },
-        customFromList: [
-          {label: '表单1', value: '789447944244'},
-          {label: '表单2', value: '578964789475'},
-          {label: '表单3', value: '587654894656'}
-        ],
+        customFromList: customFromList,
         tagTypeList: tagTypeList,
+        otherTypeTags: [],
         rules: {
           tagName: [
             {required: true, message: '请输入标签名称', trigger: 'blur'}
+          ],
+          tagCode: [
+            {required: true, message: '请输入标签代码', trigger: 'blur'}
+          ],
+          tagType: [
+            {required: true, message: '请选择标签类型', trigger: 'change'}
           ]
         }
       };
@@ -74,18 +80,34 @@
       }
     },
     watch: {
+      /**
+       * props.show 监听方法
+       */
       show() {
         let self = this;
         self.visible = self.show;
-        self.formData = self.data;
+        if (self.show) {
+          self.formData = self.data
+          getCustomFormTagList({tagType: '03'})
+            .then(res => {
+              console.log('res:', res);
+              self.otherTypeTags = res;
+            })
+        } else {
+          self.$emit('listenToChildEvent', false)
+        }
       }
     },
     methods: {
+      /**
+       * 确定
+       * @param formName from 表单ref 参数
+       */
       submitForm(formName) {
         let self = this;
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            addCustomFormTag(self.formData)
+            addOrEditCustomFormTag(self.formData)
               .then(res => {
                 if (!res) {
                   return;
@@ -95,7 +117,7 @@
                   message: '操作成功'
                 });
                 self.$refs[formName].resetFields()
-                self.$emit('listenToChildEvent', false)
+                self.$emit('update:show', false)
               });
           } else {
             self.$notify.error({
@@ -108,7 +130,7 @@
       },
       /**
        * 关闭弹窗
-       * @param formName
+       * @param formName from 表单ref 参数
        */
       closeForm(formName) {
         this.$refs[formName].resetFields()

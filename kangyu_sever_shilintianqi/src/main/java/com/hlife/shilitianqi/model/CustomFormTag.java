@@ -7,13 +7,14 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Accessors(chain = true)
 @Document(collection = "custom_form_tag")
-public class CustomFormTag {
+public class CustomFormTag implements Serializable {
 
     /**
      * id

@@ -9,22 +9,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 
 /**
- * 自定义表单 与 标签匹配数据实体类
+ * 附加标签实体类
  */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "match_customform_and_tag")
-public class MatchCustomFormAndTag implements Serializable {
+@Document(collection = "additional_tag")
+public class AdditionalTag implements Serializable {
 
     /**
-     * 表单（量表） id
+     * 主标签id
      */
-    private String customFormId;
+    String mainTagId;
 
     /**
-     * 标签 id
+     * 副标签(附加标签)id
      */
-    private String tagId;
+    String assistantTagId;
 }
+
