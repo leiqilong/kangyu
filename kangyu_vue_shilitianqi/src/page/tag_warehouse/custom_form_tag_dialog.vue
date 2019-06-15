@@ -49,7 +49,7 @@
           additionalTags: [],
           tagType: ''
         },
-        customFromList: customFromList,
+        customFromList: [],
         tagTypeList: tagTypeList,
         otherTypeTags: [],
         rules: {
@@ -90,12 +90,13 @@
           self.formData = self.data
           getCustomFormTagList({tagType: '03'})
             .then(res => {
-              console.log('res:', res);
               self.otherTypeTags = res;
             })
         } else {
           self.$emit('listenToChildEvent', false)
         }
+
+        console.log('customFromList', customFromList);
       }
     },
     methods: {
