@@ -12,11 +12,18 @@ import java.util.List;
 public interface CustomFormTagService {
 
     /**
-     * 新增（修改自定义表单标签）
+     * 新增/修改自定义表单标签
+     * @param customFormTag 自定义表单标签 信息
+     * @return 自定义表单标签 信息
+     */
+    CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag);
+
+    /**
+     *
      * @param customFormTag
      * @return
      */
-    CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag);
+    CustomFormTag addOrEditCustomFormTagSelf(CustomFormTag customFormTag);
 
     /**
      * 查询自定义表单列表(分页)
@@ -24,7 +31,7 @@ public interface CustomFormTagService {
      *                  tagName 标签名称 <br/>
      *                   pageSize [必传] 每页条数 <br/>
      *                   pageNum [必传] 当前页 <br/>
-     * @return
+     * @return 自定义表单列表(分页)
      */
     PageResult<CustomFormTag> getCustomFormTagPageResult(JSONObject jsonObject);
 
@@ -43,4 +50,18 @@ public interface CustomFormTagService {
      * @return
      */
     String deleteCustomFormTagById(String id);
+
+    /**
+     * 查询相关表单列表
+     *
+     * @return 相关表单列表
+     */
+    List<JSONObject> getCorrespondingFromList();
+
+    /**
+     * 根据 标签id list 查询对应的 表单id list
+     * @param tagIdList 标签id list
+     * @return 对应的 表单id list
+     */
+    List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList);
 }

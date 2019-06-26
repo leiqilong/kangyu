@@ -1,14 +1,18 @@
 server:
   port: 8090
   servlet:
-    context-path: '/web/v1'
+    context-path: '/kangyu_server'
 
 spring:
   data:
     mongodb:
       uri: mongodb://db_kangyu:db_kangyu_11@localhost:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.51:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
   aop:
     proxy-target-class: true
+  output:
+    ansi:
+      enabled: always # 彩色控制台
 
 #spring.data.mongodb.uri=mongodb://user:pwd@ip1:port1,ip2:port2/database  多个节点集群配置
 logging:
@@ -20,3 +24,7 @@ logging:
         data:
           mongodb:
             core: debug
+
+user-data:
+  url: localhost
+  port: 5000

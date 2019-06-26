@@ -2,16 +2,25 @@ package com.hlife;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@EnableSwagger2
+//@EnableAutoConfiguration
 @RestController
 //@EnableTransactionManagement
 @SpringBootApplication
-public class ShilinTianQiApplication {
+public class ShilinTianQiApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(ShilinTianQiApplication.class, args);
+    }
+
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ShilinTianQiApplication.class);
     }
 
     @GetMapping("/")

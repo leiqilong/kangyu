@@ -56,6 +56,7 @@ public class CustomFormTagController {
     public ResultVO<List<CustomFormTag>> getCustomFormTagList(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(customFormTagService.getCustomFormTagList(jsonObject));
     }
+
     /**
      * 根据id 删除标签
      * @param id 标签 id
@@ -64,5 +65,14 @@ public class CustomFormTagController {
     @DeleteMapping(value = "/deleteCustomFormTagById/{id}/{rand}")
     public ResultVO<String> deleteCustomFormTagById(@PathVariable("id") String id) {
         return new ResultVO<>(customFormTagService.deleteCustomFormTagById(id));
+    }
+
+    /**
+     * 查询相关表单列表
+     * @return 删除是否成功
+     */
+    @GetMapping(value = "/getCorrespondingFromList/{rand}")
+    public ResultVO<List<JSONObject>> getCorrespondingFromList() {
+        return new ResultVO<>(customFormTagService.getCorrespondingFromList());
     }
 }

@@ -29,6 +29,11 @@ public class CustomFormTag implements Serializable {
     private String tagName;
 
     /**
+     * 标签值
+     */
+    private String tagValue;
+
+    /**
      * 标签代码
      */
     private String tagCode;

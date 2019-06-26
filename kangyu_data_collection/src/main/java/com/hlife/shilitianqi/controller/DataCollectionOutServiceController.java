@@ -1,7 +1,7 @@
 package com.hlife.shilitianqi.controller;
 
 import com.hlife.shilitianqi.model.DataCollectionOut;
-import com.hlife.shilitianqi.controller.service.DataCollectionOutService;
+import com.hlife.shilitianqi.service.DataCollectionOutService;
 import com.hlife.framework.base.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

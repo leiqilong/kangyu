@@ -1,0 +1,126 @@
+package com.hlife.shilitianqi.service;
+
+import com.alibaba.fastjson.JSONObject;
+import com.hlife.framework.base.PageResult;
+import com.hlife.shilitianqi.model.CustomFormTag;
+import com.hlife.shilitianqi.model.DeviceOfScenes;
+import com.hlife.shilitianqi.model.JudgeStandard;
+import com.hlife.shilitianqi.model.Scenes;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 场景服务层接口
+ */
+public interface ScenesService {
+
+    /**
+     * 查询场景列表
+     *
+     * @return 所有场景列表
+     */
+    List<Scenes> searchScenesListAll();
+
+    /**
+     * 分页查询场景列表
+     *
+     * @param jsonObject 查询参数 <br/>
+     *              scenesName 场景名称
+     *                   pageSize 每页条数
+     *                   pageNum 页数
+     * @return 场景列表 分页数据
+     */
+    PageResult<Scenes> searchScenesListByParams(JSONObject jsonObject);
+
+    /**
+     * 新境或修改场景基本信息
+     *
+     * @param scenes 场景 基本信息
+     * @return 场景 基本信息
+     */
+    Scenes saveOrEditScenes(Scenes scenes);
+
+    /**
+     * 删除场景
+     *
+     * @param scenesId 场景id
+     * @return 删除的条数
+     */
+    Long deleteScenesById(String scenesId);
+
+    /**
+     * 新境或修改场景设备信息
+     *
+     * @param deviceOfScenes 场景设备信息
+     * @return 场景设备信息
+     */
+    DeviceOfScenes saveOrEditDeviceOfScenes(DeviceOfScenes deviceOfScenes);
+
+    /**
+     * 根据场景id 查询对应的设备列表
+     *
+     * @param scenesId 场景id
+     * @return 场景设备列表
+     */
+    List<DeviceOfScenes> searchDeviceOfScenesList(String scenesId);
+
+    /**
+     * 根据设备id 删除设备
+     *
+     * @param deviceOfScenesId 设备id
+     * @return 影戏的行数
+     */
+    Long deleteDeviceOfScenes(String deviceOfScenesId);
+
+    /**
+     * 新增或修改场景设备规则信息
+     *
+     * @param judgeStandard 场景设备规则信息
+     * @return 场景设备规则信息
+     */
+    JudgeStandard saveOrEditJudgeStandard(JudgeStandard judgeStandard);
+
+    /**
+     * 根据 场景设备id 查询规则信息
+     *
+     * @param deviceOfScenesId 场景设备 id
+     * @return 规则信息列表
+     */
+    List<JudgeStandard> searchJudgeStandardList(String deviceOfScenesId);
+
+    /**
+     * 根据规则主键删除规则
+     *
+     * @param judgeStandardId 规则
+     * @return 影响的行数
+     */
+    Long deleteJudgeStandard(String judgeStandardId);
+
+    /**
+     * 查询患者某场景下得分
+     *
+     * @param guid 患者id
+     * @param scenesId  场景 id
+     * @return 得分情况
+     */
+    Map<String, Object> getTagAndScore(String guid, String scenesId) ;
+
+    /**
+     * 获取自定义表单标签列表
+     * @param jsonObject 查询条件 <br/>
+     *                      tagType 标签类别 <br/>
+     * @return 自定义表单标签列表
+     */
+    List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject);
+
+    /**
+     *
+     * @param guid
+     * @param scenesId
+     * @return
+     */
+    List<String> getMission(String guid, String scenesId);
+
+    List<String> getSurvey(String guid, String scenesId);
+}

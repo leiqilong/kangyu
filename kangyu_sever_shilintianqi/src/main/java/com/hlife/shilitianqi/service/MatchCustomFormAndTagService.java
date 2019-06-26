@@ -38,4 +38,19 @@ public interface MatchCustomFormAndTagService {
      * @return 相应表单 数据
      */
     List<MatchCustomFormAndTag> selectMatchCustomFormAndTagListByTagId(String tagId);
+
+    /**
+     * 根据 标签id list 查询对应的 表单id list
+     * @param tagIdList 标签id list
+     * @return 对应的 表单id list
+     */
+    List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList);
+
+    /**
+     * 根据 标签 id list 查询对应的表单list
+     *
+     * @param tagIdList
+     * @return
+     */
+    List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList);
 }

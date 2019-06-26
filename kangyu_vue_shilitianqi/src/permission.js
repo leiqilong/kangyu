@@ -1,8 +1,5 @@
-import router from './router'
-import {constantRoutes} from './router'
+import router, {constantRoutes} from './router'
 import store from './store'
-import {Message} from 'element-ui'
-import {getToken} from '@/utils/auth' // get token from cookie
 
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
@@ -12,7 +9,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       var routerList = constantRoutes;
-      let newrouter = constantRoutes
+      let newrouter = constantRoutes;
       if (store.getters.role == '2') {  //判断权限
         var newchildren = routerList[0].children
         for (var i = 0; i < newchildren.length; i++) {

@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath group:'org.springframework.boot', name:'spring-boot-gradle-plugin', version:"${springBootVersion}"
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: "${springBootVersion}"
     }
 }
 
@@ -16,22 +16,25 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'java'
 apply plugin: 'idea'
 
- 
+
 archivesBaseName = 'kangyu_server_shilintinaqi'
- 
- 
+
+
 ext {
 }
- 
+
 /*bootRepackage{
     enabled = false
 }*/
- 
-build{
+
+build {
 }
- 
+
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
+
+    providedRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: "${springBootVersion}"
+   
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: "${springBootVersion}"
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: "${springBootVersion}"
 
@@ -43,7 +46,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/springloaded
     //compile group: 'org.springframework', name: 'springloaded', version: '1.2.8.RELEASE'
     // spring-boot-starter-data-mongodb
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "${springBootVersion}" 
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "${springBootVersion}"
 
     // fastjson
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.58'
@@ -61,6 +64,14 @@ dependencies {
     // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.1'
 
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-gradle-plugin
+    //compile group: 'io.swagger.core.v3', name: 'swagger-gradle-plugin', version: '2.0.8'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+
     //compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.2.2'
 
     testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.3')
@@ -72,7 +83,8 @@ dependencies {
     //compile group: 'com.google.common', name: 'google-collect', version: '1.0-rc1'
 
 }
- 
+
+
 configurations {
     // 所有需要忽略的包定义在此
     //all*.exclude group: 'commons-httpclient'

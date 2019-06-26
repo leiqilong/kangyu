@@ -5,22 +5,25 @@ import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.util.GuidUtil;
 import com.hlife.framework.util.StringUtil;
+import com.hlife.shilitianqi.constant.Constant;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
 import com.hlife.shilitianqi.model.CustomFormTag;
+import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.AdditionalTagService;
 import com.hlife.shilitianqi.service.CustomFormTagService;
 import com.hlife.shilitianqi.service.MatchCustomFormAndTagService;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
  * 自定义表单标签服务层实现
  */
+@Slf4j
 @Service
 public class CustomFormTagServiceImpl implements CustomFormTagService {
 
@@ -63,6 +66,15 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return newCustomFormTag;
     }
 
+    @Override
+    public CustomFormTag addOrEditCustomFormTagSelf(CustomFormTag customFormTag) {
+        if (StringUtil.stringIsNotNull(customFormTag.getId())) {
+            this.customFormTagMapper.deleteCustomFormTagById(customFormTag.getId());
+        } else {
+            customFormTag.setId(GuidUtil.generateGuid());
+        }
+        return  this.customFormTagMapper.addCustomFormTag(customFormTag);
+    }
 
     @Override
     public PageResult<CustomFormTag> getCustomFormTagPageResult(JSONObject jsonObject) {
@@ -128,6 +140,65 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return "操作成功";
     }
 
+    @Override
+    public List<JSONObject> getCorrespondingFromList() {
+        List<JSONObject> jsonObjectList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put(Constant.GROUP_LABEL, "量表");
+        jsonObject.put(Constant.GROUP_OPTIONS, Constant.Scale.getScaleList());
+
+        jsonObjectList.add(jsonObject);
+        return jsonObjectList;
+    }
+
+    @Override
+    public List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList) {
+        List<String> formIdList = new ArrayList<>();
+        List<MatchCustomFormAndTag> matchList = this.matchCustomFormAndTagService.selectCustomFormsByTagIdList(tagIdList);
+        for (MatchCustomFormAndTag match : matchList) {
+            if (!formIdList.contains(match.getCustomFormId())) {
+                formIdList.add(match.getCustomFormId());
+            }
+        }
+
+        Map<String, List<String>> formMap = new HashMap<>();
+
+        for (String formId : formIdList) {
+            List<String> tagGroup = new ArrayList<>();
+            for (MatchCustomFormAndTag match : matchList) {
+                if (match.getCustomFormId().equals(formId)) {
+                    tagGroup.add(match.getTagId());
+                }
+            }
+            formMap.put(formId, tagGroup);
+        }
+
+        return this.funAbc(formMap, tagIdList);
+        //return this.matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(tagIdList);
+    }
+
+    private List<String> funAbc(Map<String, List<String>> formMap, List<String> tagIdList) {
+        List<String> formIdList = new ArrayList<>();
+
+        for (Map.Entry<String, List<String>> entry : formMap.entrySet()) {
+            if (this.equalsList(entry.getValue(), tagIdList)) {
+                formIdList.add(entry.getKey());
+            }
+        }
+
+        return formIdList;
+    }
+
+    private boolean equalsList(List<String> value, List<String> tagIdList) {
+        for (String tagId: tagIdList) {
+            if (!value.contains(tagId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void checkTagNameAndTagCode(CustomFormTag customFormTag) {
         Document queryDoc = new Document("tagCode", customFormTag.getTagCode());
 
@@ -141,9 +212,10 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         queryDoc.remove("tagCode");
         queryDoc.append("tagName", customFormTag.getTagName());
+        queryDoc.append("tagValue", customFormTag.getTagValue());
 
         if (this.customFormTagMapper.isExists(queryDoc)) {
-            throw new RuntimeException("标签名称重复");
+            throw new RuntimeException("标签名称+值重复");
         }
     }
 }

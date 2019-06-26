@@ -28,9 +28,13 @@ public class MatchCustomFormAndTagMapperImpl extends BaseMapper implements Match
         this.saveBatch(matchCustomFormAndTags, MatchCustomFormAndTag.class);
     }
 
-
     @Override
     public List<MatchCustomFormAndTag> selectMatchCustomFormAndTagListByTagId(String tagId) {
         return this.mongoTemplate.find(new BasicQuery(new Document("tagId", tagId)), MatchCustomFormAndTag.class);
+    }
+
+    @Override
+    public List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList) {
+        return this.mongoTemplate.find(new BasicQuery(new Document("tagId", new Document("$in", tagIdList))), MatchCustomFormAndTag.class);
     }
 }

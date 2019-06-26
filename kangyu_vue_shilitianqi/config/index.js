@@ -18,10 +18,16 @@ module.exports = {
     proxyTable: {
       '/v1': {
         target: 'http://localhost:8090/',
-        // target: 'http://39.107.249.175:8081/',
         changeOrigin: true,
         pathRewrite: {
-          '^/v1': '/web/v1'
+          '^/v1': '/kangyu_server'
+        }
+      },
+      '/v2': {
+        target: 'http://10.10.10.51:6666/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/v2': '/web/v1'
         }
       }
     },

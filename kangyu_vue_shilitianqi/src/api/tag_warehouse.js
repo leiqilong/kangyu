@@ -52,3 +52,14 @@ export function deleteCustomFormTagById(id) {
     method: 'delete'
   })
 }
+
+/**
+ * 查询相关表单信息
+ * @param id
+ */
+export function getCorrespondingFromList() {
+  return request({
+    url: '/v1/customFormTag/getCorrespondingFromList/' + Date.now(),
+    method: 'get'
+  })
+}

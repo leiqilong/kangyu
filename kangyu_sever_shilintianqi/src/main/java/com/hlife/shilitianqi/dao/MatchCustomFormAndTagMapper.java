@@ -29,4 +29,7 @@ public interface MatchCustomFormAndTagMapper {
      * @return
      */
     List<MatchCustomFormAndTag> selectMatchCustomFormAndTagListByTagId(String tagId);
+
+
+    List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList);
 }

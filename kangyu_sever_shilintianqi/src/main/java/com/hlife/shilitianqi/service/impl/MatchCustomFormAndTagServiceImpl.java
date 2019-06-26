@@ -7,6 +7,7 @@ import com.hlife.shilitianqi.service.MatchCustomFormAndTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
 
         this.matchCustomFormAndTagMapper.saveMatchCustomFormAndTagBatch(
                 correspondingForms.stream()
-                        .map(formId -> new MatchCustomFormAndTag(formId, tagId))
+                        .map(formId ->  new MatchCustomFormAndTag(formId, tagId))
                         .collect(Collectors.toList())
         );
     }
@@ -46,5 +47,22 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
     @Override
     public List<MatchCustomFormAndTag> selectMatchCustomFormAndTagListByTagId(String tagId) {
         return this.matchCustomFormAndTagMapper.selectMatchCustomFormAndTagListByTagId(tagId);
+    }
+
+    @Override
+    public List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList) {
+        if (tagIdList == null || tagIdList.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return this.selectCustomFormsByTagIdList(tagIdList)
+                .stream()
+                .map(tag -> tag.getCustomFormId())
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList) {
+        return this.matchCustomFormAndTagMapper.selectCustomFormsByTagIdList(tagIdList);
     }
 }

@@ -1,8 +1,8 @@
-package com.hlife.shilitianqi.controller.service.impl;
+package com.hlife.shilitianqi.service.impl;
 
 import com.hlife.shilitianqi.dao.DataCollectionOutMapper;
 import com.hlife.shilitianqi.model.DataCollectionOut;
-import com.hlife.shilitianqi.controller.service.DataCollectionOutService;
+import com.hlife.shilitianqi.service.DataCollectionOutService;
 import com.hlife.framework.util.StringUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

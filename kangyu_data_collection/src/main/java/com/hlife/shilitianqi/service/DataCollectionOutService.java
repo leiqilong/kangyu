@@ -1,4 +1,4 @@
-package com.hlife.shilitianqi.controller.service;
+package com.hlife.shilitianqi.service;
 
 import com.hlife.shilitianqi.model.DataCollectionOut;
 
