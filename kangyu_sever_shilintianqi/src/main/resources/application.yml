@@ -26,5 +26,5 @@ logging:
             core: debug
 
 user-data:
-  url: localhost
+  url: 10.10.10.51
   port: 5000

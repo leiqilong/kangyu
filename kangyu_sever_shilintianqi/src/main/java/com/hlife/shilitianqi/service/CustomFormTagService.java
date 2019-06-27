@@ -3,8 +3,10 @@ package com.hlife.shilitianqi.service;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.model.CustomFormTag;
+import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义表单标签服务层接口
@@ -45,6 +47,14 @@ public interface CustomFormTagService {
     List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject);
 
     /**
+     * 获取标签树
+     * @param jsonObject 查询条件 <br/>
+     *                   tagType 标签类别
+     * @return 标签树
+     */
+    List<Map<String, Object>> getCustomFormTagTree(JSONObject jsonObject);
+
+    /**
      * 根据id 删除 自定义表单标签
      * @param id
      * @return
@@ -64,4 +74,10 @@ public interface CustomFormTagService {
      * @return 对应的 表单id list
      */
     List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList);
+
+    MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag);
+
+    List<MatchCustomFormAndTag> getTagListByFormId(String formId);
+
+    Long deleteMatchCustomFormAndTag(String formId, String tagId);
 }

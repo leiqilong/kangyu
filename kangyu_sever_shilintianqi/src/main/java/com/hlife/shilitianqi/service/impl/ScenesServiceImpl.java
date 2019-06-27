@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 场景服务层实现
@@ -90,7 +91,8 @@ public class ScenesServiceImpl implements ScenesService {
                     new CustomFormTag()
                             .setId(guid)
                             //.setTagCode(scenes.getScenesCode())
-                            .setTagName(scenes.getScenesName())
+                            .setTagName("场景")
+                            .setTagValue(scenes.getScenesName())
                             .setTagType("05")
                             .setCreateTime(new Date())
             );
@@ -105,7 +107,8 @@ public class ScenesServiceImpl implements ScenesService {
                 new CustomFormTag()
                         .setId(scenes.getScenesId())
                         //.setTagCode(scenes.getScenesCode())
-                        .setTagName(scenes.getScenesName())
+                        .setTagName("场景")
+                        .setTagValue(scenes.getScenesName())
                         .setTagType("05")
                         .setCreateTime(new Date())
         );
@@ -177,31 +180,6 @@ public class ScenesServiceImpl implements ScenesService {
     public Map<String, Object> getTagAndScore(String guid, String scenesId) {
         log.info("url ==> {}, port ==> {}", url, port);
 
-        Map<String, Object> resultMap = new HashMap<>();
-
-        List<DeviceResult> resultList = new ArrayList<>();
-
-        // 获取场景设备规则
-        List<DeviceOfScenes> deviceList = this.deviceOfScenesService.searchDeviceOfScenesWithJudgeStandardList(scenesId);
-
-        if (deviceList == null || deviceList.isEmpty()) {
-            throw new RuntimeException("请正确维护场景信息！");
-        }
-
-        log.info("deviceList ==> {}", JSON.toJSONString(deviceList));
-
-        // 设备排序
-        deviceList.sort((device1, device2) -> {
-            if (device1.getWeights().compareTo(device2.getWeights()) != 0) {
-                return device2.getWeights().compareTo(device1.getWeights());
-            }
-            return device1.getPriority().compareTo(device2.getPriority());
-        });
-
-        log.info("deviceListSort ==> {}", JSON.toJSONString(deviceList));
-
-        double score = 0d;
-
         // 远程获取当前人所额设备数据
         String userDataStr =
                 HttpClientUtil.doPost(
@@ -209,38 +187,18 @@ public class ScenesServiceImpl implements ScenesService {
                         JSON.toJSONString(new JSONObject().fluentPut("queryID", guid))
                 );
 
-        if (StringUtil.stringIsNull(userDataStr)) {
-            throw new RuntimeException("暂无数据！");
+        JSONArray jsonArray = new JSONArray();
+
+        if (StringUtil.stringIsNotNull(userDataStr)) {
+            log.info("userData ==> {}", userDataStr);
+
+            JSONObject jsonObject = JSON.parseObject(userDataStr);
+
+            jsonArray = jsonObject.getJSONArray("datas");
         }
 
-        log.info("userData ==> {}", userDataStr);
 
-        JSONObject jsonObject = JSON.parseObject(userDataStr);
-
-        JSONArray jsonArray = jsonObject.getJSONArray("datas");
-
-        for (DeviceOfScenes device : deviceList) {
-            String deviceCode = device.getDeviceCode();
-            if (StringUtil.stringIsNull(deviceCode)) {
-                continue;
-            }
-            score += getScore(resultList, jsonArray, device);
-        }
-
-        if (resultList.isEmpty()) {
-            throw new RuntimeException("暂无数据");
-        }
-
-        int resultListSize = resultList.size();
-        if (resultListSize < 3) {
-            resultMap.put("resultList", resultList);
-        } else {
-            resultMap.put("resultList", new DeviceResult[]{resultList.get(0), resultList.get(1), resultList.get(2)});
-        }
-
-        resultMap.put("score", score);
-
-        return resultMap;
+        return getStringObjectMap(scenesId, jsonArray);
     }
 
     @Override
@@ -267,6 +225,23 @@ public class ScenesServiceImpl implements ScenesService {
         return customFormTagService.getCustomFormTagList(jsonObject);
     }
 
+    @Override
+    public Map<String, Object> getTagAndScoreTwice(JSONObject jsonObject) {
+        String scenesId = jsonObject.getString("scenesId");
+        if (StringUtil.stringIsNull(scenesId)) {
+            throw new IllegalArgumentException("传入场景scenesId为空");
+        }
+        JSONArray userArray = jsonObject.getJSONArray("userArray");
+        return this.getStringObjectMap(scenesId, userArray);
+    }
+
+    /**
+     * 获取标签 id List
+     *
+     * @param guid 患者id
+     * @param scenesId 场景id
+     * @return 标签 id List
+     */
     private List<String> getTagIdList(String guid, String scenesId) {
         Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
         List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
@@ -279,27 +254,50 @@ public class ScenesServiceImpl implements ScenesService {
         return tagIdList;
     }
 
+    /**
+     * 获取 某设备 计算结果
+     *
+     * @param resultList 结果 list
+     * @param jsonArray 患者数据
+     * @param device 某设备
+     * @return 设备得分
+     */
     private double getScore(List<DeviceResult> resultList, JSONArray jsonArray, DeviceOfScenes device) {
         String deviceCode = device.getDeviceCode();
         String deviceType = deviceCode.split("-")[0];
+
+        BiFunction<JSONObject, List<JudgeStandard>, DeviceResult> fun = deviceResultFunMap.get(deviceCode);
+
+        JSONObject datas = new JSONObject();
+
         for (int i = 0, size = jsonArray.size(); i < size; i++) {
             JSONObject data = jsonArray.getJSONObject(i);
-            log.info("dataType ==> {}", data.getString("dataType"));
+            String dataType = data.getString("dataType");
+            String dataType0 = dataType.split("-")[0];
+            log.info("dataType ==> {}", dataType);
 
-            if (deviceType.equals(data.getString("dataType"))) {
-                BiFunction<JSONObject, List<JudgeStandard>, DeviceResult> fun = deviceResultFunMap.get(deviceCode);
-                if (fun == null) {
-                    return 0d;
-                }
-                DeviceResult deviceResult = fun.apply(data.getJSONObject("datas"), device.getJudgeStandardList());
-                if (deviceResult != null) {
-                    resultList.add(deviceResult.setCode(deviceCode));
-                    return deviceResult.getScore() * device.getWeights();
-                }
+            if (deviceCode.equals(dataType)) {
+                datas = data.getJSONObject("datas");
+                break;
+            }
+
+            if (deviceType.equals(dataType)) {
+                datas = data.getJSONObject("datas");
+                break;
+            }
+
+            if (deviceType.equals(dataType0)) {
+                datas = data.getJSONObject("datas");
             }
         }
 
-        return 0d;
+        DeviceResult deviceResult = fun.apply(datas, device.getJudgeStandardList());
+        if (deviceResult != null) {
+            resultList.add(deviceResult.setDataType(deviceCode));
+            return deviceResult.getScore() * device.getWeights();
+        }
+        resultList.add(deviceResult.setDataType(deviceCode));
+        return deviceResult.getScore() * device.getWeights();
     }
 
 
@@ -309,17 +307,85 @@ public class ScenesServiceImpl implements ScenesService {
      * @param tagIdList 计算结果
      */
     private List<String> pushMassage(List<String> tagIdList) {
-
-
-        /*List<String> tags = new ArrayList<String>() {{
-            this.add("1143067481694822400");
-            this.add("1143068096294576128");
-            this.add("1143066995155558400");
-            this.add("1143068018372796416");
-        }};*/
-
         List<String> formIdList = this.customFormTagService.selectCustomFormIdsByTagIdList(tagIdList);
         log.info("formIdList:{}", formIdList);
-        return formIdList;
+
+        if (formIdList == null || formIdList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return formIdList.stream().map(id -> id.split(";")[0]).collect(Collectors.toList());
+    }
+
+    /**
+     * 根据场景 id 患都数据获取返回结果
+     *
+     * @param scenesId 场景id
+     * @param jsonArray 患都数据
+     * @return 计算结果
+     */
+    private Map<String, Object> getStringObjectMap(String scenesId, JSONArray jsonArray) {
+        List<DeviceOfScenes> deviceList = getDeviceOfScenes(scenesId);
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        List<DeviceResult> resultList = new ArrayList<>();
+
+        double score = 0d;
+
+        for (DeviceOfScenes device : deviceList) {
+            String deviceCode = device.getDeviceCode();
+            if (StringUtil.stringIsNull(deviceCode)) {
+                continue;
+            }
+            score += getScore(resultList, jsonArray, device);
+        }
+
+        if (resultList.isEmpty()) {
+            throw new RuntimeException("暂无数据");
+        }
+
+        int resultListSize = resultList.size();
+        if (resultListSize < 4) {
+            resultMap.put("resultList", resultList);
+        } else {
+            resultMap.put("resultList", new ArrayList<DeviceResult>(){{
+                this.add(resultList.get(0));
+                this.add(resultList.get(1));
+                this.add(resultList.get(2));
+            }});
+        }
+
+        resultMap.put("allResultList", resultList);
+        resultMap.put("score", score);
+
+        return resultMap;
+    }
+
+    /**
+     * 获取排序后的 场景设备列表
+     * @param scenesId 场景 id
+     * @return 场景设备列表
+     */
+    private List<DeviceOfScenes> getDeviceOfScenes(String scenesId) {
+        // 获取场景设备规则
+        List<DeviceOfScenes> deviceList = this.deviceOfScenesService.searchDeviceOfScenesWithJudgeStandardList(scenesId);
+
+        if (deviceList == null || deviceList.isEmpty()) {
+            throw new RuntimeException("请正确维护场景信息！");
+        }
+
+        log.info("deviceList ==> {}", JSON.toJSONString(deviceList));
+
+        // 设备排序
+        deviceList.sort((device1, device2) -> {
+            if (device1.getWeights().compareTo(device2.getWeights()) != 0) {
+                return device2.getWeights().compareTo(device1.getWeights());
+            }
+            return device1.getPriority().compareTo(device2.getPriority());
+        });
+
+        log.info("deviceListSort ==> {}", JSON.toJSONString(deviceList));
+        return deviceList;
     }
 }

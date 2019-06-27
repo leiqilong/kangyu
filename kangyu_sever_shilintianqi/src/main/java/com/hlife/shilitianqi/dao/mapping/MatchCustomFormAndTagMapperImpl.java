@@ -37,4 +37,20 @@ public class MatchCustomFormAndTagMapperImpl extends BaseMapper implements Match
     public List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList) {
         return this.mongoTemplate.find(new BasicQuery(new Document("tagId", new Document("$in", tagIdList))), MatchCustomFormAndTag.class);
     }
+
+    @Override
+    public MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag) {
+        return this.mongoTemplate.save(matchCustomFormAndTag);
+    }
+
+    @Override
+    public List<MatchCustomFormAndTag> getTagListByFormId(String formId) {
+        return this.mongoTemplate.find(new BasicQuery(new Document("customFormId", formId)), MatchCustomFormAndTag.class);
+    }
+
+    @Override
+    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
+        Document document = new Document("customFormId", formId).append("tagId", tagId);
+        return this.mongoTemplate.remove(new BasicQuery(document), MatchCustomFormAndTag.class).getDeletedCount();
+    }
 }

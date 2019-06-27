@@ -32,4 +32,10 @@ public interface MatchCustomFormAndTagMapper {
 
 
     List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList);
+
+    MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag);
+
+    List<MatchCustomFormAndTag> getTagListByFormId(String formId);
+
+    Long deleteMatchCustomFormAndTag(String formId, String tagId);
 }

@@ -219,7 +219,7 @@
         self.cascaderVisible = false
       },
 
-      selectValue(value) {
+      /*selectValue(value) {
         let that = this;
         let leaf = value[value.length - 1];
         if (this.formLeaf.indexOf(leaf) < 0) {//去重
@@ -249,7 +249,7 @@
         }
         this.visibleAdd = false
         console.log(value)
-      },
+      },*/
 
       //删除某一附加表单
       handleClose(tag) {

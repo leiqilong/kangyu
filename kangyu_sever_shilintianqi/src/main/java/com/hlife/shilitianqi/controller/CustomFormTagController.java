@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.base.ResultVO;
 import com.hlife.shilitianqi.model.CustomFormTag;
+import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.CustomFormTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义表单标签控制器
@@ -58,6 +60,19 @@ public class CustomFormTagController {
     }
 
     /**
+     * 获取自定义表单标签树
+     *
+     * @param jsonObject 查询条件 <br/>
+     *                     tagType 标签类别 <br/>
+     *                     tagTypeList 标签类别List
+     * @return resultVO.resultData 自定义表单标签列表
+     */
+    @PostMapping(value = "/getCustomFormTagTree")
+    public ResultVO<List<Map<String, Object>>> getCustomFormTagTree(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.customFormTagService.getCustomFormTagTree(jsonObject));
+    }
+
+    /**
      * 根据id 删除标签
      * @param id 标签 id
      * @return 删除是否成功
@@ -75,4 +90,24 @@ public class CustomFormTagController {
     public ResultVO<List<JSONObject>> getCorrespondingFromList() {
         return new ResultVO<>(customFormTagService.getCorrespondingFromList());
     }
+
+    /**
+     * 给表单添加标签
+     * @return 标签 表单 关联
+     */
+    @PostMapping(value = "/addMatchCustomFormAndTag}")
+    public ResultVO<MatchCustomFormAndTag> addMatchCustomFormAndTag(@RequestBody MatchCustomFormAndTag matchCustomFormAndTag) {
+        return new ResultVO<>(customFormTagService.addMatchCustomFormAndTag(matchCustomFormAndTag));
+    }
+
+    @GetMapping(value = "/getTagListByFormId/{formId}/{rand}")
+    public ResultVO<List<MatchCustomFormAndTag>> getTagListByFormId(@PathVariable("formId") String formId) {
+        return new ResultVO<>(customFormTagService.getTagListByFormId(formId));
+    }
+
+    @DeleteMapping(value = "/deleteMatchCustomFormAndTag/{formId}/{tagId}/{rand}")
+    public ResultVO<Long> deleteMatchCustomFormAndTag(@PathVariable("formId") String formId, @PathVariable("tagId") String tagId) {
+        return new ResultVO<>(customFormTagService.deleteMatchCustomFormAndTag(formId, tagId));
+    }
+
 }

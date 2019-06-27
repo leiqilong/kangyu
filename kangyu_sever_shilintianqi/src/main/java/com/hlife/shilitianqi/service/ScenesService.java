@@ -26,7 +26,7 @@ public interface ScenesService {
      * 分页查询场景列表
      *
      * @param jsonObject 查询参数 <br/>
-     *              scenesName 场景名称
+     *                   scenesName 场景名称
      *                   pageSize 每页条数
      *                   pageNum 页数
      * @return 场景列表 分页数据
@@ -98,29 +98,47 @@ public interface ScenesService {
     Long deleteJudgeStandard(String judgeStandardId);
 
     /**
-     * 查询患者某场景下得分
+     * 查询患者某场景下得分与标签数据
      *
-     * @param guid 患者id
-     * @param scenesId  场景 id
-     * @return 得分情况
+     * @param guid     患者id
+     * @param scenesId 场景 id
+     * @return 得分情况与标签数据
      */
-    Map<String, Object> getTagAndScore(String guid, String scenesId) ;
+    Map<String, Object> getTagAndScore(String guid, String scenesId);
 
     /**
-     * 获取自定义表单标签列表
+     * 获取标签列表
+     *
      * @param jsonObject 查询条件 <br/>
-     *                      tagType 标签类别 <br/>
+     *                   tagType 标签类别 <br/>
      * @return 自定义表单标签列表
      */
     List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject);
 
     /**
+     * 获取宣教list
      *
-     * @param guid
-     * @param scenesId
-     * @return
+     * @param guid     患者id
+     * @param scenesId 场景 id
+     * @return 宣教list
      */
     List<String> getMission(String guid, String scenesId);
 
+    /**
+     * 获取调查问卷表单list
+     *
+     * @param guid     患者guid
+     * @param scenesId 场景id
+     * @return 调查问卷表单list
+     */
     List<String> getSurvey(String guid, String scenesId);
+
+    /**
+     * 根据前台数据获取某场景下得分与标签数据
+     *
+     * @param jsonObject <br/> scenesId 场景id <br>
+     *                   userArray 用户
+     * @return 得分与标签数据
+     */
+    Map<String, Object> getTagAndScoreTwice(JSONObject jsonObject);
 }

@@ -65,4 +65,19 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
     public List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList) {
         return this.matchCustomFormAndTagMapper.selectCustomFormsByTagIdList(tagIdList);
     }
+
+    @Override
+    public MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag) {
+        return this.matchCustomFormAndTagMapper.addMatchCustomFormAndTag(matchCustomFormAndTag);
+    }
+
+    @Override
+    public List<MatchCustomFormAndTag> getTagListByFormId(String formId) {
+        return this.matchCustomFormAndTagMapper.getTagListByFormId(formId);
+    }
+
+    @Override
+    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
+        return this.matchCustomFormAndTagMapper.deleteMatchCustomFormAndTag(formId, tagId);
+    }
 }

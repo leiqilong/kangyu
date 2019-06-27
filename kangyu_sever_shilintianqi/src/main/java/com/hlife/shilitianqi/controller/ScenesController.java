@@ -48,6 +48,7 @@ public class ScenesController {
 
     /**
      * 保存/修改 场景基本信息
+     *
      * @param scenes 场景基本信息
      * @return resultVO.resultData
      */
@@ -58,6 +59,7 @@ public class ScenesController {
 
     /**
      * 删除场景信息
+     *
      * @param scenesId 场景设备 id
      * @return resultVO.resultData 影响的条数
      */
@@ -68,6 +70,7 @@ public class ScenesController {
 
     /**
      * 保存/修改 场景设备
+     *
      * @param deviceOfScenes 场景设备信息
      * @return resultVO.resultData 场景设备信息
      */
@@ -78,6 +81,7 @@ public class ScenesController {
 
     /**
      * 根据场景id 查询对应的设备列表
+     *
      * @param scenesId 场景id
      * @return resultVO.resultData 场景设备列表
      */
@@ -88,6 +92,7 @@ public class ScenesController {
 
     /**
      * 保存/修改 场景设备规则
+     *
      * @param judgeStandard 场景设备规则信息
      * @return resultVO.resultData 场景设备规则信息
      */
@@ -98,6 +103,7 @@ public class ScenesController {
 
     /**
      * 删除场景设备信息
+     *
      * @param deviceOfScenesId 场景设备 id
      * @return resultVO.resultData 影响的条数
      */
@@ -133,7 +139,8 @@ public class ScenesController {
      * 获取自定义表单标签列表（不分页）
      *
      * @param jsonObject 查询条件 <br/>
-     *                     tagType 标签类别 <br/>
+     *                   tagType 标签类别 <br/>
+     *                   tagTypeList 标签类别List
      * @return resultVO.resultData 自定义表单标签列表
      */
     @PostMapping(value = "/getCustomFormTagList")
@@ -141,10 +148,11 @@ public class ScenesController {
         return new ResultVO<>(this.scenesService.getCustomFormTagList(jsonObject));
     }
 
+
     /**
      * 获取场景标签和得分
      *
-     * @param guid 患者guid
+     * @param guid     患者guid
      * @param scenesId 场景id
      * @return 得分情况
      */
@@ -155,11 +163,24 @@ public class ScenesController {
     }
 
     /**
-     * 获取宣教表单list
+     * 根据前台的数据 获取场景标签和得分
      *
-     * @param guid 患者guid
+     * @param jsonObject scenesId 场景id <br>
+     *                   userArray 用户信息
+     * @return 得分情况
+     */
+    @ApiOperation("根据前台的数据， 获取场景标签和得分")
+    @PostMapping("/getTagAndScoreTwice")
+    public ResultVO<Map<String, Object>> getTagAndScoreTwice(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getTagAndScoreTwice(jsonObject));
+    }
+
+    /**
+     * 获取宣教list
+     *
+     * @param guid     患者guid
      * @param scenesId 场景id
-     * @return
+     * @return 宣教list
      */
     @ApiOperation("获取宣教表单list")
     @GetMapping("/getMission/{guid}/{scenesId}/{rand}")
@@ -170,9 +191,9 @@ public class ScenesController {
     /**
      * 获取调查问卷表单list
      *
-     * @param guid 患者guid
+     * @param guid     患者guid
      * @param scenesId 场景id
-     * @return
+     * @return 查问卷表单list
      */
     @ApiOperation("获取调查问卷表单list")
     @GetMapping("/getSurvey/{guid}/{scenesId}/{rand}")

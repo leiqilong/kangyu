@@ -1,5 +1,6 @@
 package com.hlife.shilitianqi.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
@@ -113,7 +114,41 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         if (StringUtil.stringIsNotNull(tagType)) {
             queryDoc.append("tagType", tagType);
         }
+
+        JSONArray tagTypeList = jsonObject.getJSONArray("tagTypeList");
+        if (tagTypeList != null && tagTypeList.size() > 0) {
+            queryDoc.append("tagType", new Document("$in", tagTypeList));
+        }
         return customFormTagMapper.getCustomFormTagList(queryDoc);
+    }
+
+    @Override
+    public List<Map<String, Object>> getCustomFormTagTree(JSONObject jsonObject) {
+        List<CustomFormTag> tagList = this.getCustomFormTagList(jsonObject);
+
+        List<String> tagNames = new ArrayList<>();
+        for (CustomFormTag customFormTag: tagList) {
+            String tagName = customFormTag.getTagName();
+            if (!tagNames.contains(customFormTag.getTagName())) {
+                tagNames.add(tagName);
+            }
+        }
+        List<Map<String, Object>> tagTree = new ArrayList<>();
+        for (String tagName: tagNames) {
+            List<CustomFormTag> customFormTagGroup = new ArrayList<>();
+            for (CustomFormTag customFormTag: tagList) {
+                if (customFormTag.getTagName().equals(tagName)) {
+                    customFormTagGroup.add(customFormTag);
+                }
+            }
+            Map<String, Object> groupMap = new HashMap<>();
+            groupMap.put("tagValue", tagName);
+            groupMap.put("id", "");
+            groupMap.put("children", customFormTagGroup);
+            tagTree.add(groupMap);
+        }
+
+        return tagTree;
     }
 
     @Override
@@ -176,6 +211,21 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         return this.funAbc(formMap, tagIdList);
         //return this.matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(tagIdList);
+    }
+
+    @Override
+    public MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag) {
+        return this.matchCustomFormAndTagService.addMatchCustomFormAndTag(matchCustomFormAndTag);
+    }
+
+    @Override
+    public List<MatchCustomFormAndTag> getTagListByFormId(String formId) {
+        return this.matchCustomFormAndTagService.getTagListByFormId(formId);
+    }
+
+    @Override
+    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
+        return this.matchCustomFormAndTagService.deleteMatchCustomFormAndTag(formId, tagId);
     }
 
     private List<String> funAbc(Map<String, List<String>> formMap, List<String> tagIdList) {

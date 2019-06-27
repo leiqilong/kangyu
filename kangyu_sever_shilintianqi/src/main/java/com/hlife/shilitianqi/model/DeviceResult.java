@@ -1,5 +1,6 @@
 package com.hlife.shilitianqi.model;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,7 +13,7 @@ public class DeviceResult implements Serializable {
     /**
      * 设备代码
      */
-    private String code;
+    private String dataType;
 
     /**
      * 得分
@@ -33,4 +34,9 @@ public class DeviceResult implements Serializable {
      * 标签Id
      */
     private String tagId;
+
+    /**
+     *
+     */
+    private JSONObject datas;
 }
