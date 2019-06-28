@@ -52,6 +52,7 @@ public class CustomFormTagController {
      *
      * @param jsonObject 查询条件 <br/>
      *                     tagType 标签类别 <br/>
+     *                     tagTypeList 标签类别列表 <br/>
      * @return resultVO.resultData 自定义表单标签列表
      */
     @PostMapping(value = "/getCustomFormTagList")

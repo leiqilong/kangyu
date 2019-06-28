@@ -6,6 +6,7 @@ import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
 import com.hlife.shilitianqi.model.CustomFormTag;
 import org.bson.Document;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,11 @@ public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTag
 
     @Override
     public List<CustomFormTag> getCustomFormTagList(Document queryDoc) {
-        return this.mongoTemplate.find(new BasicQuery(queryDoc), CustomFormTag.class);
+        return this.mongoTemplate.find(
+                new BasicQuery(queryDoc)
+                        .with(new Sort(new Sort.Order(Sort.Direction.DESC, "tagName"))),
+                CustomFormTag.class
+        );
     }
 
     @Override

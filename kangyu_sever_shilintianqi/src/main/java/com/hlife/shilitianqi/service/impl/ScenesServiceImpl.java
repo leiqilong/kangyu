@@ -291,6 +291,11 @@ public class ScenesServiceImpl implements ScenesService {
             }
         }
 
+        if (fun == null) {
+            resultList.add(new DeviceResult().setDataType(deviceCode));
+            return 100d * device.getWeights();
+        }
+
         DeviceResult deviceResult = fun.apply(datas, device.getJudgeStandardList());
         if (deviceResult != null) {
             resultList.add(deviceResult.setDataType(deviceCode));

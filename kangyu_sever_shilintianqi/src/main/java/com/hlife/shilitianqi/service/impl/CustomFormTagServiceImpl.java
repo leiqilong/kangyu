@@ -209,8 +209,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
             formMap.put(formId, tagGroup);
         }
 
-        return this.funAbc(formMap, tagIdList);
-        //return this.matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(tagIdList);
+        return this.findFormList(formMap, tagIdList);
     }
 
     @Override
@@ -228,7 +227,16 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return this.matchCustomFormAndTagService.deleteMatchCustomFormAndTag(formId, tagId);
     }
 
-    private List<String> funAbc(Map<String, List<String>> formMap, List<String> tagIdList) {
+    /**
+     * 根据标签 idlist 过滤 表单
+     *
+     * @param formMap 表单列表和其相关标签
+     *                kqy  表单id
+     *                value 表单上的标签
+     * @param tagIdList 过滤用标签 list
+     * @return 过滤后的表单
+     */
+    private List<String> findFormList(Map<String, List<String>> formMap, List<String> tagIdList) {
         List<String> formIdList = new ArrayList<>();
 
         for (Map.Entry<String, List<String>> entry : formMap.entrySet()) {
@@ -239,6 +247,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         return formIdList;
     }
+
 
     private boolean equalsList(List<String> value, List<String> tagIdList) {
         for (String tagId: tagIdList) {
