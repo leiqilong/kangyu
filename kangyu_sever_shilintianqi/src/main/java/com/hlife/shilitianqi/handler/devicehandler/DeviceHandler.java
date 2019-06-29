@@ -35,6 +35,7 @@ public class DeviceHandler {
 
         String path = "datas.data.dayTotals.step";
         String defaultTwiceValue = "0";
+        String chineseDescription = "手环-运动-步数";
 
         // 当前患者没有 运动数据
         if (jsonObject.isEmpty()) {
@@ -42,7 +43,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "手环-运动-步数");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -61,7 +62,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, step);
-                    this.put(CHINESE_DESCRIPTION, "手环-运动-步数");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -72,6 +73,7 @@ public class DeviceHandler {
         log.info("jsonObject==>{}", jsonObject);
         String path = "datas.data[0].sbp/dbp";
         String defaultTwiceValue = "0/0";
+        String chineseDescription = "手环-血压-收缩压/舒张压";
 
 
         // 无数据
@@ -80,7 +82,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "手环-血压-收缩压/舒张压");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -101,7 +103,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, sbp + "/" + dbp);
-                    this.put(CHINESE_DESCRIPTION, "手环-血压-收缩压/舒张压");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -111,6 +113,7 @@ public class DeviceHandler {
     public static DeviceResult bandBloodoxygenDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.data[0].so2";
         String defaultTwiceValue = "0";
+        String chineseDescription = "手环-血氧-so2";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -118,7 +121,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "手环-血氧-so2");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -137,7 +140,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, xygen);
-                    this.put(CHINESE_DESCRIPTION, "手环-血氧-so2");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -147,6 +150,7 @@ public class DeviceHandler {
     public static DeviceResult bandheartRateDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.data[0].bpm";
         String defaultTwiceValue = "0";
+        String chineseDescription = "手环-心率-bpm";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -154,7 +158,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "手环-心率-bpm");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -173,7 +177,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, bpm);
-                    this.put(CHINESE_DESCRIPTION, "手环-心率-bpm");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -182,14 +186,15 @@ public class DeviceHandler {
      */
     public static DeviceResult bandSleepDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.ss/qs";
-        String defaultTwiceValue = "0/0";
+        String chineseDescription = "手环-睡眠-深睡/浅睡";
+
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, "0")
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
-                        this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "手环-睡眠-深睡/浅睡");
+                        this.put(TWICE_VALUE, "0/0");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
         // 页面修改后的数据
@@ -208,7 +213,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, ss + "/" + qs);
-                    this.put(CHINESE_DESCRIPTION, "手环-睡眠-深睡/浅睡");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -218,6 +223,7 @@ public class DeviceHandler {
     public static DeviceResult bgdTcfDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.hdcl[0].DataItem.Tzhl";
         String defaultTwiceValue = "0";
+        String chineseDescription = "报告单-体成分-体脂含量";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -225,7 +231,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "报告单-体成分-体脂含量");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -243,7 +249,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, tzhl);
-                    this.put(CHINESE_DESCRIPTION, "报告单-体成分-体脂含量");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -253,6 +259,7 @@ public class DeviceHandler {
     public static DeviceResult waterDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.waterValue";
         String defalutTwiceValue = "0";
+        String chineseDescription = "水杯-饮水量";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -260,7 +267,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "水杯-饮水量");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -276,7 +283,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, waterValue);
-                    this.put(CHINESE_DESCRIPTION, "水杯-饮水量");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -286,6 +293,7 @@ public class DeviceHandler {
     public static DeviceResult diagnose_sleepTimeDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.sleepTime";
         String defalutTwiceValue = "<9h";
+        String chineseDescription = "量表-睡眠时间";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -293,7 +301,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "量表-睡眠时间");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -309,7 +317,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, sleepTime);
-                    this.put(CHINESE_DESCRIPTION, "量表-睡眠时间");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -319,6 +327,7 @@ public class DeviceHandler {
     public static DeviceResult diagnose_whDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.height/weight";
         String defalutTwiceValue = "0/1";
+        String chineseDescription = "量表-档案-身高/体重";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -329,7 +338,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "量表-档案-身高体重");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -350,7 +359,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, height + "/" + weight);
-                    this.put(CHINESE_DESCRIPTION, "量表-档案-身高体重");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -358,8 +367,9 @@ public class DeviceHandler {
      * 量表-户外运动
      */
     public static DeviceResult diagnose_outdoorDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
-        String path = "datas.outdoorTwice";
+        String path = "datas.outdoor";
         String defalutTwiceValue = "＜60min/天";
+        String chineseDescription = "量表-户外运动";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -367,7 +377,7 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "量表-户外运动");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -383,7 +393,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, outdoor);
-                    this.put(CHINESE_DESCRIPTION, "量表-户外运动");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -391,8 +401,9 @@ public class DeviceHandler {
      * 量表-心率
      */
     public static DeviceResult diagnose_heartDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
-        String path = "datas.outdoorTwice";
+        String path = "datas.heart";
         String defalutTwiceValue = "＜80次/分钟";
+        String chineseDescription = "量表-心率";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -400,14 +411,14 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "量表-心率");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
         // 前台处理后的数据
         String heartTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(heartTwice)) {
-            return getDeviceResult(judgeStandards, heartTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, heartTwice).setDatas(jsonObject);
         }
 
         // 原数据
@@ -416,7 +427,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, heart);
-                    this.put(CHINESE_DESCRIPTION, "量表-心率");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -426,13 +437,15 @@ public class DeviceHandler {
     public static DeviceResult cfTjspLd_energDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.Energy.Actual/Recommend";
         String defalutTwiceValue = "0/1";
+        String chineseDescription = "膳食营养-能量-实际值/推荐值";
+
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, defalutTwiceValue)
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "膳食营养-能量");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -451,7 +464,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, actual + "/" + recommend);
-                    this.put(CHINESE_DESCRIPTION, "膳食营养-能量");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -461,13 +474,15 @@ public class DeviceHandler {
     public static DeviceResult cfTjspLd_proteinDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.Protein.Actual/Recommend";
         String defalutTwiceValue = "0/1";
+        String chineseDescription = "膳食营养-蛋白质-实际值/推荐值";
+
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, "0")
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "膳食营养-蛋白质");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -486,7 +501,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, actual + "/" + recommend);
-                    this.put(CHINESE_DESCRIPTION, "膳食营养-蛋白质");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -496,13 +511,15 @@ public class DeviceHandler {
     public static DeviceResult cfTjspLd_fatDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.Fat.Actual/Recommend";
         String defalutTwiceValue = "0/1";
+        String chineseDescription = "膳食营养-脂肪-实际值/推荐值";
+
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, defalutTwiceValue)
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "膳食营养-脂肪");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
@@ -522,7 +539,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, actual + "/" + recommend);
-                    this.put(CHINESE_DESCRIPTION, "膳食营养-蛋白质");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -532,13 +549,15 @@ public class DeviceHandler {
     public static DeviceResult cfTjspLd_choDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.Fat.Actual/Recommend";
         String defalutTwiceValue = "0/1";
+        String chineseDescription = "膳食营养-碳水化合物-实际值/推荐值";
+
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, defalutTwiceValue)
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "膳食营养-碳水化合物");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
         // 前台二次处理的数据
@@ -556,7 +575,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, actual + "/" + recommend);
-                    this.put(CHINESE_DESCRIPTION, "膳食营养-碳水化合物");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -567,6 +586,7 @@ public class DeviceHandler {
     public static DeviceResult form_childrenHeathTyhd(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.jk_tyhd";
         String defalutTwiceValue = "<60min/天";
+        String chineseDescription = "儿童健康检查-运动";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -574,14 +594,14 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-运动");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
         // 前台处理后的数据
         String jkTyhdTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkTyhdTwice)) {
-            return getDeviceResult(judgeStandards, jkTyhdTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkTyhdTwice).setDatas(jsonObject);
         }
 
         // 原数据
@@ -590,7 +610,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, jkTyhd);
-                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-运动");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -600,6 +620,7 @@ public class DeviceHandler {
     public static DeviceResult form_childrenHeathYsl(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.jk_ysl";
         String defalutTwiceValue = "<1000ml";
+        String chineseDescription = "儿童健康检查-饮水量";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -607,14 +628,14 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-饮水量");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
         // 前台处理后的数据
         String jkSylTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkSylTwice)) {
-            return getDeviceResult(judgeStandards, jkSylTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkSylTwice).setDatas(jsonObject);
         }
 
         // 原数据
@@ -623,7 +644,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, jkSyl);
-                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-饮水量");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -633,6 +654,7 @@ public class DeviceHandler {
     public static DeviceResult form_childrenHeathSmsj(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
         String path = "datas.jk_smsj";
         String defalutTwiceValue = "<9h";
+        String chineseDescription = "儿童健康检查-睡眠";
 
         // 无数据
         if (jsonObject.isEmpty()) {
@@ -640,14 +662,14 @@ public class DeviceHandler {
                     .setDatas(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defalutTwiceValue);
-                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-睡眠");
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
                     }});
         }
 
         // 前台处理后的数据
         String jkSmsjTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkSmsjTwice)) {
-            return getDeviceResult(judgeStandards, jkSmsjTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkSmsjTwice).setDatas(jsonObject);
         }
 
         // 原数据
@@ -656,7 +678,7 @@ public class DeviceHandler {
                 .setDatas(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, jkSmsj);
-                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-睡眠");
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
                 }});
     }
 
@@ -681,7 +703,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String jkXlTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkXlTwice)) {
-            return getDeviceResult(judgeStandards, jkXlTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkXlTwice).setDatas(jsonObject);
         }
 
         // 原数据
