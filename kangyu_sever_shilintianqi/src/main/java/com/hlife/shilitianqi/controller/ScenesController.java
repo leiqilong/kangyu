@@ -200,4 +200,32 @@ public class ScenesController {
     public ResultVO<List<String>> getSurvey(@PathVariable("guid") String guid, @PathVariable("scenesId") String scenesId) {
         return new ResultVO<>(this.scenesService.getSurvey(guid, scenesId));
     }
+
+    /**
+     * 推送宣教list
+     *
+     * @param jsonObject <br>
+     *                   guid     患者guid <br>
+     *                   scenesId 场景id
+     * @return 成功消息
+     */
+    @ApiOperation("推送宣教list")
+    @PostMapping("/publishMission")
+    public ResultVO<String> publishMission(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.publishMission(jsonObject));
+    }
+
+    /**
+     * 推送调查问卷list
+     *
+     * @param jsonObject <br>
+     *                   guid     患者guid <br>
+     *                   scenesId 场景id
+     * @return 成功消息
+     */
+    @ApiOperation("推送调查问卷list")
+    @PostMapping("/publishSurvey")
+    public ResultVO<String> publishSurvey(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.publishSurvey(jsonObject));
+    }
 }

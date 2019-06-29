@@ -63,6 +63,11 @@ public class CustomFormTag implements Serializable {
     private String tagType;
 
     /**
+     * 标签说明
+     */
+    private String tagRemark;
+
+    /**
      * 创建时间
      */
     private Date createTime;

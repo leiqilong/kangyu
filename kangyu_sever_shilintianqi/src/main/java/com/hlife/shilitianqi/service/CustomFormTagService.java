@@ -75,9 +75,35 @@ public interface CustomFormTagService {
      */
     List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList);
 
+    /**
+     * 给表单添加标签
+     *
+     * @param matchCustomFormAndTag 标签 表单关联数据
+     * @return 标签 表单关联数据
+     */
     MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag);
 
+    /**
+     * 根据表单id 获取对应的 标签
+     *
+     * @param formId 表单id
+     * @return 标签表单对应数据
+     */
     List<MatchCustomFormAndTag> getTagListByFormId(String formId);
 
+    /**
+     * 删除某表单的某个标签
+     * @param formId 表单id
+     * @param tagId 标签id
+     * @return
+     */
     Long deleteMatchCustomFormAndTag(String formId, String tagId);
+
+    /**
+     * 根据 id 查询对应的标签
+     *
+     * @param tagId 标签 id
+     * @return 标签 数据
+     */
+    CustomFormTag selectCustomFormTagById(String tagId);
 }

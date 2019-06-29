@@ -136,9 +136,30 @@ public interface ScenesService {
     /**
      * 根据前台数据获取某场景下得分与标签数据
      *
-     * @param jsonObject <br/> scenesId 场景id <br>
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br>
      *                   userArray 用户
      * @return 得分与标签数据
      */
     Map<String, Object> getTagAndScoreTwice(JSONObject jsonObject);
+
+    /**
+     * 摧送宣教list
+     *
+     * @param jsonObject <br/>
+     *                   guid患者guid <br>
+     *                   scenesId 场景id
+     * @return 推送成功
+     */
+    String publishMission(JSONObject jsonObject);
+
+    /**
+     * 摧送调查问卷list
+     *
+     * @param jsonObject <br/>
+     *                   guid患者guid <br>
+     *                   scenesId 场景id
+     * @return 推送成功
+     */
+    String publishSurvey(JSONObject jsonObject);
 }

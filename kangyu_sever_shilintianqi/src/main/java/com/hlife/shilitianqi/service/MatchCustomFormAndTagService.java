@@ -54,9 +54,28 @@ public interface MatchCustomFormAndTagService {
      */
     List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList);
 
+    /**
+     * 给表单加上某标签
+     * 保存一条标签 表单 关联数据
+     *
+     * @param matchCustomFormAndTag  表单关联数据
+     * @return 表单关联数据
+     */
     MatchCustomFormAndTag addMatchCustomFormAndTag(MatchCustomFormAndTag matchCustomFormAndTag);
 
+    /**
+     * 根据 表单id 获取对应的 标签 表单关联数据
+     *
+     * @param formId 表单id
+     * @return 标签 表单关联数据
+     */
     List<MatchCustomFormAndTag> getTagListByFormId(String formId);
 
+    /**
+     * 删除 标签 表单关联数据
+     * @param formId  表单id
+     * @param tagId 标签 id
+     * @return 影响的行数
+     */
     Long deleteMatchCustomFormAndTag(String formId, String tagId);
 }

@@ -560,10 +560,144 @@ public class DeviceHandler {
                 }});
     }
 
+
     /**
-     * 量表计算结果
+     * 儿童健康检查-运动
+     */
+    public static DeviceResult form_childrenHeathTyhd(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.jk_tyhd";
+        String defalutTwiceValue = "<60min/天";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, defalutTwiceValue)
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defalutTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-运动");
+                    }});
+        }
+
+        // 前台处理后的数据
+        String jkTyhdTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(jkTyhdTwice)) {
+            return getDeviceResult(judgeStandards, jkTyhdTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String jkTyhd = jsonObject.getString("jk_tyhd");
+        return getDiagnoseDeviceResult(judgeStandards, jkTyhd)
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, jkTyhd);
+                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-运动");
+                }});
+    }
+
+    /**
+     * 儿童健康检查-饮水量
+     */
+    public static DeviceResult form_childrenHeathYsl(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.jk_ysl";
+        String defalutTwiceValue = "<1000ml";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, defalutTwiceValue)
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defalutTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-饮水量");
+                    }});
+        }
+
+        // 前台处理后的数据
+        String jkSylTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(jkSylTwice)) {
+            return getDeviceResult(judgeStandards, jkSylTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String jkSyl = jsonObject.getString("jk_ysl");
+        return getDiagnoseDeviceResult(judgeStandards, jkSyl)
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, jkSyl);
+                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-饮水量");
+                }});
+    }
+
+    /**
+     * 儿童健康检查-睡眠
+     */
+    public static DeviceResult form_childrenHeathSmsj(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.jk_smsj";
+        String defalutTwiceValue = "<9h";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, defalutTwiceValue)
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defalutTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, "儿童健康检查-睡眠");
+                    }});
+        }
+
+        // 前台处理后的数据
+        String jkSmsjTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(jkSmsjTwice)) {
+            return getDeviceResult(judgeStandards, jkSmsjTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String jkSmsj = jsonObject.getString("jk_smsj");
+        return getDiagnoseDeviceResult(judgeStandards, jkSmsj)
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, jkSmsj);
+                    this.put(CHINESE_DESCRIPTION, "儿童健康检查-睡眠");
+                }});
+    }
+
+    /**
+     * 儿童健康检查-心率
+     */
+    public static DeviceResult form_childrenHeathXl(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.jk_xl";
+        String defalutTwiceValue = "<80次/分钟";
+        String chineseDescription = "儿童健康检查-心率";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, defalutTwiceValue)
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defalutTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
+                    }});
+        }
+
+        // 前台处理后的数据
+        String jkXlTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(jkXlTwice)) {
+            return getDeviceResult(judgeStandards, jkXlTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String jkXl = jsonObject.getString("jk_xl");
+        return getDiagnoseDeviceResult(judgeStandards, jkXl)
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, jkXl);
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
+                }});
+    }
+
+    /**
+     * 量表/自定义表单计算结果
      *
-     * @return
+     * 数据为字符串,采用 equals 对比
      */
     private static DeviceResult getDiagnoseDeviceResult(List<JudgeStandard> judgeStandards, String param) {
         if (StringUtil.stringIsNull(param)) {
@@ -595,8 +729,11 @@ public class DeviceHandler {
 
     /**
      * 其它计算结果
+     *
+     * 公式 算法 用数据替换公式中的 X 然后用 eval
+     *
      */
-    public static DeviceResult getDeviceResult(List<JudgeStandard> judgeStandards, String param) {
+    private static DeviceResult getDeviceResult(List<JudgeStandard> judgeStandards, String param) {
         boolean match = false;
         for (JudgeStandard judgeStandard : judgeStandards) {
             try {
@@ -619,6 +756,11 @@ public class DeviceHandler {
 
     /**
      * 手环-血压 计算
+     *
+     *  公式 算法 用数据 替换 公式中 X Y 参数
+     *
+     *  血压 X sbp 收缩压（高压）
+     *  血压 Y dbp 舒张压（低压）
      */
     private static DeviceResult getDeviceResult(List<JudgeStandard> judgeStandards, String sbp, String dbp) {
         boolean match = false;
@@ -639,4 +781,5 @@ public class DeviceHandler {
         }
         return new DeviceResult().setScore(100d);
     }
+
 }

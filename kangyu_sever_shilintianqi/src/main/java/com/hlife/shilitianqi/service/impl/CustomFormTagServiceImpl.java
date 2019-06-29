@@ -227,6 +227,11 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return this.matchCustomFormAndTagService.deleteMatchCustomFormAndTag(formId, tagId);
     }
 
+    @Override
+    public CustomFormTag selectCustomFormTagById(String tagId) {
+        return this.customFormTagMapper.selectCustomFormTagById(tagId);
+    }
+
     /**
      * 根据标签 idlist 过滤 表单
      *

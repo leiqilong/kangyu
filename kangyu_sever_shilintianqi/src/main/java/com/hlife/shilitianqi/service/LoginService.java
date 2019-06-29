@@ -18,6 +18,7 @@ public interface LoginService {
 
     /**
      * 登录
+     *
      * @param jsonObject
      *              phone 用户名手机号
      *              password 密码

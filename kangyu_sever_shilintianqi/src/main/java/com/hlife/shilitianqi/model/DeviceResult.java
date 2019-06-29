@@ -35,6 +35,8 @@ public class DeviceResult implements Serializable {
      */
     private String tagId;
 
+    private String tagRemark;
+
     /**
      *
      */
