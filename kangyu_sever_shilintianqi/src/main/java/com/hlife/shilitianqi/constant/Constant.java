@@ -84,15 +84,10 @@ public class Constant {
             for (Constant.Scale scale : Constant.Scale.values()) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put(VALUE, String.format(VALUE_FORMART, scale.getId(), "01"));
-                //jsonObject.put(VALUE, scale.getId());
                 jsonObject.put(LABEL, scale.getName());
-                //jsonObject.put(TYPE, "01");
                 jsonObjectList.add(jsonObject);
             }
             return jsonObjectList;
         }
     }
-
-
-
 }

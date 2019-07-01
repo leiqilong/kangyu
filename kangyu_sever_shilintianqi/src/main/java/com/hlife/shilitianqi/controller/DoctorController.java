@@ -32,6 +32,7 @@ public class DoctorController {
 
     /**
      * 删除医生信息
+     *
      * @param id 医生id
      * @return resultVO.resultData 操作成功
      */

@@ -278,14 +278,6 @@ public class ScenesServiceImpl implements ScenesService {
      * @return 标签 id List
      */
     private List<String> getTagIdList(String guid, String scenesId) {
-        /*Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
-        List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
-
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(scenesId);
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }*/
         return this.getTagIdList(guid, scenesId, new JSONObject());
     }
 
@@ -417,7 +409,7 @@ public class ScenesServiceImpl implements ScenesService {
 
         }
 
-        for (DeviceResult deviceResult: tagList) {
+        for (DeviceResult deviceResult : tagList) {
             if (deviceResult != null && StringUtil.stringIsNotNull(deviceResult.getTagId())) {
                 deviceResult.setTagRemark(
                         this.customFormTagService.selectCustomFormTagById(deviceResult.getTagId())
@@ -465,9 +457,9 @@ public class ScenesServiceImpl implements ScenesService {
     /**
      * 获取宣教list 并给微信id 赋值
      *
-     * @param guid 并给微信id 赋值
+     * @param guid     并给微信id 赋值
      * @param scenesId 场景id
-     * @param param 微信id
+     * @param param    微信id
      * @return 宣教list
      */
     private List<String> getMission(String guid, String scenesId, JSONObject param) {
@@ -485,9 +477,9 @@ public class ScenesServiceImpl implements ScenesService {
     /**
      * 获取调查问卷list 并给微信id 赋值
      *
-     * @param guid 并给微信id 赋值
+     * @param guid     并给微信id 赋值
      * @param scenesId 场景id
-     * @param param 微信id
+     * @param param    微信id
      * @return 调查问卷list
      */
     private List getSurvey(String guid, String scenesId, JSONObject param) {
@@ -505,10 +497,10 @@ public class ScenesServiceImpl implements ScenesService {
     /**
      * 推送模版消息
      *
-     * @param guid 患者guid
-     * @param weChatID 患者微信id
+     * @param guid        患者guid
+     * @param weChatID    患者微信id
      * @param paramObject 消息 jsonObject
-     * @param data 消息具体信息
+     * @param data        消息具体信息
      */
     private void pushMassage(String guid, String weChatID, JSONObject paramObject, JSONObject data) {
         JSONObject userObject = new JSONObject();

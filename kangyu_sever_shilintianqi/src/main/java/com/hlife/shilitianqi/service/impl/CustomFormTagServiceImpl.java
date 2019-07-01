@@ -74,7 +74,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         } else {
             customFormTag.setId(GuidUtil.generateGuid());
         }
-        return  this.customFormTagMapper.addCustomFormTag(customFormTag);
+        return this.customFormTagMapper.addCustomFormTag(customFormTag);
     }
 
     @Override
@@ -127,16 +127,16 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         List<CustomFormTag> tagList = this.getCustomFormTagList(jsonObject);
 
         List<String> tagNames = new ArrayList<>();
-        for (CustomFormTag customFormTag: tagList) {
+        for (CustomFormTag customFormTag : tagList) {
             String tagName = customFormTag.getTagName();
             if (!tagNames.contains(customFormTag.getTagName())) {
                 tagNames.add(tagName);
             }
         }
         List<Map<String, Object>> tagTree = new ArrayList<>();
-        for (String tagName: tagNames) {
+        for (String tagName : tagNames) {
             List<CustomFormTag> customFormTagGroup = new ArrayList<>();
-            for (CustomFormTag customFormTag: tagList) {
+            for (CustomFormTag customFormTag : tagList) {
                 if (customFormTag.getTagName().equals(tagName)) {
                     customFormTagGroup.add(customFormTag);
                 }
@@ -235,9 +235,9 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     /**
      * 根据标签 idlist 过滤 表单
      *
-     * @param formMap 表单列表和其相关标签
-     *                kqy  表单id
-     *                value 表单上的标签
+     * @param formMap   表单列表和其相关标签
+     *                  kqy  表单id
+     *                  value 表单上的标签
      * @param tagIdList 过滤用标签 list
      * @return 过滤后的表单
      */
@@ -255,7 +255,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
 
     private boolean equalsList(List<String> value, List<String> tagIdList) {
-        for (String tagId: tagIdList) {
+        for (String tagId : tagIdList) {
             if (!value.contains(tagId)) {
                 return false;
             }

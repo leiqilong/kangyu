@@ -15,13 +15,13 @@ public interface CustomFormTagService {
 
     /**
      * 新增/修改自定义表单标签
+     *
      * @param customFormTag 自定义表单标签 信息
      * @return 自定义表单标签 信息
      */
     CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag);
 
     /**
-     *
      * @param customFormTag
      * @return
      */
@@ -29,8 +29,9 @@ public interface CustomFormTagService {
 
     /**
      * 查询自定义表单列表(分页)
+     *
      * @param jsonObject 查询条件 <br/>
-     *                  tagName 标签名称 <br/>
+     *                   tagName 标签名称 <br/>
      *                   pageSize [必传] 每页条数 <br/>
      *                   pageNum [必传] 当前页 <br/>
      * @return 自定义表单列表(分页)
@@ -41,13 +42,14 @@ public interface CustomFormTagService {
      * 获取自定义表单标签列表（不分页）
      *
      * @param jsonObject 查询条件 <br/>
-     *      *               tagType 标签类别 <br/>
+     *                   *               tagType 标签类别 <br/>
      * @return 自定义表单标签列表
      */
     List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject);
 
     /**
      * 获取标签树
+     *
      * @param jsonObject 查询条件 <br/>
      *                   tagType 标签类别
      * @return 标签树
@@ -56,6 +58,7 @@ public interface CustomFormTagService {
 
     /**
      * 根据id 删除 自定义表单标签
+     *
      * @param id
      * @return
      */
@@ -70,6 +73,7 @@ public interface CustomFormTagService {
 
     /**
      * 根据 标签id list 查询对应的 表单id list
+     *
      * @param tagIdList 标签id list
      * @return 对应的 表单id list
      */
@@ -93,8 +97,9 @@ public interface CustomFormTagService {
 
     /**
      * 删除某表单的某个标签
+     *
      * @param formId 表单id
-     * @param tagId 标签id
+     * @param tagId  标签id
      * @return
      */
     Long deleteMatchCustomFormAndTag(String formId, String tagId);

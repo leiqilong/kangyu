@@ -37,7 +37,7 @@ public class CustomFormTagController {
      * 获取自定义表单标签列表（分页查询）
      *
      * @param jsonObject 查询条件 <br/>
-     *                    tagName 标签名称 <br/>
+     *                   tagName 标签名称 <br/>
      *                   pageSize [必传] 每页条数 <br/>
      *                   pageNum [必传] 当前页 <br/>
      * @return resultVO.resultData 自定义表单标签列表
@@ -51,8 +51,8 @@ public class CustomFormTagController {
      * 获取自定义表单标签列表（不分页）
      *
      * @param jsonObject 查询条件 <br/>
-     *                     tagType 标签类别 <br/>
-     *                     tagTypeList 标签类别列表 <br/>
+     *                   tagType 标签类别 <br/>
+     *                   tagTypeList 标签类别列表 <br/>
      * @return resultVO.resultData 自定义表单标签列表
      */
     @PostMapping(value = "/getCustomFormTagList")
@@ -64,8 +64,8 @@ public class CustomFormTagController {
      * 获取自定义表单标签树
      *
      * @param jsonObject 查询条件 <br/>
-     *                     tagType 标签类别 <br/>
-     *                     tagTypeList 标签类别List
+     *                   tagType 标签类别 <br/>
+     *                   tagTypeList 标签类别List
      * @return resultVO.resultData 自定义表单标签列表
      */
     @PostMapping(value = "/getCustomFormTagTree")
@@ -75,6 +75,7 @@ public class CustomFormTagController {
 
     /**
      * 根据id 删除标签
+     *
      * @param id 标签 id
      * @return 删除是否成功
      */
@@ -85,6 +86,7 @@ public class CustomFormTagController {
 
     /**
      * 查询相关表单列表
+     *
      * @return 删除是否成功
      */
     @GetMapping(value = "/getCorrespondingFromList/{rand}")

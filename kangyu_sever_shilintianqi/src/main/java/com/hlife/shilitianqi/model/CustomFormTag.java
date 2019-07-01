@@ -40,7 +40,7 @@ public class CustomFormTag implements Serializable {
 
     /**
      * 相关表单
-     *
+     * <p>
      * 不录入到当前文档
      * 录入标签表单关联表
      */
@@ -49,7 +49,7 @@ public class CustomFormTag implements Serializable {
 
     /**
      * 附加标签
-     *
+     * <p>
      * 不录入到当前文档
      * 不录入到表单自关联表
      */

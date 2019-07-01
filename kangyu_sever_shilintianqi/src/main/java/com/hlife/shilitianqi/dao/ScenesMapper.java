@@ -14,6 +14,7 @@ public interface ScenesMapper {
 
     /**
      * 保存场景基本信息
+     *
      * @param scenes 场景基本信息
      * @return 场景基本信息
      */
@@ -29,7 +30,7 @@ public interface ScenesMapper {
     /**
      * 分页 查询场景列表
      *
-     * @param queryDoc 查询参数
+     * @param queryDoc  查询参数
      * @param pageParam 分页参数
      * @return 查询场景列表分页数据
      */
@@ -53,6 +54,7 @@ public interface ScenesMapper {
 
     /**
      * 修改 场景基本信息
+     *
      * @param scenes 场景基本信息
      * @return 场景基本信息
      */

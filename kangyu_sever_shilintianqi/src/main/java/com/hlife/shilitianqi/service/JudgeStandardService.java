@@ -21,7 +21,7 @@ public interface JudgeStandardService {
      * 根据场景设备id 查询 场景设备判别数据
      *
      * @param deviceOfScenesId 场景设备id
-     * @return  场景设备判别数据list
+     * @return 场景设备判别数据list
      */
     List<JudgeStandard> searchJudgeStandardList(String deviceOfScenesId);
 

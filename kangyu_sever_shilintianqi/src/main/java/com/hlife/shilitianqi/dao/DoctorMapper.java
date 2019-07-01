@@ -12,12 +12,13 @@ import org.bson.Document;
 public interface DoctorMapper {
     /**
      * 根据手机号获取医生信息
+     *
      * @param phone
      * @return
      */
     Doctor selectByPhone(String phone);
 
-    PageResult<Doctor> getDoctorList(Document document,  PageParam pageParam);
+    PageResult<Doctor> getDoctorList(Document document, PageParam pageParam);
 
     Doctor selectDoctorById(String id);
 

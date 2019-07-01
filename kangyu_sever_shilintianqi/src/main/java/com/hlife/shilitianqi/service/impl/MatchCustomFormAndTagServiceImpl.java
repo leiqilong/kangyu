@@ -32,7 +32,7 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
 
         this.matchCustomFormAndTagMapper.saveMatchCustomFormAndTagBatch(
                 correspondingForms.stream()
-                        .map(formId ->  new MatchCustomFormAndTag(formId, tagId))
+                        .map(formId -> new MatchCustomFormAndTag(formId, tagId))
                         .collect(Collectors.toList())
         );
     }

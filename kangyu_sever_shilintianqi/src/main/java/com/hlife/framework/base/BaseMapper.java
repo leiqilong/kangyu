@@ -30,7 +30,7 @@ public abstract class BaseMapper {
      * java.lang.String)
      */
     protected <T> PageResult<T> pageQuery(BasicQuery query, Class<T> entityClass, Integer pageSize,
-                                       Integer pageNum) {
+                                          Integer pageNum) {
         return pageQuery(query, entityClass, Function.identity(), pageSize, pageNum, null);
     }
 
@@ -42,7 +42,7 @@ public abstract class BaseMapper {
      * java.lang.String)
      */
     protected <T, R> PageResult<R> pageQuery(BasicQuery query, Class<T> entityClass, Function<T, R> mapper,
-                                          Integer pageSize, Integer pageNum) {
+                                             Integer pageSize, Integer pageNum) {
         return pageQuery(query, entityClass, mapper, pageSize, pageNum, null);
     }
 
@@ -61,7 +61,7 @@ public abstract class BaseMapper {
      * @return PageResult，一个封装page信息的对象.
      */
     protected <T, R> PageResult<R> pageQuery(BasicQuery query, Class<T> entityClass, Function<T, R> mapper,
-                                          Integer pageSize, Integer pageNum, String lastId) {
+                                             Integer pageSize, Integer pageNum, String lastId) {
         //分页逻辑
         long total = mongoTemplate.count(query, entityClass);
         final Integer pages = (int) Math.ceil(total / (double) pageSize);
@@ -99,16 +99,17 @@ public abstract class BaseMapper {
 
     /**
      * 批量保存
-     * @param list 要存入的集合
+     *
+     * @param list        要存入的集合
      * @param entityClass Mongo collection定义的entity class 用来确定查询哪个集合.
-     * @param <T> 泛型
+     * @param <T>         泛型
      */
     protected <T> void saveBatch(List<T> list, Class<T> entityClass) {
         if (list == null || list.isEmpty() || entityClass == null) {
             return;
         }
         BulkOperations bulkOperations = this.mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, entityClass);
-        for (T t: list) {
+        for (T t : list) {
             bulkOperations.insert(t);
         }
         bulkOperations.execute();

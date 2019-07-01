@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 @Configuration
 public class MongoConfig
-       // extends AbstractMongoConfiguration
+        // extends AbstractMongoConfiguration
 {
     @Value("${spring.data.mongodb.uri}")
     private String mongoUri;

@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 /**
  * 返回值包装类
+ *
  * @param <T> 具体返回类型
  */
 @Data

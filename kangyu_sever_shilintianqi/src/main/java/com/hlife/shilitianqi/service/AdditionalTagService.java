@@ -21,7 +21,7 @@ public interface AdditionalTagService {
      * 批量保存附加标签数据
      *
      * @param additionalTags 附加标签信息list
-     * @param mainTagId 主标签
+     * @param mainTagId      主标签
      */
     void saveAdditionalTagsBatch(List<String> additionalTags, String mainTagId);
 

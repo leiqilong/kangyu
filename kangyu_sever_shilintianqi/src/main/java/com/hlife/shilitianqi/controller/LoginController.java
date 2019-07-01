@@ -18,8 +18,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-   /**
+    /**
      * 根据 id 获取医院信息
+     *
      * @param id 医院主键
      * @return resultVO.resultData 医生信息
      */
@@ -30,9 +31,9 @@ public class LoginController {
 
     /**
      * 登录
-     * @param jsonObject
-     *              phone 用户名手机号
-     *              password 密码
+     *
+     * @param jsonObject phone 用户名手机号
+     *                   password 密码
      * @return resultVO.resultData 医院信息
      */
     @PostMapping(value = "/login")

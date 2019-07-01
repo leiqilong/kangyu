@@ -33,7 +33,6 @@ public class HttpClientUtil {
     /**
      * get请求
      *
-     *
      * @param httpurl 请求路径
      * @return 远程数据
      */
@@ -99,11 +98,11 @@ public class HttpClientUtil {
 
     /**
      * post请求
-     *
+     * <p>
      * Content-Type = application/json
      *
      * @param httpUrl 请求路径
-     * @param param 请求路径参数
+     * @param param   请求路径参数
      * @return 远程数据
      */
     public static String doPost(String httpUrl, String param) {

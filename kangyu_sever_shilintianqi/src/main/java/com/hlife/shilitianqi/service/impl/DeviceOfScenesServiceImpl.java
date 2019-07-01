@@ -63,7 +63,7 @@ public class DeviceOfScenesServiceImpl implements DeviceOfScenesService {
             return 0L;
         }
 
-        for (DeviceOfScenes deviceOfScenes: deviceOfScenesList) {
+        for (DeviceOfScenes deviceOfScenes : deviceOfScenesList) {
             this.judgeStandardService.deleteJudgeStandardByDeviceOfScenesId(deviceOfScenes.getDeviceOfScenesId());
         }
 

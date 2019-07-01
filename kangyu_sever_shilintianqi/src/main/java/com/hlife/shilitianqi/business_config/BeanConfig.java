@@ -12,9 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+/**
+ * springBean 配置
+ */
 @Configuration
 public class BeanConfig {
 
+    /**
+     * 场景设备计算分支
+     *
+     * @return 场景设备计算全部分支
+     */
     @Bean
     public Map<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>> deviceResultFunMap() {
         Map<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>> deviceResultFunMap = new HashMap<>();
@@ -58,6 +66,6 @@ public class BeanConfig {
         deviceResultFunMap.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_xl", DeviceHandler::form_childrenHeathXlDispart);
         // 儿童健康检查-BMI
         deviceResultFunMap.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_bmi", DeviceHandler::form_childrenHeathBMIDispart);
-        return  deviceResultFunMap;
+        return deviceResultFunMap;
     }
 }

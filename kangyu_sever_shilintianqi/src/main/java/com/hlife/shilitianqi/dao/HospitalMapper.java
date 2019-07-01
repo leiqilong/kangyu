@@ -8,6 +8,7 @@ import com.hlife.shilitianqi.model.Hospital;
 public interface HospitalMapper {
     /**
      * 根据id 查询医院信息
+     *
      * @param id 医院主键
      * @return 医院信息
      */
