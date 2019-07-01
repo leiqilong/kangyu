@@ -538,7 +538,7 @@ public class ScenesServiceImpl implements ScenesService {
         JSONObject resObj = JSON.parseObject(res);
 
         if (!resObj.getBoolean("state")) {
-            throw new RuntimeException("推送消息成功");
+            throw new RuntimeException("推送消息失败");
         }
     }
 }
