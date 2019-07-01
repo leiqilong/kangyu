@@ -1,11 +1,11 @@
 package com.hlife.shilitianqi.business_config;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
+@Getter
 public class BusinessConfig {
 
     /**
@@ -31,5 +31,4 @@ public class BusinessConfig {
      */
     @Value("${msg-publish.port}")
     private String msgPublishPort;
-
 }

@@ -16,6 +16,8 @@ import java.net.URL;
  */
 @Slf4j
 public class HttpClientUtil {
+    private HttpClientUtil() {
+    }
 
     /**
      * http 请求格式

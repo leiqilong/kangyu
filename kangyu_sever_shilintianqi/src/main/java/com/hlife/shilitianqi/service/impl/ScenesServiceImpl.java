@@ -10,7 +10,6 @@ import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.shilitianqi.business_config.BusinessConfig;
 import com.hlife.shilitianqi.dao.ScenesMapper;
-import com.hlife.shilitianqi.handler.devicehandler.DeviceHandler;
 import com.hlife.shilitianqi.model.*;
 import com.hlife.shilitianqi.service.CustomFormTagService;
 import com.hlife.shilitianqi.service.DeviceOfScenesService;
@@ -19,7 +18,6 @@ import com.hlife.shilitianqi.service.ScenesService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,52 +44,8 @@ public class ScenesServiceImpl implements ScenesService {
     @Autowired
     private BusinessConfig businessConfig;
 
-    private final Map<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>> deviceResultFunMap
-            = new HashMap<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>>() {{
-        // 手环-运动 （step）
-        this.put("ky.stl.Band.steps", DeviceHandler::bandStepDispart);
-        // 手环-血压
-        this.put("ky.stl.Band.bloodpressure", DeviceHandler::bandBloodpressureDispart);
-        // 手环-血氧
-        this.put("ky.stl.Band.bloodoxygen", DeviceHandler::bandBloodoxygenDispart);
-        // 手环-心率
-        this.put("ky.stl.Band.heartRate", DeviceHandler::bandheartRateDispart);
-        // 手环-睡眠
-        this.put("ky.stl.Band.sleep", DeviceHandler::bandSleepDispart);
-        // 报告单-体成分
-        this.put("ky.stl.bgd.tcf", DeviceHandler::bgdTcfDispart);
-        // 水杯
-        this.put("ky.stl.Water", DeviceHandler::waterDispart);
-        // 量表-(睡眼)
-        this.put("ky.stl.diagnose-sleepTime", DeviceHandler::diagnose_sleepTimeDispart);
-        // 档案-bmi (量表-体重/身高）
-        this.put("ky.stl.diagnose-wh", DeviceHandler::diagnose_whDispart);
-        // 量表-（运动）
-        this.put("ky.stl.diagnose-outdoor", DeviceHandler::diagnose_outdoorDispart);
-        // 量表-（心率）
-        this.put("ky.stl.diagnose-heart", DeviceHandler::diagnose_heartDispart);
-        // 膳食营养-（能量）
-        this.put("ky.stl.cf.tjsp.ld-Energy", DeviceHandler::cfTjspLd_energDispart);
-        // 膳食营养-（蛋白质）
-        this.put("ky.stl.cf.tjsp.ld-Protein", DeviceHandler::cfTjspLd_proteinDispart);
-        // 膳食营养-（脂肪）
-        this.put("ky.stl.cf.tjsp.ld-Fat", DeviceHandler::cfTjspLd_fatDispart);
-        // 膳食营养-（碳水化合物）
-        this.put("ky.stl.cf.tjsp.ld-Cho", DeviceHandler::cfTjspLd_choDispart);
-        // 儿童健康检查-运动
-        this.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_tyhd", DeviceHandler::form_childrenHeathTyhd);
-        // 儿童健康检查-饮水量
-        this.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_ysl", DeviceHandler::form_childrenHeathYsl);
-        // 儿童健康检查-睡眠
-        this.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_smsj", DeviceHandler::form_childrenHeathSmsj);
-        // 儿童健康检查-心率
-        this.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_xl", DeviceHandler::form_childrenHeathXl);
-    }};
-
-   /* @Value("${user-data.url}")
-    private String url;
-    @Value("${user-data.port}")
-    private String port;*/
+    @Autowired
+    private Map<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>> deviceResultFunMap;
 
     @Override
     public Scenes saveOrEditScenes(Scenes scenes) {
@@ -215,7 +169,9 @@ public class ScenesServiceImpl implements ScenesService {
             JSONObject jsonObject = JSON.parseObject(userDataStr);
 
             jsonArray = jsonObject.getJSONArray("datas");
-            weChatID = jsonObject.getString("weChatID");
+            if (jsonArray != null && jsonArray.size() > 0) {
+                weChatID = jsonArray.getJSONObject(0).getString("weChatID");
+            }
         }
 
         Map<String, Object> resultMap = this.getStringObjectMap(scenesId, jsonArray);
@@ -231,17 +187,16 @@ public class ScenesServiceImpl implements ScenesService {
 
         tagIdList.add("1143454014872510464"); // 类型宣教
 
-        return pushMassage(tagIdList);
+        return getMassage(tagIdList);
     }
 
     @Override
     public List<String> getSurvey(String guid, String scenesId) {
-
         List<String> tagIdList = getTagIdList(guid, scenesId);
 
         tagIdList.add("1143454297266610176"); // 类型调查问卷
 
-        return pushMassage(tagIdList);
+        return getMassage(tagIdList);
     }
 
     @Override
@@ -267,33 +222,9 @@ public class ScenesServiceImpl implements ScenesService {
 
         String scenesId = jsonObject.getString("sceneId");
 
-        Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
+        JSONObject param = new JSONObject();
 
-        String weChatID = (String) resultMap.get("weChatID");
-
-        if (StringUtil.stringIsNull(weChatID)) {
-            throw new RuntimeException("用户没有绑定微信");
-        }
-
-        List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
-
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(scenesId);
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }
-
-        /*String weChatID = "";
-
-        List<String> tagIdList = this.getTagIdList(guid, scenesId, weChatID);
-
-        if (StringUtil.stringIsNull(weChatID)) {
-            throw new RuntimeException("用户没有绑定微信");
-        }*/
-
-        tagIdList.add("1143454014872510464"); // 类型调查问卷
-
-        List missionList = this.pushMassage(tagIdList);
+        List missionList = this.getMission(guid, scenesId, param);
 
         if (missionList == null || missionList.isEmpty()) {
             throw new RuntimeException("没有查到相应的调查问卷");
@@ -307,29 +238,7 @@ public class ScenesServiceImpl implements ScenesService {
         data.put("title", "宣教");
         data.put("content", "请点击详情完成宣教");
 
-        JSONObject userObject = new JSONObject();
-        userObject.put("Weixinid", weChatID);
-        userObject.put("guid", guid);
-
-        JSONArray userList = new JSONArray();
-        userList.add(userObject);
-
-        data.put("userList", userList);
-
-        paramObject.put("data", data);
-
-        String res =
-                HttpClientUtil.doPost(
-                        String.format(
-                                HttpClientUtil.HTTP_URL_FORMAT,
-                                businessConfig.getMsgPublishUrl(),
-                                businessConfig.getMsgPublishPort(),
-                                "wpa/msg/sendPubMsg"
-                        ),
-                        JSON.toJSONString(paramObject)
-                );
-
-        log.info("res ==> {}", res);
+        pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
         return "推送宣教成功";
     }
@@ -341,33 +250,8 @@ public class ScenesServiceImpl implements ScenesService {
         String guid = jsonObject.getString("guid");
         String scenesId = jsonObject.getString("sceneId");
 
-        Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
-
-        String weChatID = (String) resultMap.get("weChatID");
-
-        if (StringUtil.stringIsNull(weChatID)) {
-            throw new RuntimeException("用户没有绑定微信");
-        }
-
-        List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
-
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(scenesId);
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }
-
-        /*String weChatID = "";
-
-        List<String> tagIdList = this.getTagIdList(guid, scenesId, weChatID);
-
-        if (StringUtil.stringIsNull(weChatID)) {
-            throw new RuntimeException("用户没有绑定微信");
-        }*/
-
-        tagIdList.add("1143454297266610176"); // 类型调查问卷
-
-        List surveyList = this.pushMassage(tagIdList);
+        JSONObject param = new JSONObject();
+        List surveyList = this.getSurvey(guid, scenesId, param);
 
         if (surveyList == null || surveyList.isEmpty()) {
             throw new RuntimeException("没有查到相应的调查问卷");
@@ -381,29 +265,7 @@ public class ScenesServiceImpl implements ScenesService {
         data.put("title", "调查问卷");
         data.put("content", "请点击详情完成调查问卷");
 
-        JSONObject userObject = new JSONObject();
-        userObject.put("Weixinid", weChatID);
-        userObject.put("guid", guid);
-
-        JSONArray userList = new JSONArray();
-        userList.add(userObject);
-
-        data.put("userList", userList);
-
-        paramObject.put("data", data);
-
-        String res =
-                HttpClientUtil.doPost(
-                        String.format(
-                                HttpClientUtil.HTTP_URL_FORMAT,
-                                businessConfig.getMsgPublishUrl(),
-                                businessConfig.getMsgPublishPort(),
-                                "wpa/msg/sendPubMsg"
-                        ),
-                        JSON.toJSONString(paramObject)
-                );
-
-        log.info("res ==> {}", res);
+        pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
         return "推送调查问卷成功";
     }
@@ -424,7 +286,7 @@ public class ScenesServiceImpl implements ScenesService {
         for (DeviceResult deviceResult : resultList) {
             tagIdList.add(deviceResult.getTagId());
         }*/
-        return this.getTagIdList(guid, scenesId, "");
+        return this.getTagIdList(guid, scenesId, new JSONObject());
     }
 
     /**
@@ -434,11 +296,11 @@ public class ScenesServiceImpl implements ScenesService {
      * @param scenesId 场景id
      * @return 标签 id List
      */
-    private List<String> getTagIdList(String guid, String scenesId, String weChatID) {
+    private List<String> getTagIdList(String guid, String scenesId, JSONObject param) {
         Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
         List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
 
-        weChatID = (String) resultMap.get("weChatID");
+        param.put("weChatID", resultMap.get("weChatID"));
 
         List<String> tagIdList = new ArrayList<>();
         tagIdList.add(scenesId);
@@ -499,13 +361,12 @@ public class ScenesServiceImpl implements ScenesService {
         return deviceResult.getScore() * device.getWeights();
     }
 
-
     /**
      * 根据场景计算结果摧送消息
      *
      * @param tagIdList 计算结果
      */
-    private List<String> pushMassage(List<String> tagIdList) {
+    private List<String> getMassage(List<String> tagIdList) {
         List<String> formIdList = this.customFormTagService.selectCustomFormIdsByTagIdList(tagIdList);
         log.info("formIdList:{}", formIdList);
 
@@ -544,7 +405,7 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("暂无数据");
         }
 
-        List<DeviceResult> tagList = new ArrayList();
+        List<DeviceResult> tagList = new ArrayList<>();
 
         int resultListSize = resultList.size();
         if (resultListSize < 4) {
@@ -604,16 +465,80 @@ public class ScenesServiceImpl implements ScenesService {
     /**
      * 获取宣教list 并给微信id 赋值
      *
-     * @param guid 患者 guid
+     * @param guid 并给微信id 赋值
      * @param scenesId 场景id
-     * @param weChatId 微信id
+     * @param param 微信id
      * @return 宣教list
      */
-    private List<String> getMission(String guid, String scenesId, String weChatId) {
-        List<String> tagIdList = getTagIdList(guid, scenesId, weChatId);
+    private List<String> getMission(String guid, String scenesId, JSONObject param) {
+        List<String> tagIdList = getTagIdList(guid, scenesId, param);
+
+        if (StringUtil.stringIsNull(param.getString("weChatID"))) {
+            throw new RuntimeException("该用户没有绑定微信");
+        }
 
         tagIdList.add("1143454014872510464"); // 类型宣教
 
-        return pushMassage(tagIdList);
+        return getMassage(tagIdList);
+    }
+
+    /**
+     * 获取调查问卷list 并给微信id 赋值
+     *
+     * @param guid 并给微信id 赋值
+     * @param scenesId 场景id
+     * @param param 微信id
+     * @return 调查问卷list
+     */
+    private List getSurvey(String guid, String scenesId, JSONObject param) {
+        List<String> tagIdList = getTagIdList(guid, scenesId, param);
+
+        if (StringUtil.stringIsNull(param.getString("weChatID"))) {
+            throw new RuntimeException("该用户没有绑定微信");
+        }
+
+        tagIdList.add("1143454297266610176"); // 类型宣教
+
+        return getMassage(tagIdList);
+    }
+
+    /**
+     * 推送模版消息
+     *
+     * @param guid 患者guid
+     * @param weChatID 患者微信id
+     * @param paramObject 消息 jsonObject
+     * @param data 消息具体信息
+     */
+    private void pushMassage(String guid, String weChatID, JSONObject paramObject, JSONObject data) {
+        JSONObject userObject = new JSONObject();
+        userObject.put("Weixinid", weChatID);
+        userObject.put("guid", guid);
+
+        JSONArray userList = new JSONArray();
+        userList.add(userObject);
+
+        data.put("userList", userList);
+
+        paramObject.put("data", data);
+
+        String res =
+                HttpClientUtil.doPost(
+                        String.format(
+                                HttpClientUtil.HTTP_URL_FORMAT,
+                                businessConfig.getMsgPublishUrl(),
+                                businessConfig.getMsgPublishPort(),
+                                "wpa/msg/sendPubMsg"
+                        ),
+                        JSON.toJSONString(paramObject)
+                );
+
+        log.info("res ==> {}", res);
+
+        JSONObject resObj = JSON.parseObject(res);
+
+        if (!resObj.getBoolean("state")) {
+            throw new RuntimeException("推送消息成功");
+        }
     }
 }

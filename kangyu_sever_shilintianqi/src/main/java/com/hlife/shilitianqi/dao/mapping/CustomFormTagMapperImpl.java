@@ -33,7 +33,7 @@ public class CustomFormTagMapperImpl extends BaseMapper implements CustomFormTag
     public List<CustomFormTag> getCustomFormTagList(Document queryDoc) {
         return this.mongoTemplate.find(
                 new BasicQuery(queryDoc)
-                        .with(new Sort(new Sort.Order(Sort.Direction.DESC, "tagName"))),
+                        .with(Sort.by(new Sort.Order(Sort.Direction.DESC, "tagName"))),
                 CustomFormTag.class
         );
     }
