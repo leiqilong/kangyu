@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -552,6 +553,248 @@ public class DeviceHandler {
         return getDeviceResult(judgeStandards, path, jkBMI, chineseDescription);
     }
 
+
+    /**
+     * 孕期基础档案信息表-体温
+     */
+    public static DeviceResult form_yqjcdaxx_twDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_tw";
+        String defaultTwiceValue = "0";
+        String chineseDescription = "孕期基础档案信息表-体温";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
+        }
+
+        // 前台处理后的数据
+        String bodyTemperatureTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(bodyTemperatureTwice)) {
+            return getDeviceResult(judgeStandards, bodyTemperatureTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxx_tw = jsonObject.getString("yqjcdaxx_tw");
+
+        final String jkBMI = StringUtil.stringIsNotNull(yqjcdaxx_tw) ? yqjcdaxx_tw : defaultTwiceValue;
+
+        return getDeviceResult(judgeStandards, path, jkBMI, chineseDescription);
+    }
+
+    /**
+     * 孕期基础档案信息表-血压
+     */
+    public static DeviceResult form_yqjcdaxx_xyDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_xy";
+        String defaultTwiceValue = "0/0";
+        String chineseDescription = "孕期基础档案信息表-血压-收缩压/舒张压";
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDeviceResult(judgeStandards, "0", "0")
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defaultTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
+                    }});
+        }
+
+        // 页面修改后的数据
+        String sbpAndDbpTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(sbpAndDbpTwice)) {
+            String[] sbpAndDbpTwiceArr = sbpAndDbpTwice.split("/");
+            return getDeviceResult(judgeStandards, sbpAndDbpTwiceArr[0], sbpAndDbpTwiceArr[1]).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxx_xy = jsonObject.getString("yqjcdaxx_xy");
+
+        String[] yqjcdaxxXyArr = yqjcdaxx_xy.split("/");
+
+        return getDeviceResult(judgeStandards, yqjcdaxxXyArr[0], yqjcdaxxXyArr[1])
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, yqjcdaxx_xy);
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
+                }});
+    }
+
+
+    /**
+     * 孕期基础档案信息表-现空腹血糖
+     */
+    public static DeviceResult form_yqjcdaxx_yhxtDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_yhxt";
+        String defaultTwiceValue = "<3.1";
+        String chineseDescription = "孕期基础档案信息表-现空腹血糖";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
+        }
+
+        // 前台处理后的数据
+        String yqjcdaxxYhxtTwice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(yqjcdaxxYhxtTwice)) {
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYhxtTwice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxxYhxt = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_yhxt"))
+                ? jsonObject.getString("yqjcdaxx_yhxt") : defaultTwiceValue;
+        return getDiagnoseDeviceResult(judgeStandards, path, yqjcdaxxYhxt, chineseDescription);
+    }
+
+    /**
+     * 孕期基础档案信息表-运动
+     */
+    public static DeviceResult form_yqjcdaxx_yd2Dispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_yd2";
+        String defaultTwiceValue = "<5000步";
+        String chineseDescription = "孕期基础档案信息表-运动";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
+        }
+
+        // 前台处理后的数据
+        String yqjcdaxxYd2Twice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(yqjcdaxxYd2Twice)) {
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYd2Twice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxxYd2 = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_yd2"))
+                ? jsonObject.getString("yqjcdaxx_yd2") : defaultTwiceValue;
+        return getDiagnoseDeviceResult(judgeStandards, path, yqjcdaxxYd2, chineseDescription);
+    }
+
+    /**
+     * 孕期基础档案信息表-饮水量
+     */
+    public static DeviceResult form_yqjcdaxx_ys1Dispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_ys1";
+        String defaultTwiceValue = "<2000ml";
+        String chineseDescription = "孕期基础档案信息表-饮水量";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
+        }
+
+        // 前台处理后的数据
+        String yqjcdaxxYs1Twice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(yqjcdaxxYs1Twice)) {
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYs1Twice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxxYs1 = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_ys1"))
+                ? jsonObject.getString("yqjcdaxx_ys1") : defaultTwiceValue;
+        return getDiagnoseDeviceResult(judgeStandards, path, yqjcdaxxYs1, chineseDescription);
+    }
+
+
+    /**
+     * 孕期基础档案信息表-情绪
+     */
+    public static DeviceResult form_yqjcdaxx_ybxl1Dispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_ybxl1";
+        String defaultTwiceValue = "良好";
+        String chineseDescription = "孕期基础档案信息表-情绪";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getModDeviceResult(judgeStandards, defaultTwiceValue)
+                    .setDatas(new JSONObject() {{
+                        this.put(PATH, path);
+                        this.put(TWICE_VALUE, defaultTwiceValue);
+                        this.put(CHINESE_DESCRIPTION, chineseDescription);
+                    }});
+        }
+
+        // 前台处理后的数据
+        String yqjcdaxxYbxl1Twice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(yqjcdaxxYbxl1Twice)) {
+            return getModDeviceResult(judgeStandards, yqjcdaxxYbxl1Twice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxxYbxl1 = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_ybxl1"))
+                ? jsonObject.getString("yqjcdaxx_ybxl1") : defaultTwiceValue;
+        return getModDeviceResult(judgeStandards, yqjcdaxxYbxl1)
+                .setDatas(new JSONObject() {{
+                    this.put(PATH, path);
+                    this.put(TWICE_VALUE, yqjcdaxxYbxl1);
+                    this.put(CHINESE_DESCRIPTION, chineseDescription);
+                }});
+    }
+
+    /**
+     * 孕期基础档案信息表-睡眠
+     */
+    public static DeviceResult form_yqjcdaxx_sleep3Dispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
+        String path = "datas.yqjcdaxx_sleep3";
+        String defaultTwiceValue = "<8h";
+        String chineseDescription = "孕期基础档案信息表-睡眠";
+
+        // 无数据
+        if (jsonObject.isEmpty()) {
+            return getDiagnoseDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
+        }
+
+        // 前台处理后的数据
+        String yqjcdaxxSleep3Twice = jsonObject.getString(TWICE_VALUE);
+        if (StringUtil.stringIsNotNull(yqjcdaxxSleep3Twice)) {
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxSleep3Twice).setDatas(jsonObject);
+        }
+
+        // 原数据
+        String yqjcdaxxSleep3 = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_sleep3"))
+                ? jsonObject.getString("yqjcdaxx_sleep3") : defaultTwiceValue;
+        return getDiagnoseDeviceResult(judgeStandards, path, yqjcdaxxSleep3, chineseDescription);
+    }
+
+    /**
+     * 情绪类匹配方法
+     *
+     * 将规则字符串分成 list
+     * list 包涵当前值 则true
+     *
+     * @param judgeStandards 规则列表
+     * @param param 当前值
+     * @return 返回结果
+     */
+    private static DeviceResult getModDeviceResult(List<JudgeStandard> judgeStandards, String param) {
+        if (StringUtil.stringIsNull(param)) {
+            return new DeviceResult().setScore(100d);
+        }
+        param = param.trim();
+        for (JudgeStandard judgeStandard : judgeStandards) {
+            String ruler = judgeStandard.getRuler();
+
+            if (StringUtil.stringIsNull(ruler)) {
+                continue;
+            }
+
+            List modeList = Arrays.asList(ruler.trim().split(" "));
+
+            boolean match = modeList.contains(param);
+
+            log.info("ruler:{}, param:{}, match:{}", ruler, param, match);
+
+            if (match) {
+                return new DeviceResult()
+                        .setTagName(judgeStandard.getTagName())
+                        .setTagValue(judgeStandard.getTagValue())
+                        .setTagId(judgeStandard.getTagId())
+                        .setScore(judgeStandard.getScore());
+            }
+        }
+
+        return new DeviceResult().setScore(100d);
+    }
+
     /**
      * 量表/自定义表单计算结果
      * <p>
@@ -694,4 +937,5 @@ public class DeviceHandler {
 
         return getDeviceResult(judgeStandards, path, bpm, chineseDescription);
     }
+
 }

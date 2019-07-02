@@ -5,7 +5,7 @@ import request from '@/utils/request'
  */
 export function searchScenesList() {
   return request({
-    url: '/v1/scenes/searchScenesList',
+    url: '/v1/scenes/searchScenesList/' + Date.now(),
     method: 'get'
   })
 }

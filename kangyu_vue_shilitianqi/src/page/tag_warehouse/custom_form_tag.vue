@@ -13,23 +13,28 @@
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" :height="tableHeight">
-        <el-table-column label="序号" type="index"></el-table-column>
+        <!--<el-table-column label="序号" type="index"></el-table-column>-->
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="标签说明">
+                <span>{{ props.row.tagRemark }}</span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
         <el-table-column sortable label="标签名称" prop="tagName"></el-table-column>
         <el-table-column sortable label="标签值" prop="tagValue"></el-table-column>
         <el-table-column sortable label="标签代码" prop="tagCode"></el-table-column>
-       <!-- <el-table-column label="对应表单" prop="correspondingForms"
-                         :formatter="formatCorrespondingForms">
-        </el-table-column>-->
-        <el-table-column label="附加标签" prop="additionalTags"
-                         :formatter="formatAdditionalTags">
-        </el-table-column>
-        <el-table-column label="标签类别" prop="tagType"
-                         :formatter="formatTagType">
-        </el-table-column>
+        <!-- <el-table-column label="对应表单" prop="correspondingForms"
+                          :formatter="formatCorrespondingForms">
+         </el-table-column>-->
+        <el-table-column label="附加标签" prop="additionalTags" :formatter="formatAdditionalTags"></el-table-column>
+        <el-table-column label="标签类别" prop="tagType" :formatter="formatTagType"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button v-if="scope.row.tagType !== '05'" size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,8 +55,7 @@
 <script>
   import elDialog from './custom_form_tag_add'
   import headTop from '@/components/headTop'
-  import {getCustomFormTagPageResult, deleteCustomFormTagById, getCorrespondingFromList} from '@/api/tag_warehouse.js'
-  import {getAllModelTree} from '@/api/getData'
+  import {deleteCustomFormTagById, getCustomFormTagPageResult} from '@/api/tag_warehouse.js'
   import {tagTypeList} from './js/tag_list_data.js'
 
   export default {
@@ -109,11 +113,17 @@
             self.correspondingFromList = res;
           })*/
 
-        getAllModelTree()
+        /*getAllModelTree()
           .then(list => {
+            let menuList = [];
+            for (let ele of list) {
+              menuList.push(ele.menu);
+            }
 
-          self.formTree = list[3].menu;
-        })
+            menuList = self.delChirld(menuList)
+            self.formTree = menuList
+            self.getFormList(menuList)
+          })*/
       },
 
       /**
@@ -129,7 +139,6 @@
        * 编辑
        */
       handleEdit(index, row) {
-        console.log(index, row);
         this.handleEditProp.dialogFormVisible = true;
         this.handleEditProp.title = '编辑标签';
         this.handleEditProp.data = JSON.parse(JSON.stringify(row));

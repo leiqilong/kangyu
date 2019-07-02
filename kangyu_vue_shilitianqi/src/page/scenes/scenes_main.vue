@@ -10,125 +10,130 @@
           <el-button type="primary" @click="searchScenesList">查询</el-button>
           <el-button type="primary" @click="handleScenesAdd">新建</el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button v-if="backButtonVisible" type="primary" @click="goBack">返回</el-button>
+        </el-form-item>
       </el-form>
+      <div style="overflow:hidden">
+        <div class="form_style">
+          <el-table v-loading="loading" :data="scenesList" class="croll" highlight-current-row @current-change="scenesCurrentChange" :style="'overflow:auto;width:100%;border: 1px solid #ddd;'+leftHeight" border>
+            <el-table-column sortable label="场景名称" prop="scenesName"></el-table-column>
+            <el-table-column sortable label="场景代码" prop="scenesCode"></el-table-column>
+            <el-table-column label="操作" width="180px" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" type="primary" @click="handleDeviceAdd(scope.$index, scope.row)">添加设备</el-button>
+                <el-button size="mini" @click="handleScenesEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="handleScenesDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            @size-change="scenesSizeChange"
+            @current-change="scenesPageChange"
+            :page-sizes="[5, 10, 15, 20, 50, 100]"
+            :page-size="queryData.pageSize"
+            layout="total, sizes, prev, pager, next"
+            :total="scenesTotal">
+          </el-pagination>
+        </div>
 
-      <el-table v-loading="loading" :data="scenesList" highlight-current-row
-                @current-change="scenesCurrentChange" :height="tableHeight(0.47)">
-        <el-table-column label="序号" type="index" width="100px"></el-table-column>
-        <el-table-column sortable label="场景名称" prop="scenesName"></el-table-column>
-        <el-table-column sortable label="场景代码" prop="scenesCode"></el-table-column>
-        <el-table-column label="操作" width="250px">
-          <template slot-scope="scope">
-            <el-button size="small" type="primary" @click="handleDeviceAdd(scope.$index, scope.row)">添加设备</el-button>
-            <el-button size="small" @click="handleScenesEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleScenesDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+        <div class="table_style">
+          <el-table v-loading="loading" :data="deviceList" highlight-current-row
+                    @current-change="deviceCurrentChange" class="croll"  border :style="'overflow:auto;width:100%;'+rightHeight">
+            <el-table-column label="序号" type="index" width="65px"></el-table-column>
+            <el-table-column sortable label="设备名称" prop="deviceName"></el-table-column>
+            <el-table-column sortable label="设备代码" prop="deviceCode"></el-table-column>
+            <el-table-column sortable label="权重" prop="weights"></el-table-column>
+            <el-table-column sortable label="优先级" prop="priority"></el-table-column>
+            <el-table-column label="操作" width="250px"align="center">
+              <template slot-scope="scope">
+                <el-button size="small" type="primary" @click="judgeStandardAdd(scope.$index, scope.row)">添加规则</el-button>
+                <el-button size="small" @click="handleDeviceEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="small" type="danger" @click="handleDeviceDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table v-loading="loading" class="croll" :data="judgeStandardList" :style="'overflow:auto;width: 100%;margin-top: 20px;border: 1px solid #ddd;'+rightHeight"border>
+            <el-table-column label="序号" type="index" width="65px"></el-table-column>
+            <el-table-column label="标签" prop="tagName" :formatter="formatTagName"></el-table-column>
+            <el-table-column label="规则" prop="ruler"></el-table-column>
+            <el-table-column label="分数" prop="score"></el-table-column>
+            <el-table-column label="操作" width="180px"align="center">
+              <template slot-scope="scope">
+                <el-button size="small" @click="judgeStandardEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="small" type="danger" @click="judgeStandardDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      <!--场景弹窗-->
+      <el-dialog title="场景" :visible.sync="scenesFormVisible" @close="scenesFormClose">
+        <el-form :model="scenesForm" label-width="100px" :rules="scenesFormRules" ref="scenesForm">
+          <el-form-item label="场景名称" prop="scenesName">
+            <el-input v-model="scenesForm.scenesName" autocomplete="off"></el-input>
+          </el-form-item>
 
-      <el-pagination
-        @size-change="scenesSizeChange"
-        @current-change="scenesPageChange"
-        :page-sizes="[5, 10, 15, 20, 50, 100]"
-        :page-size="queryData.pageSize"
-        layout="total, sizes, prev, pager, next"
-        :total="scenesTotal">
-      </el-pagination>
+          <el-form-item label="场景代码" prop="scenesCode">
+            <el-input v-model="scenesForm.scenesCode" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="scenesFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveScenes">确 定</el-button>
+        </div>
+      </el-dialog>
 
-      <el-table v-loading="loading" :data="deviceList" highlight-current-row
-                @current-change="deviceCurrentChange" :height="tableHeight(0.3)">
-        <el-table-column label="序号" type="index" width="100px"></el-table-column>
-        <el-table-column sortable label="设备名称" prop="deviceName"></el-table-column>
-        <el-table-column sortable label="设备代码" prop="deviceCode"></el-table-column>
-        <el-table-column sortable label="权重" prop="weights"></el-table-column>
-        <el-table-column sortable label="优先级" prop="priority"></el-table-column>
-        <el-table-column label="操作" width="250px">
-          <template slot-scope="scope">
-            <el-button size="small" type="primary" @click="judgeStandardAdd(scope.$index, scope.row)">添加规则</el-button>
-            <el-button size="small" @click="handleDeviceEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDeviceDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <!--设备弹窗-->
+      <el-dialog title="设备" :visible.sync="deviceFormVisible" @close="deviceFormClose">
+        <el-form :model="deviceForm" label-width="100px" :rules="deviceFormRules" ref="deviceForm">
+          <el-form-item label="设备名称" prop="deviceName">
+            <el-select v-model="deviceForm.deviceName" placeholder="请选择" @change="deviceChange" style="width: 100%">
+              <el-option v-for="item in defalutDeviceList" :label="item.deviceName" :value="item.deviceName" :key="item.index">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备代码" prop="deviceCode">
+            <el-input v-model="deviceForm.deviceCode" autocomplete="off" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label="权重" prop="weights">
+            <el-input v-model="deviceForm.weights" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="优先级" prop="priority">
+            <el-input v-model="deviceForm.priority" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
 
-      <el-table v-loading="loading" :data="judgeStandardList" :height="tableHeight(0.2)">
-        <el-table-column label="序号" type="index" width="100px"></el-table-column>
-        <el-table-column label="标签" prop="tagName" :formatter="formatTagName"></el-table-column>
-        <el-table-column label="规则" prop="ruler"></el-table-column>
-        <el-table-column label="分数" prop="score"></el-table-column>
-        <el-table-column label="操作" width="180px">
-          <template slot-scope="scope">
-            <el-button size="small" @click="judgeStandardEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="judgeStandardDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="deviceFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveDeviceForm">确 定</el-button>
+        </div>
+      </el-dialog>
+
+      <!--规则弹窗-->
+      <el-dialog title="规则" :visible.sync="judgeStandardFormVisible" @close="judgeStandardFormClose">
+        <el-form :model="judgeStandardForm" label-width="100px" :rules="judgeStandardFormRules" ref="judgeStandardForm">
+          <el-form-item label="标签" prop="tagId">
+            <el-select v-model="judgeStandardForm.tagId" placeholder="请选择" @change="tagChange"
+                       filterable style="width: 100%">
+              <el-option v-for="item in typeTags" :label="item.tagName + (item.tagValue ? item.tagValue : '')"
+                         :value="item.id" :key="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="规则" prop="ruler">
+            <el-input v-model="judgeStandardForm.ruler" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="分数" prop="score">
+            <el-input v-model="judgeStandardForm.score" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="judgeStandardFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveJudgeStandard">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
-
-    <!--场景弹窗-->
-    <el-dialog title="场景" :visible.sync="scenesFormVisible" @close="scenesFormClose">
-      <el-form :model="scenesForm" label-width="100px" :rules="scenesFormRules" ref="scenesForm">
-        <el-form-item label="场景名称" prop="scenesName">
-          <el-input v-model="scenesForm.scenesName" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="场景代码" prop="scenesCode">
-          <el-input v-model="scenesForm.scenesCode" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="scenesFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveScenes">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!--设备弹窗-->
-    <el-dialog title="设备" :visible.sync="deviceFormVisible" @close="deviceFormClose">
-      <el-form :model="deviceForm" label-width="100px" :rules="deviceFormRules" ref="deviceForm">
-        <el-form-item label="设备名称" prop="deviceName">
-          <el-input v-model="deviceForm.deviceName" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="设备代码" prop="deviceCode">
-          <el-input v-model="deviceForm.deviceCode" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="权重" prop="weights">
-          <el-input v-model="deviceForm.weights" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="优先级" prop="priority">
-          <el-input v-model="deviceForm.priority" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="deviceFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveDeviceForm">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!--规则弹窗-->
-    <el-dialog title="规则" :visible.sync="judgeStandardFormVisible" @close="judgeStandardFormClose">
-      <el-form :model="judgeStandardForm" label-width="100px" :rules="judgeStandardFormRules" ref="judgeStandardForm">
-        <el-form-item label="标签" prop="tagId">
-          <!--<el-input v-model="judgeStandardForm.tagName" autocomplete="off"></el-input>-->
-          <el-select v-model="judgeStandardForm.tagId" placeholder="请选择" @change="tagChange" style="width: 100%">
-            <el-option v-for="item in typeTags" :label="item.tagName + (item.tagValue ? item.tagValue : '')" :value="item.id" :key="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="规则" prop="ruler">
-          <el-input v-model="judgeStandardForm.ruler" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="分数" prop="score">
-          <el-input v-model="judgeStandardForm.score" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="judgeStandardFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveJudgeStandard">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -148,11 +153,15 @@
     getCustomFormTagList
   } from '@/api/scenes.js'
 
+  import {defalutDeviceList} from './js/constant'
+
   export default {
     name: 'scenes_main',
 
     data() {
       return {
+        leftHeight:'',
+        rightHeight:'',
         queryData: {
           scenesName: '',
           pageSize: 5,
@@ -204,6 +213,8 @@
           priority: '',
         },
 
+        defalutDeviceList: defalutDeviceList,
+
         deviceFormRules: {
           deviceName: [{required: true, message: '请输入设备名称', trigger: 'blur'}],
           deviceCode: [{required: true, message: '请输入设备代码', trigger: 'blur'}],
@@ -235,7 +246,9 @@
             {required: true, message: '请输入分数', trigger: 'blur'},
             {validator: validateNumber, trigger: 'blur'}
           ],
-        }
+        },
+
+        backButtonVisible: false
       }
     },
 
@@ -244,7 +257,17 @@
     },
 
     mounted() {
+      let backParam = this.$myStore.getStore('backParam');
+      if (backParam) {
+        this.backButtonVisible = true
+      }
+      this.$myStore.removeStore('backParam');
       this.searchScenesList()
+    },
+
+    created() {
+      this.leftHeight = 'height:' + parseFloat(window.innerHeight - 240) + 'px';
+      this.rightHeight='height:' + parseFloat(window.innerHeight - 260)/2 + 'px';
     },
 
     methods: {
@@ -397,6 +420,9 @@
        */
       deviceCurrentChange(currentRow, oldCurrentRow) {
         let self = this;
+        if (!currentRow) {
+          return;
+        }
         self.deviceOfScenesId = currentRow.deviceOfScenesId
         self.searchJudgeStandardList(currentRow.deviceOfScenesId)
       },
@@ -488,7 +514,6 @@
       },
 
 
-
       /**
        * 根据场景设备主键 查询场景设备规则列表
        */
@@ -571,6 +596,15 @@
         }
       },
 
+      deviceChange(deviceName) {
+        let self = this;
+        for (let device of self.defalutDeviceList) {
+          if (device.deviceName === deviceName) {
+            self.deviceForm.deviceCode = device.deviceCode
+          }
+        }
+      },
+
       /**
        * 规则弹窗关闭时清空
        */
@@ -589,7 +623,6 @@
         return self
       },
 
-
       /**
        * 规则删除
        */
@@ -602,18 +635,27 @@
             }
             this.searchJudgeStandardList(self.deviceOfScenesId)
           })
-      }
+      },
 
-    },
-
-    computed: {
-      tableHeight() {
-        return (per) => (window.innerHeight - 220) * per
+      goBack() {
+        this.$router.go(-1);
       }
     }
   }
 </script>
 
 <style scoped>
+  .form_style {
+    height: 100%;
+    position: relative;
+    width: 400px;
+    float: left;
+    margin-bottom: 30px;
+  }
 
+  .table_style{
+    margin-left:420px;
+    margin-bottom: 25px;
+    overflow-y:auto;
+  }
 </style>

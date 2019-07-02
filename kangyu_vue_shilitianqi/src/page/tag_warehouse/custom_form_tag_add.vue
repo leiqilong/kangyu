@@ -52,10 +52,20 @@
               <el-button slot="reference" class="button-new-tag" size="small">添加</el-button>
             </el-popover>
           </div>-->
-          <el-cascader v-model="currentLeaf" :options="formTree" :props="props" v-if="cascaderVisible"
-                       clearable collapse-tags @change="correspondingFormsChange">
+          <el-cascader v-if="cascaderVisible" v-model="currentLeaf" :options="formTree" :props="props"
+                       clearable collapse-tags @change="cascaderChange">
           </el-cascader>
-          <el-button v-else class="button-new-tag" size="small" @click="cascaderShow">添加</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="cascaderShow">添加自定义表单</el-button>
+          <el-select v-if="selectVisible" v-model="currentSelect" placeholder="请选择"
+                     @change="selectChange">
+            <el-option
+              v-for="item in pdAdEdnList"
+              :key="item.guid"
+              :label="item.title"
+              :value="item.guid">
+            </el-option>
+          </el-select>
+          <el-button v-else class="button-new-tag" size="small" @click="selectShow">添加宣教</el-button>
         </el-form-item>
         <el-form-item label="附加标签" prop="additionalTags">
           <el-select v-model="formData.additionalTags" placeholder="请选择" :multiple="true" style="width: 100%">
@@ -69,6 +79,10 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="标签说明" prop="tagType">
+          <el-input v-model="formData.tagRemark" type="textarea" :rows="4" placeholder="请输入内容"
+                    autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('formData')">确定</el-button>
           <el-button @click="closeForm('formData')">取消</el-button>
@@ -79,7 +93,7 @@
 </template>
 <script>
   import {addOrEditCustomFormTag, getCustomFormTagList, getCorrespondingFromList} from '@/api/tag_warehouse'
-  import {getAllModelTree} from '@/api/getData'
+  // import {getAllModelTree, getPdAdEdn} from '@/api/getData'
   import {tagTypeList} from './js/tag_list_data.js'
 
   export default {
@@ -92,22 +106,29 @@
           tagCode: '',
           correspondingForms: [],
           additionalTags: [],
-          tagType: ''
+          tagType: '',
+          tagRemark: ''
         },
         correspondingFromList: [],
+
+        cascaderVisible: false,
         formTree: [],
         formList: [],
         currentLeaf: [],
-        visibleAdd: false, //添加表单
+
+        selectVisible: false,
+        pdAdEdnList: [],
+        currentSelect: [],
+        // visibleAdd: false, //添加表单
+
         props: {
-          multiple: true,
           value: 'leaf',
           children: 'children',
           label: 'name',
         },
         tagTypeList: tagTypeList,
         otherTypeTags: [],
-        cascaderVisible: false,
+
         rules: {
           tagName: [
             {required: true, message: '请输入标签名称', trigger: 'blur'}
@@ -143,32 +164,47 @@
         let self = this;
         self.visible = self.show;
         if (self.show) {
-          self.formData = self.data
-          self.formData.correspondingForms = self.formData.correspondingForms || []
-
-          getCustomFormTagList({tagType: '03'})
-            .then(res => {
-              self.otherTypeTags = res;
-            })
-
-          getCorrespondingFromList()
-            .then(res => {
-              self.correspondingFromList = res;
-            })
-          getAllModelTree({}).then(function (list) {
-            let menu = list[3].menu;
-            menu = self.delChirld(menu)
-            self.formTree = menu
-            self.getFormList(menu)
-          })
+          self.initData()
         } else {
           self.$emit('listenToChildEvent', false)
         }
-
-        // console.log('customFromList', customFromList);
       }
     },
     methods: {
+
+      initData() {
+        let self = this;
+        self.formData = self.data
+        self.formData.correspondingForms = self.formData.correspondingForms || []
+
+        getCustomFormTagList({tagType: '03'})
+          .then(res => {
+            self.otherTypeTags = res;
+          })
+
+        getCorrespondingFromList()
+          .then(res => {
+            self.correspondingFromList = res;
+          })
+
+        /*getAllModelTree({})
+          .then(res => {
+            let menuList = [];
+            for (let ele of res) {
+              menuList= menuList.concat(ele.menu);
+            }
+
+            menuList = self.delChirld(menuList)
+            self.formTree = menuList
+            self.getFormList(menuList)
+          })
+
+        getPdAdEdn({})
+          .then(res => {
+            console.log('res:', res);
+            self.pdAdEdnList = res.data;
+          })*/
+      },
       /**
        * 确定
        * @param formName from 表单ref 参数
@@ -208,16 +244,6 @@
         this.$emit('update:show', false)
       },
 
-      /**
-       * 相关表单下拉改变
-       * @param value
-       */
-      correspondingFormsChange(value) {
-        let self = this;
-          let v = value[value.length-1];
-          self.formData.correspondingForms.push(v + ';02')
-        self.cascaderVisible = false
-      },
 
       /*selectValue(value) {
         let that = this;
@@ -251,13 +277,9 @@
         console.log(value)
       },*/
 
-      //删除某一附加表单
-      handleClose(tag) {
-        let correspondingForms = this.formData.correspondingForms;
-        correspondingForms.splice(correspondingForms.indexOf(tag), 1)
-      },
-
-      //递归删除空子对象
+      /**
+       * 递归删除空子对象
+       */
       delChirld(treeList) {
         let newData = treeList;
         try {
@@ -279,12 +301,9 @@
         return newData
       },
 
-      cascaderShow() {
-        let self = this;
-        self.currentLeaf = [];
-        self.cascaderVisible = true
-      },
-
+      /**
+       * 将树平行化
+       */
       getFormList(menu) {
         let self = this;
         self.formList = self.formList.concat(menu)
@@ -293,6 +312,44 @@
             self.formList = self.formList.concat(element.children)
           }
         }
+      },
+
+      /**
+       * 删除某一表单
+       * @param tag 要删除的表单
+       */
+      handleClose(tag) {
+        let correspondingForms = this.formData.correspondingForms;
+        correspondingForms.splice(correspondingForms.indexOf(tag), 1)
+      },
+
+      /**
+       * 相关表单下拉改变
+       * @param value
+       */
+      cascaderChange(value) {
+        let self = this;
+        let v = value[value.length - 1];
+        self.formData.correspondingForms.push(v + ';02')
+        self.cascaderVisible = false
+      },
+
+      cascaderShow() {
+        let self = this;
+        self.currentLeaf = [];
+        self.cascaderVisible = true
+      },
+
+      selectShow() {
+        let self = this;
+        self.currentSelect = []
+        self.selectVisible = true
+      },
+
+      selectChange(value) {
+        let self = this;
+        self.formData.correspondingForms.push(value + ';03')
+        self.selectVisible = false
       }
     },
 
@@ -304,6 +361,12 @@
           for (let element of self.formList) {
             if (formTagArr[1] === '02' && formTagArr[0] === element.leaf) {
               return element.name
+            }
+          }
+
+          for (let element of self.pdAdEdnList) {
+            if (formTagArr[1] === '03' && formTagArr[0] === element.guid) {
+              return element.title
             }
           }
         }

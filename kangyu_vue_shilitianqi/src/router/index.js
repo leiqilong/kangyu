@@ -45,7 +45,7 @@ export const constantRoutes = [
       {
         path: '/scenes',
         name: '场景管理',
-        component: () => import('@/page/scenes/scenes_main.vue'),
+        component: () => import('@/page/scenes/scenes_main'),
         meta: {
           routeList: ['场景管理'],
           keepAlive: false,
@@ -53,35 +53,46 @@ export const constantRoutes = [
           role: '1'
         },
       },
-
-      /*{
-        name: '标签库管理',
-        path: '/tag_warehouse',
+      {
+        path: '/archives',
+        name: '档案管理',
+        component: () => import('@/page/archives/archives_list'),
         meta: {
+          routeList: ['档案管理'],
+          keepAlive: false,
           show: true,
-          role: '1',
-          children: [
-            {
-              path: '/tag_warehouse/custom_form_tag',
-              name: '自定义表单标签',
-              component: () => import('@/page/tag_warehouse/custom_form_tag'),
-              meta: {
-                routeList: ['标签库管理', '自定义表单标签'],
-                keepAlive: false
-              },
-            },
-            {
-              path: '/tag_warehouse/message_push_tag',
-              name: '消息推送类标签',
-              component: () => import('@/page/tag_warehouse/message_push_tag'),
-              meta: {
-                routeList: ['标签库管理', '消息推送类标签'],
-                keepAlive: false
-              }
+          role: '1'
+        },
+      },
+      {
+        path: '/archives_card',
+        name: '档案管理',
+        component: () => import('@/page/archives/archives_card'),
+        meta: {
+          routeList: ['档案管理'],
+          keepAlive: false,
+          role: '1'
+        },
+        children: [
+          {
+            path: 'archives_info',
+            component: () => import('@/page/archives/archives_info'),
+            meta: {
+              routeList: ['档案信息', '基本信息'],
+              keepAlive: false
             }
-          ]
-        }
-      }*/
+          },
+          {
+            path: 'sub_archives',
+            component: () => import('@/page/archives/sub_archives'),
+            meta: {
+              routeList: ['档案信息', '出生情况记录'],
+              keepAlive: false,
+              role: '1'
+            }
+          }
+        ]
+      }
     ]
   }
 ]

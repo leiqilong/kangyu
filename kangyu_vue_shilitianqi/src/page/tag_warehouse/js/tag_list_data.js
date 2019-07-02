@@ -6,7 +6,8 @@ const tagTypeList = [
   {label: '档案类', value: '01'},
   {label: '精神分析类', value: '02'},
   {label: '其它', value: '03'},
-  {label: '分析结果类', value: '04'}
+  {label: '分析结果类', value: '04'},
+  {label: '固定类型', value: '05'}
 ]
 
 /**
@@ -17,10 +18,6 @@ const customFromList = [
   {label: '表单1', value: '789447944244'},
   {label: '表单2', value: '578964789475'},
   {label: '表单3', value: '587654894656'}
-]
-
-const tagNameList = [
-  {label: '', value: ''}
 ]
 
 export {

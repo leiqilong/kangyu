@@ -66,6 +66,21 @@ public class BeanConfig {
         deviceResultFunMap.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_xl", DeviceHandler::form_childrenHeathXlDispart);
         // 儿童健康检查-BMI
         deviceResultFunMap.put("ky.stl.form.Y3D5YA9ZUQNW11IXEALFHQ2JKL6ERH1C-jk_bmi", DeviceHandler::form_childrenHeathBMIDispart);
+        // 孕期基础档案信息表-体温
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_tw", DeviceHandler::form_yqjcdaxx_twDispart);
+        // 孕期基础档案信息表-血压
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_xy", DeviceHandler::form_yqjcdaxx_xyDispart);
+        // 孕期基础档案信息表-现空腹血糖
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_yhxt", DeviceHandler::form_yqjcdaxx_yhxtDispart);
+        // 孕期基础档案信息表-运动
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_yd2", DeviceHandler::form_yqjcdaxx_yd2Dispart);
+        // 孕期基础档案信息表-饮水
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_ys1", DeviceHandler::form_yqjcdaxx_ys1Dispart);
+        // 孕期基础档案信息表-情绪
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_ybxl1", DeviceHandler::form_yqjcdaxx_ybxl1Dispart);
+        // 孕期基础档案信息表-睡眠
+        deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_sleep3", DeviceHandler::form_yqjcdaxx_sleep3Dispart);
+
         return deviceResultFunMap;
     }
 }
