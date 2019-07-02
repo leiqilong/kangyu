@@ -53,7 +53,7 @@ public class ScenesMapperImpl extends BaseMapper implements ScenesMapper {
                         new Document("scenesId", scenes.getScenesId())
                 ),
                 update,
-                DeviceOfScenes.class
+                Scenes.class
         );
         return scenes;
     }

@@ -26,10 +26,12 @@ logging:
           mongodb:
             core: debug
 
+# 获取用户数据
 user-data:
   url: 10.10.10.51
   port: 5000
 
+# 发送模版消息接口
 msg-publish:
   url: 10.10.10.51
   port: 5566
