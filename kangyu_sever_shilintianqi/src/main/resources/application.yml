@@ -33,5 +33,5 @@ user-data:
 
 # 发送模版消息接口
 msg-publish:
-  url: 10.10.10.51
-  port: 5566
+  url: localhost
+  port: 8088

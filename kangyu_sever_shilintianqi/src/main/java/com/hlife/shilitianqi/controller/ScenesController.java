@@ -163,19 +163,6 @@ public class ScenesController {
     }
 
     /**
-     * 根据前台的数据 获取场景标签和得分
-     *
-     * @param jsonObject scenesId 场景id <br>
-     *                   userArray 用户信息
-     * @return 得分情况
-     */
-    @ApiOperation("根据前台的数据， 获取场景标签和得分")
-    @PostMapping("/getTagAndScoreTwice")
-    public ResultVO<Map<String, Object>> getTagAndScoreTwice(@RequestBody JSONObject jsonObject) {
-        return new ResultVO<>(this.scenesService.getTagAndScoreTwice(jsonObject));
-    }
-
-    /**
      * 获取宣教list
      *
      * @param guid     患者guid
@@ -199,6 +186,31 @@ public class ScenesController {
     @GetMapping("/getSurvey/{guid}/{scenesId}/{rand}")
     public ResultVO<List<String>> getSurvey(@PathVariable("guid") String guid, @PathVariable("scenesId") String scenesId) {
         return new ResultVO<>(this.scenesService.getSurvey(guid, scenesId));
+    }
+
+    /**
+     * 根据前台的数据 获取场景标签和得分
+     *
+     * @param jsonObject scenesId 场景id <br>
+     *                   userArray 用户信息
+     * @return 得分情况
+     */
+    @ApiOperation("根据前台的数据， 获取场景标签和得分")
+    @PostMapping("/getTagAndScoreTwice")
+    public ResultVO<Map<String, Object>> getTagAndScoreTwice(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getTagAndScoreTwice(jsonObject));
+    }
+
+    @ApiOperation("根据前台的数据， 获取宣教表单list")
+    @PostMapping("/getMissionTwice")
+    public ResultVO<List<String>> getMissionTwice(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getMissionTwice(jsonObject));
+    }
+
+    @ApiOperation("根据前台的数据， 获取查问卷表单list")
+    @PostMapping("/getSurveyTwice")
+    public ResultVO<List<String>> getSurveyTwice(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getSurveyTwice(jsonObject));
     }
 
     /**

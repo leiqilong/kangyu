@@ -133,6 +133,8 @@ public interface ScenesService {
      */
     List<String> getSurvey(String guid, String scenesId);
 
+
+
     /**
      * 根据前台数据获取某场景下得分与标签数据
      *
@@ -142,6 +144,12 @@ public interface ScenesService {
      * @return 得分与标签数据
      */
     Map<String, Object> getTagAndScoreTwice(JSONObject jsonObject);
+
+
+    List<String> getMissionTwice(JSONObject jsonObject);
+
+
+    List<String> getSurveyTwice(JSONObject jsonObject);
 
     /**
      * 摧送宣教list

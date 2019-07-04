@@ -1,5 +1,6 @@
 package com.hlife.shilitianqi.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 
 import java.util.List;
@@ -52,8 +53,8 @@ public interface MatchCustomFormAndTagService {
     /**
      * 根据 标签 id list 查询对应的表单list
      *
-     * @param tagIdList
-     * @return
+     * @param tagIdList 标签 id list
+     * @return 标签表单 关联 list
      */
     List<MatchCustomFormAndTag> selectCustomFormsByTagIdList(List<String> tagIdList);
 
@@ -72,7 +73,7 @@ public interface MatchCustomFormAndTagService {
      * @param formId 表单id
      * @return 标签 表单关联数据
      */
-    List<MatchCustomFormAndTag> getTagListByFormId(String formId);
+    List<String> getTagListByFormId(String formId);
 
     /**
      * 删除 标签 表单关联数据
@@ -81,5 +82,23 @@ public interface MatchCustomFormAndTagService {
      * @param tagId  标签 id
      * @return 影响的行数
      */
-    Long deleteMatchCustomFormAndTag(String formId, String tagId);
+    Long deleteMatchCustomFormAndTag(JSONObject jsonObject);
+
+    /**
+     * 给标单批量添加标签
+     *
+     * @param jsonObject <br/>
+     *                   tagIdList： 标签 list <br/>
+     *                   customFormId: 表单id
+     * @return 添加成功
+     */
+    String addMatchCustomFormAndTagList(JSONObject jsonObject);
+
+    /**
+     * 根据表单id 删除对应的标签
+     *
+     * @param formId 表单id
+     * @return 影响的条数
+     */
+    Long deleteMatchCustomFormAndTagListByFormId(String formId);
 }

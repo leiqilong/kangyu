@@ -54,6 +54,8 @@ public class HttpClientUtil {
             connection.setReadTimeout(60000);
             // 发送请求
             connection.connect();
+
+            log.info("doGet:responseCode == > {}", connection.getResponseCode());
             // 通过connection连接，获取输入流
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
@@ -106,7 +108,6 @@ public class HttpClientUtil {
      * @return 远程数据
      */
     public static String doPost(String httpUrl, String param) {
-
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
@@ -135,6 +136,8 @@ public class HttpClientUtil {
             os = connection.getOutputStream();
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的
             os.write(param.getBytes());
+
+            log.info("doPost:responseCode == > {}", connection.getResponseCode());
             // 通过连接对象获取一个输入流，向远程读取
             if (connection.getResponseCode() == 200) {
 
@@ -152,10 +155,13 @@ public class HttpClientUtil {
                 result = sbf.toString();
             }
         } catch (MalformedURLException e) {
+            log.info("MalformedURLException == > {}", e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
+            log.info("IOException == > {}", e.getMessage());
             e.printStackTrace();
         } finally {
+            log.info("finally == > {}", result);
             // 关闭资源
             if (null != br) {
                 try {

@@ -97,21 +97,50 @@ public class CustomFormTagController {
     /**
      * 给表单添加标签
      *
+     * @param matchCustomFormAndTag 表单标签信息
      * @return 标签 表单 关联
      */
-    @PostMapping(value = "/addMatchCustomFormAndTag}")
+    @PostMapping(value = "/addMatchCustomFormAndTag")
     public ResultVO<MatchCustomFormAndTag> addMatchCustomFormAndTag(@RequestBody MatchCustomFormAndTag matchCustomFormAndTag) {
         return new ResultVO<>(customFormTagService.addMatchCustomFormAndTag(matchCustomFormAndTag));
     }
 
-    @GetMapping(value = "/getTagListByFormId/{formId}/{rand}")
-    public ResultVO<List<MatchCustomFormAndTag>> getTagListByFormId(@PathVariable("formId") String formId) {
-        return new ResultVO<>(customFormTagService.getTagListByFormId(formId));
+    /**
+     * 根据表单id 获取对应的 标签
+     *
+     * @param jsonObject <br/>
+     *                   formId 表单id
+     * @return 标签list
+     */
+    @PostMapping(value = "/getTagListByFormId")
+    public ResultVO<List<String>> getTagListByFormId(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(customFormTagService.getTagListByFormId(jsonObject.getString("formId")));
     }
 
-    @DeleteMapping(value = "/deleteMatchCustomFormAndTag/{formId}/{tagId}/{rand}")
-    public ResultVO<Long> deleteMatchCustomFormAndTag(@PathVariable("formId") String formId, @PathVariable("tagId") String tagId) {
-        return new ResultVO<>(customFormTagService.deleteMatchCustomFormAndTag(formId, tagId));
+    /**
+     * 删除表单标签
+     *
+     * @param jsonObject <br/>
+     *                   formId 表单id <br/>
+     *                   tagId  标签 id <br/>
+     *                   formIdList 表单id List
+     * @return resultVO.resultData 删除的行数
+     */
+    @PostMapping(value = "/deleteMatchCustomFormAndTag")
+    public ResultVO<Long> deleteMatchCustomFormAndTag(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(customFormTagService.deleteMatchCustomFormAndTag(jsonObject));
     }
 
+    /**
+     * 给表单添加标签
+     *
+     * @param jsonObject 表单标签信息 <br/>
+     *                   tagIdList： 标签 list <br/>
+     *                   customFormId: 表单id
+     * @return 标签 表单 关联
+     */
+    @PostMapping(value = "/addMatchCustomFormAndTagList")
+    public ResultVO<String> addMatchCustomFormAndTagList(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(customFormTagService.addMatchCustomFormAndTagList(jsonObject));
+    }
 }

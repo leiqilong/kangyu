@@ -27,6 +27,8 @@ public class Test {
 
     public static String getValue(JSONObject jsonObject, int i, String... paths) {
         String path = paths[i];
+
+        log.info("index ==> {}, path ==> {}, jsonObject ==> {}", i, path, jsonObject);
         int lengh = paths.length;
         i++;
         if (lengh == i) {
@@ -42,9 +44,13 @@ public class Test {
     }
 
     public static String getValue(JSONArray jsonArray, int i, String... paths) {
+
         String path = paths[i];
-        int lengh = paths.length;
+
+        log.info("index ==> {}, path ==> {},  jsonArray ==> {}", i, path, jsonArray);
+
         i++;
+        int lengh = paths.length;
         if (lengh == i) {
             return jsonArray.getString(0);
         }

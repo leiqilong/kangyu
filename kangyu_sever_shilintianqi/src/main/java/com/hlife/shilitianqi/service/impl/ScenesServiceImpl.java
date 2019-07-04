@@ -199,6 +199,7 @@ public class ScenesServiceImpl implements ScenesService {
         return getMassage(tagIdList);
     }
 
+
     @Override
     public List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject) {
         return customFormTagService.getCustomFormTagList(jsonObject);
@@ -215,12 +216,51 @@ public class ScenesServiceImpl implements ScenesService {
     }
 
     @Override
+    public List<String> getMissionTwice(JSONObject jsonObject) {
+        Map<String, Object> twiceResultMap = this.getTagAndScoreTwice(jsonObject);
+
+        List<DeviceResult> resultList = (List<DeviceResult>) twiceResultMap.get("resultList");
+
+        //tagIdList.add("1143454014872510464"); // 类型宣教
+        List<String> tagIdList = new ArrayList<>();
+        tagIdList.add(jsonObject.getString("scenesId"));
+        for (DeviceResult deviceResult : resultList) {
+            tagIdList.add(deviceResult.getTagId());
+        }
+
+        tagIdList.add("1143454014872510464"); // 类型宣教
+
+        return getMassage(tagIdList);
+    }
+
+    @Override
+    public List<String> getSurveyTwice(JSONObject jsonObject) {
+        Map<String, Object> twiceResultMap = this.getTagAndScoreTwice(jsonObject);
+
+        List<DeviceResult> resultList = (List<DeviceResult>) twiceResultMap.get("resultList");
+
+        List<String> tagIdList = new ArrayList<>();
+        tagIdList.add(jsonObject.getString("scenesId"));
+        for (DeviceResult deviceResult : resultList) {
+            tagIdList.add(deviceResult.getTagId());
+        }
+
+        tagIdList.add("1143454297266610176"); // 类型调查问卷
+
+        return getMassage(tagIdList);
+    }
+
+    @Override
     public String publishMission(JSONObject jsonObject) {
-        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}", businessConfig.getMsgPublishUrl(), businessConfig.getMsgPublishPort());
+        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==>{}",
+                businessConfig.getMsgPublishUrl(),
+                businessConfig.getMsgPublishPort(),
+                jsonObject
+        );
 
         String guid = jsonObject.getString("guid");
 
-        String scenesId = jsonObject.getString("sceneId");
+        String scenesId = jsonObject.getString("sceneid");
 
         JSONObject param = new JSONObject();
 
@@ -245,10 +285,14 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public String publishSurvey(JSONObject jsonObject) {
-        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}", businessConfig.getMsgPublishUrl(), businessConfig.getMsgPublishPort());
+        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==>{}",
+                businessConfig.getMsgPublishUrl(),
+                businessConfig.getMsgPublishPort(),
+                jsonObject
+        );
 
         String guid = jsonObject.getString("guid");
-        String scenesId = jsonObject.getString("sceneId");
+        String scenesId = jsonObject.getString("sceneid");
 
         JSONObject param = new JSONObject();
         List surveyList = this.getSurvey(guid, scenesId, param);
@@ -514,22 +558,22 @@ public class ScenesServiceImpl implements ScenesService {
 
         paramObject.put("data", data);
 
-        String res =
-                HttpClientUtil.doPost(
-                        String.format(
-                                HttpClientUtil.HTTP_URL_FORMAT,
-                                businessConfig.getMsgPublishUrl(),
-                                businessConfig.getMsgPublishPort(),
-                                "wpa/msg/sendPubMsg"
-                        ),
-                        JSON.toJSONString(paramObject)
-                );
+        log.info("paramObject ==> {}", paramObject);
 
+        String url = String.format(
+                HttpClientUtil.HTTP_URL_FORMAT,
+                businessConfig.getMsgPublishUrl(),
+                businessConfig.getMsgPublishPort(),
+                "wpa/msg/sendPubMsg"
+        );
+        log.info("url ==> {}", url);
+
+        String res = HttpClientUtil.doPost(url, JSON.toJSONString(paramObject));
         log.info("res ==> {}", res);
 
         JSONObject resObj = JSON.parseObject(res);
 
-        if (!resObj.getBoolean("state")) {
+        if (resObj == null || !resObj.getBoolean("state")) {
             throw new RuntimeException("推送消息失败");
         }
     }

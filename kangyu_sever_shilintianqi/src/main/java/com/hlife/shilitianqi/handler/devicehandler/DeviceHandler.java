@@ -316,7 +316,6 @@ public class DeviceHandler {
         return getDeviceResult(judgeStandards, path, actual + "/" + recommend, chineseDescription);
     }
 
-
     /**
      * 档案-身高体重
      */
@@ -743,7 +742,6 @@ public class DeviceHandler {
             return getDiagnoseDeviceResult(judgeStandards, path, defaultTwiceValue, chineseDescription);
         }
 
-        // 前台处理后的数据
         String yqjcdaxxSleep3Twice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxSleep3Twice)) {
             return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxSleep3Twice).setDatas(jsonObject);

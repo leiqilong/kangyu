@@ -93,16 +93,18 @@ public interface CustomFormTagService {
      * @param formId 表单id
      * @return 标签表单对应数据
      */
-    List<MatchCustomFormAndTag> getTagListByFormId(String formId);
+    List<String> getTagListByFormId(String formId);
+
 
     /**
      * 删除某表单的某个标签
      *
-     * @param formId 表单id
-     * @param tagId  标签id
+     * @param jsonObject <br/>
+     *                   formId 表单id <br/>
+     *                   tagId  标签id
      * @return
      */
-    Long deleteMatchCustomFormAndTag(String formId, String tagId);
+    Long deleteMatchCustomFormAndTag(JSONObject jsonObject);
 
     /**
      * 根据 id 查询对应的标签
@@ -111,4 +113,14 @@ public interface CustomFormTagService {
      * @return 标签 数据
      */
     CustomFormTag selectCustomFormTagById(String tagId);
+
+    /**
+     * 给标单批量添加标签
+     *
+     * @param jsonObject <br/>
+     *                   tagIdList： 标签 list <br/>
+     *                   customFormId: 表单id
+     * @return 添加成功
+     */
+    String addMatchCustomFormAndTagList(JSONObject jsonObject);
 }

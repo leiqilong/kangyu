@@ -218,18 +218,23 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     }
 
     @Override
-    public List<MatchCustomFormAndTag> getTagListByFormId(String formId) {
+    public List<String> getTagListByFormId(String formId) {
         return this.matchCustomFormAndTagService.getTagListByFormId(formId);
     }
 
     @Override
-    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
-        return this.matchCustomFormAndTagService.deleteMatchCustomFormAndTag(formId, tagId);
+    public Long deleteMatchCustomFormAndTag(JSONObject jsonObject) {
+        return this.matchCustomFormAndTagService.deleteMatchCustomFormAndTag(jsonObject);
     }
 
     @Override
     public CustomFormTag selectCustomFormTagById(String tagId) {
         return this.customFormTagMapper.selectCustomFormTagById(tagId);
+    }
+
+    @Override
+    public String addMatchCustomFormAndTagList(JSONObject jsonObject) {
+        return this.matchCustomFormAndTagService.addMatchCustomFormAndTagList(jsonObject);
     }
 
     /**
@@ -252,7 +257,6 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         return formIdList;
     }
-
 
     private boolean equalsList(List<String> value, List<String> tagIdList) {
         for (String tagId : tagIdList) {

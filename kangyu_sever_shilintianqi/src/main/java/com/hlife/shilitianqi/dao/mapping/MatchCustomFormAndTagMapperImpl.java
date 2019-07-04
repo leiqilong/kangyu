@@ -49,8 +49,18 @@ public class MatchCustomFormAndTagMapperImpl extends BaseMapper implements Match
     }
 
     @Override
-    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
-        Document document = new Document("customFormId", formId).append("tagId", tagId);
-        return this.mongoTemplate.remove(new BasicQuery(document), MatchCustomFormAndTag.class).getDeletedCount();
+    public Long deleteMatchCustomFormAndTag(Document queryDoc) {
+        //Document document = new Document("customFormId", formId).append("tagId", tagId);
+        return this.mongoTemplate.remove(new BasicQuery(queryDoc), MatchCustomFormAndTag.class).getDeletedCount();
+    }
+
+    @Override
+    public boolean isExists(Document queryDoc) {
+        return this.mongoTemplate.exists(new BasicQuery(queryDoc), MatchCustomFormAndTag.class);
+    }
+
+    @Override
+    public Long deleteMatchCustomFormAndTagByFormId(String formId) {
+        return this.mongoTemplate.remove(new BasicQuery(new Document("customFormId", formId)), MatchCustomFormAndTag.class).getDeletedCount();
     }
 }

@@ -1,9 +1,11 @@
 package com.hlife.shilitianqi.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.shilitianqi.dao.MatchCustomFormAndTagMapper;
 import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.MatchCustomFormAndTagService;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,12 +74,57 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
     }
 
     @Override
-    public List<MatchCustomFormAndTag> getTagListByFormId(String formId) {
-        return this.matchCustomFormAndTagMapper.getTagListByFormId(formId);
+    public List<String> getTagListByFormId(String formId) {
+        List<String> tagIdList = this.matchCustomFormAndTagMapper.getTagListByFormId(formId)
+                .stream()
+                .map(match -> match.getTagId())
+                .collect(Collectors.toList());
+        return tagIdList;
     }
 
     @Override
-    public Long deleteMatchCustomFormAndTag(String formId, String tagId) {
-        return this.matchCustomFormAndTagMapper.deleteMatchCustomFormAndTag(formId, tagId);
+    public Long deleteMatchCustomFormAndTag(JSONObject jsonObject) {
+        Document queryDoc = new Document();
+        String customFormId = jsonObject.getString("formId");
+        if (StringUtil.stringIsNotNull(customFormId)) {
+            queryDoc.append("customFormId", customFormId);
+        }
+
+        String tagId = jsonObject.getString("tagId");
+        if (StringUtil.stringIsNotNull(tagId)) {
+            queryDoc.append("tagId", tagId);
+        }
+
+        List<String> formIdList = (List<String>) jsonObject.get("formIdList");
+
+        if (formIdList != null && formIdList.size()>0) {
+            queryDoc.append("customFormId", new Document("$in", formIdList));
+        }
+        return this.matchCustomFormAndTagMapper.deleteMatchCustomFormAndTag(queryDoc);
+    }
+
+    @Override
+    public String addMatchCustomFormAndTagList(JSONObject jsonObject) {
+        String customFormId = jsonObject.getString("customFormId");
+        List<String> tagIdList = (List<String>) jsonObject.get("tagIdList");
+        if (tagIdList == null || tagIdList.isEmpty() || StringUtil.stringIsNull(customFormId)) {
+            return "传入参数为空";
+        }
+
+        if (this.matchCustomFormAndTagMapper.isExists(new Document("customFormId", customFormId))) {
+            this.deleteMatchCustomFormAndTagListByFormId(customFormId);
+        }
+
+        this.matchCustomFormAndTagMapper.saveMatchCustomFormAndTagBatch(
+                tagIdList.stream()
+                        .map(tagId -> new MatchCustomFormAndTag(customFormId, tagId))
+                        .collect(Collectors.toList())
+        );
+        return "添加成功";
+    }
+
+    @Override
+    public Long deleteMatchCustomFormAndTagListByFormId(String formId) {
+        return this.matchCustomFormAndTagMapper.deleteMatchCustomFormAndTagByFormId(formId);
     }
 }
