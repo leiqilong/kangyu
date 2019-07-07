@@ -107,7 +107,7 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
     public String addMatchCustomFormAndTagList(JSONObject jsonObject) {
         String customFormId = jsonObject.getString("customFormId");
         List<String> tagIdList = (List<String>) jsonObject.get("tagIdList");
-        if (tagIdList == null || tagIdList.isEmpty() || StringUtil.stringIsNull(customFormId)) {
+        if (tagIdList == null || StringUtil.stringIsNull(customFormId)) {
             return "传入参数为空";
         }
 
@@ -115,6 +115,9 @@ public class MatchCustomFormAndTagServiceImpl implements MatchCustomFormAndTagSe
             this.deleteMatchCustomFormAndTagListByFormId(customFormId);
         }
 
+        if (tagIdList.isEmpty()) {
+            return "添加成功";
+        }
         this.matchCustomFormAndTagMapper.saveMatchCustomFormAndTagBatch(
                 tagIdList.stream()
                         .map(tagId -> new MatchCustomFormAndTag(customFormId, tagId))

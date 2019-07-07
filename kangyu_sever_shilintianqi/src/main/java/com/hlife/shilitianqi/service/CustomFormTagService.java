@@ -77,7 +77,7 @@ public interface CustomFormTagService {
      * @param tagIdList 标签id list
      * @return 对应的 表单id list
      */
-    List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList);
+    List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList, String type);
 
     /**
      * 给表单添加标签

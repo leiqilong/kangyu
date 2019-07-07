@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 自定义表单标签服务层实现
@@ -188,7 +189,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     }
 
     @Override
-    public List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList) {
+    public List<String> selectCustomFormIdsByTagIdList(List<String> tagIdList, String type) {
         List<String> formIdList = new ArrayList<>();
         List<MatchCustomFormAndTag> matchList = this.matchCustomFormAndTagService.selectCustomFormsByTagIdList(tagIdList);
         for (MatchCustomFormAndTag match : matchList) {
@@ -209,7 +210,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
             formMap.put(formId, tagGroup);
         }
 
-        return this.findFormList(formMap, tagIdList);
+        return this.findFormList(formMap, tagIdList, type);
     }
 
     @Override
@@ -246,13 +247,20 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
      * @param tagIdList 过滤用标签 list
      * @return 过滤后的表单
      */
-    private List<String> findFormList(Map<String, List<String>> formMap, List<String> tagIdList) {
-        List<String> formIdList = new ArrayList<>();
+    private List<String> findFormList(Map<String, List<String>> formMap, List<String> tagIdList, String type) {
+        if (tagIdList == null || tagIdList.size() < 2) {
+            return Collections.emptyList();
+        }
 
-        for (Map.Entry<String, List<String>> entry : formMap.entrySet()) {
-            if (this.equalsList(entry.getValue(), tagIdList)) {
-                formIdList.add(entry.getKey());
-            }
+        List<String> formIdList = formMap.entrySet().stream()
+                .filter(entry -> this.equalsList(entry.getValue(), tagIdList)
+                        && entry.getKey().split(";")[1].equals(type))
+                .map(entry -> entry.getKey().split(";")[0])
+                .collect(Collectors.toList());
+
+        if (formIdList == null || formIdList.isEmpty()) {
+            tagIdList.remove(tagIdList.size() - 1);
+            return this.findFormList(formMap, tagIdList, type);
         }
 
         return formIdList;

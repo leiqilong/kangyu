@@ -185,18 +185,18 @@ public class ScenesServiceImpl implements ScenesService {
     public List<String> getMission(String guid, String scenesId) {
         List<String> tagIdList = getTagIdList(guid, scenesId);
 
-        tagIdList.add("1143454014872510464"); // 类型宣教
+        // tagIdList.add("1143454014872510464"); // 类型宣教
 
-        return getMassage(tagIdList);
+        return getMassageContent(tagIdList, "03");
     }
 
     @Override
     public List<String> getSurvey(String guid, String scenesId) {
         List<String> tagIdList = getTagIdList(guid, scenesId);
 
-        tagIdList.add("1143454297266610176"); // 类型调查问卷
+        // tagIdList.add("1143454297266610176"); // 类型调查问卷
 
-        return getMassage(tagIdList);
+        return getMassageContent(tagIdList, "02");
     }
 
 
@@ -217,37 +217,20 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public List<String> getMissionTwice(JSONObject jsonObject) {
-        Map<String, Object> twiceResultMap = this.getTagAndScoreTwice(jsonObject);
+        // List<String> tagIdList = getTagIdListTwice(jsonObject);
 
-        List<DeviceResult> resultList = (List<DeviceResult>) twiceResultMap.get("resultList");
+        // tagIdList.add("1143454014872510464"); // 类型宣教
 
-        //tagIdList.add("1143454014872510464"); // 类型宣教
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(jsonObject.getString("scenesId"));
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }
-
-        tagIdList.add("1143454014872510464"); // 类型宣教
-
-        return getMassage(tagIdList);
+        return getMassageContent(getTagIdListTwice(jsonObject), "03");
     }
 
     @Override
     public List<String> getSurveyTwice(JSONObject jsonObject) {
-        Map<String, Object> twiceResultMap = this.getTagAndScoreTwice(jsonObject);
+        //List<String> tagIdList = getTagIdListTwice(jsonObject);
 
-        List<DeviceResult> resultList = (List<DeviceResult>) twiceResultMap.get("resultList");
+        // tagIdList.add("1143454297266610176"); // 类型调查问卷
 
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(jsonObject.getString("scenesId"));
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }
-
-        tagIdList.add("1143454297266610176"); // 类型调查问卷
-
-        return getMassage(tagIdList);
+        return getMassageContent(getTagIdListTwice(jsonObject), "02");
     }
 
     @Override
@@ -267,7 +250,7 @@ public class ScenesServiceImpl implements ScenesService {
         List missionList = this.getMission(guid, scenesId, param);
 
         if (missionList == null || missionList.isEmpty()) {
-            throw new RuntimeException("没有查到相应的调查问卷");
+            throw new RuntimeException("没有查到相应的宣教内容");
         }
 
         JSONObject paramObject = new JSONObject();
@@ -278,7 +261,7 @@ public class ScenesServiceImpl implements ScenesService {
         data.put("title", "宣教");
         data.put("content", "请点击详情完成宣教");
 
-        pushMassage(guid, param.getString("weChatID"), paramObject, data);
+        this.pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
         return "推送宣教成功";
     }
@@ -309,41 +292,9 @@ public class ScenesServiceImpl implements ScenesService {
         data.put("title", "调查问卷");
         data.put("content", "请点击详情完成调查问卷");
 
-        pushMassage(guid, param.getString("weChatID"), paramObject, data);
+        this.pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
         return "推送调查问卷成功";
-    }
-
-    /**
-     * 获取标签 id List
-     *
-     * @param guid     患者id
-     * @param scenesId 场景id
-     * @return 标签 id List
-     */
-    private List<String> getTagIdList(String guid, String scenesId) {
-        return this.getTagIdList(guid, scenesId, new JSONObject());
-    }
-
-    /**
-     * 获取标签 id List 重载方法
-     *
-     * @param guid     患者id
-     * @param scenesId 场景id
-     * @return 标签 id List
-     */
-    private List<String> getTagIdList(String guid, String scenesId, JSONObject param) {
-        Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
-        List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
-
-        param.put("weChatID", resultMap.get("weChatID"));
-
-        List<String> tagIdList = new ArrayList<>();
-        tagIdList.add(scenesId);
-        for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
-        }
-        return tagIdList;
     }
 
     /**
@@ -397,21 +348,7 @@ public class ScenesServiceImpl implements ScenesService {
         return deviceResult.getScore() * device.getWeights();
     }
 
-    /**
-     * 根据场景计算结果摧送消息
-     *
-     * @param tagIdList 计算结果
-     */
-    private List<String> getMassage(List<String> tagIdList) {
-        List<String> formIdList = this.customFormTagService.selectCustomFormIdsByTagIdList(tagIdList);
-        log.info("formIdList:{}", formIdList);
 
-        if (formIdList == null || formIdList.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return formIdList.stream().map(id -> id.split(";")[0]).collect(Collectors.toList());
-    }
 
     /**
      * 根据场景 id 患都数据获取返回结果
@@ -450,7 +387,6 @@ public class ScenesServiceImpl implements ScenesService {
             for (int i = 0; i < 3; i++) {
                 tagList.add(resultList.get(i));
             }
-
         }
 
         for (DeviceResult deviceResult : tagList) {
@@ -513,9 +449,9 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("该用户没有绑定微信");
         }
 
-        tagIdList.add("1143454014872510464"); // 类型宣教
+        // tagIdList.add("1143454014872510464"); // 类型宣教
 
-        return getMassage(tagIdList);
+        return getMassageContent(tagIdList, "03");
     }
 
     /**
@@ -533,9 +469,78 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("该用户没有绑定微信");
         }
 
-        tagIdList.add("1143454297266610176"); // 类型宣教
+        // tagIdList.add("1143454297266610176"); // 类型调查问卷
 
-        return getMassage(tagIdList);
+        return getMassageContent(tagIdList, "02");
+    }
+
+    /**
+     * 获取标签 id List
+     *
+     * @param guid     患者id
+     * @param scenesId 场景id
+     * @return 标签 id List
+     */
+    private List<String> getTagIdList(String guid, String scenesId) {
+        return this.getTagIdList(guid, scenesId, new JSONObject());
+    }
+
+    /**
+     * 获取标签 id List 重载方法
+     *
+     * @param guid     患者id
+     * @param scenesId 场景id
+     * @return 标签 id List
+     */
+    private List<String> getTagIdList(String guid, String scenesId, JSONObject param) {
+        Map<String, Object> resultMap = getTagAndScore(guid, scenesId);
+        List<DeviceResult> resultList = (List<DeviceResult>) resultMap.get("resultList");
+
+        param.put("weChatID", resultMap.get("weChatID"));
+
+        List<String> tagIdList = new ArrayList<>();
+        tagIdList.add(scenesId);
+        for (DeviceResult deviceResult : resultList) {
+            tagIdList.add(deviceResult.getTagId());
+        }
+        return tagIdList;
+    }
+
+    /**
+     * 根据前台传来的数据获取取标签列表
+     *
+     * @param jsonObject 前台数据
+     *                   scenesId 场景id
+     *                   userArray 前台传来的 患者数据
+     * @return
+     */
+    private List<String> getTagIdListTwice(JSONObject jsonObject) {
+        Map<String, Object> twiceResultMap = this.getTagAndScoreTwice(jsonObject);
+
+        List<DeviceResult> resultList = (List<DeviceResult>) twiceResultMap.get("resultList");
+
+        List<String> tagIdList = new ArrayList<>();
+        tagIdList.add(jsonObject.getString("scenesId"));
+        for (DeviceResult deviceResult : resultList) {
+            tagIdList.add(deviceResult.getTagId());
+        }
+        return tagIdList;
+    }
+
+    /**
+     * 根据场景计算结果摧送消息
+     *
+     * @param tagIdList 计算结果
+     */
+    private List<String> getMassageContent(List<String> tagIdList, String type) {
+        List<String> formIdList = this.customFormTagService.selectCustomFormIdsByTagIdList(tagIdList, type);
+        log.info("formIdList:{}", formIdList);
+
+        if (formIdList == null || formIdList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return formIdList;
     }
 
     /**
