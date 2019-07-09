@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.util.GuidUtil;
+import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
+import com.hlife.framework.util.WeChatUtil;
+import com.hlife.shilitianqi.business_config.BusinessConfig;
 import com.hlife.shilitianqi.constant.Constant;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
 import com.hlife.shilitianqi.model.CustomFormTag;
@@ -35,6 +38,9 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     private MatchCustomFormAndTagService matchCustomFormAndTagService;
     @Autowired
     private AdditionalTagService additionalTagService;
+
+    @Autowired
+    private BusinessConfig businessConfig;
 
     @Override
     public CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag) {
@@ -238,6 +244,39 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return this.matchCustomFormAndTagService.addMatchCustomFormAndTagList(jsonObject);
     }
 
+    @Override
+    public String notificationVisit(JSONObject jsonObject) {
+        String weChatId = jsonObject.getString("weChatId");
+        if (StringUtil.stringIsNull(weChatId)) {
+            throw new IllegalArgumentException("传入微信id为空");
+        }
+        JSONArray tagList = jsonObject.getJSONArray("tagList");
+        if (tagList == null || tagList.isEmpty()) {
+            throw new IllegalArgumentException("传入标签list为空");
+        }
+
+        List<String> formIdList = this.matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(this.selectTagIdListByJSONArray(tagList));
+
+        for (Constant.RelatedFormType relatedFormType: Constant.RelatedFormType.values()) {
+            this.pushMessage(weChatId, formIdList, relatedFormType);
+        }
+
+        return "下达表单成功";
+    }
+
+    @Override
+    public List<String> selectTagIdListByJSONArray(JSONArray tagList) {
+        return this.selectCustomFormTagListByJSONArray(tagList)
+                .stream()
+                .map(customFormTag -> customFormTag.getId())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CustomFormTag> selectCustomFormTagListByJSONArray(JSONArray tagList) {
+        return this.customFormTagMapper.selectCustomFormTagListByJSONArray(tagList);
+    }
+
     /**
      * 根据标签 idlist 过滤 表单
      *
@@ -266,6 +305,13 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return formIdList;
     }
 
+    /**
+     * 判断 表单 是否拥有所有传入的标签
+     *
+     * @param value 表单相关标签
+     * @param tagIdList 传入的标签
+     * @return true/false
+     */
     private boolean equalsList(List<String> value, List<String> tagIdList) {
         for (String tagId : tagIdList) {
             if (!value.contains(tagId)) {
@@ -275,6 +321,11 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         return true;
     }
 
+    /**
+     * 验证标签名+值， 标签代码是否重复
+     *
+     * @param customFormTag 标签信息
+     */
     private void checkTagNameAndTagCode(CustomFormTag customFormTag) {
         Document queryDoc = new Document("tagCode", customFormTag.getTagCode());
 
@@ -293,5 +344,38 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         if (this.customFormTagMapper.isExists(queryDoc)) {
             throw new RuntimeException("标签名称+值重复");
         }
+    }
+
+    /**
+     * 推送消息
+     * @param weChatId 微信id
+     * @param formIdList 表单id list
+     * @param relatedFormType 表单类
+     */
+    private void pushMessage(String weChatId, List<String> formIdList, Constant.RelatedFormType relatedFormType) {
+        List<String> dataGuidList = formIdList.stream()
+                .filter(formId -> formId.split(";")[1].equals(relatedFormType.getKey()))
+                .map(formId -> formId.split(";")[0])
+                .collect(Collectors.toList());
+
+        if (dataGuidList == null || dataGuidList.isEmpty() || StringUtil.stringIsNull(weChatId)) {
+            return;
+        }
+
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("type", relatedFormType.getPushType());
+
+        JSONObject data = new JSONObject();
+        data.put("dataGuidList", dataGuidList);
+        data.put("title", relatedFormType.getTitle());
+        data.put("content", relatedFormType.getContent());
+
+        String url = String.format(
+                HttpClientUtil.HTTP_URL_FORMAT,
+                businessConfig.getMsgPublishUrl(),
+                businessConfig.getMsgPublishPort(),
+                "wpa/msg/sendPubMsg"
+        );
+        WeChatUtil.pushMassage("", weChatId, url, paramObject, data);
     }
 }

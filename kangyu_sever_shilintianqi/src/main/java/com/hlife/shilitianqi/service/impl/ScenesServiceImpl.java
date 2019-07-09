@@ -8,7 +8,9 @@ import com.hlife.framework.base.PageResult;
 import com.hlife.framework.util.GuidUtil;
 import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
+import com.hlife.framework.util.WeChatUtil;
 import com.hlife.shilitianqi.business_config.BusinessConfig;
+import com.hlife.shilitianqi.constant.Constant;
 import com.hlife.shilitianqi.dao.ScenesMapper;
 import com.hlife.shilitianqi.model.*;
 import com.hlife.shilitianqi.service.CustomFormTagService;
@@ -56,7 +58,6 @@ public class ScenesServiceImpl implements ScenesService {
             customFormTagService.addOrEditCustomFormTagSelf(
                     new CustomFormTag()
                             .setId(guid)
-                            //.setTagCode(scenes.getScenesCode())
                             .setTagName("场景")
                             .setTagValue(scenes.getScenesName())
                             .setTagType("05")
@@ -185,18 +186,14 @@ public class ScenesServiceImpl implements ScenesService {
     public List<String> getMission(String guid, String scenesId) {
         List<String> tagIdList = getTagIdList(guid, scenesId);
 
-        // tagIdList.add("1143454014872510464"); // 类型宣教
-
-        return getMassageContent(tagIdList, "03");
+        return getMassageContent(tagIdList, Constant.RelatedFormType.MISSION.getKey());
     }
 
     @Override
     public List<String> getSurvey(String guid, String scenesId) {
         List<String> tagIdList = getTagIdList(guid, scenesId);
 
-        // tagIdList.add("1143454297266610176"); // 类型调查问卷
-
-        return getMassageContent(tagIdList, "02");
+        return getMassageContent(tagIdList, Constant.RelatedFormType.CUSTOM_FORM.getKey());
     }
 
 
@@ -217,20 +214,12 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public List<String> getMissionTwice(JSONObject jsonObject) {
-        // List<String> tagIdList = getTagIdListTwice(jsonObject);
-
-        // tagIdList.add("1143454014872510464"); // 类型宣教
-
-        return getMassageContent(getTagIdListTwice(jsonObject), "03");
+        return getMassageContent(getTagIdListTwice(jsonObject), Constant.RelatedFormType.MISSION.getKey());
     }
 
     @Override
     public List<String> getSurveyTwice(JSONObject jsonObject) {
-        //List<String> tagIdList = getTagIdListTwice(jsonObject);
-
-        // tagIdList.add("1143454297266610176"); // 类型调查问卷
-
-        return getMassageContent(getTagIdListTwice(jsonObject), "02");
+        return getMassageContent(getTagIdListTwice(jsonObject), Constant.RelatedFormType.CUSTOM_FORM.getKey());
     }
 
     @Override
@@ -254,12 +243,12 @@ public class ScenesServiceImpl implements ScenesService {
         }
 
         JSONObject paramObject = new JSONObject();
-        paramObject.put("type", "pdAndEduTagPush");
+        paramObject.put("type", Constant.RelatedFormType.MISSION.getPushType());
 
         JSONObject data = new JSONObject();
         data.put("dataGuidList", missionList);
-        data.put("title", "宣教");
-        data.put("content", "请点击详情完成宣教");
+        data.put("title", Constant.RelatedFormType.MISSION.getTitle());
+        data.put("content", Constant.RelatedFormType.MISSION.getContent());
 
         this.pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
@@ -285,12 +274,12 @@ public class ScenesServiceImpl implements ScenesService {
         }
 
         JSONObject paramObject = new JSONObject();
-        paramObject.put("type", "formTagPush");
+        paramObject.put("type", Constant.RelatedFormType.CUSTOM_FORM.getPushType());
 
         JSONObject data = new JSONObject();
         data.put("dataGuidList", surveyList);
-        data.put("title", "调查问卷");
-        data.put("content", "请点击详情完成调查问卷");
+        data.put("title", Constant.RelatedFormType.CUSTOM_FORM.getTitle());
+        data.put("content", Constant.RelatedFormType.CUSTOM_FORM.getContent());
 
         this.pushMassage(guid, param.getString("weChatID"), paramObject, data);
 
@@ -449,9 +438,7 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("该用户没有绑定微信");
         }
 
-        // tagIdList.add("1143454014872510464"); // 类型宣教
-
-        return getMassageContent(tagIdList, "03");
+        return getMassageContent(tagIdList, Constant.RelatedFormType.MISSION.getKey());
     }
 
     /**
@@ -469,9 +456,7 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("该用户没有绑定微信");
         }
 
-        // tagIdList.add("1143454297266610176"); // 类型调查问卷
-
-        return getMassageContent(tagIdList, "02");
+        return getMassageContent(tagIdList, Constant.RelatedFormType.CUSTOM_FORM.getKey());
     }
 
     /**
@@ -552,33 +537,14 @@ public class ScenesServiceImpl implements ScenesService {
      * @param data        消息具体信息
      */
     private void pushMassage(String guid, String weChatID, JSONObject paramObject, JSONObject data) {
-        JSONObject userObject = new JSONObject();
-        userObject.put("Weixinid", weChatID);
-        userObject.put("guid", guid);
-
-        JSONArray userList = new JSONArray();
-        userList.add(userObject);
-
-        data.put("userList", userList);
-
-        paramObject.put("data", data);
-
-        log.info("paramObject ==> {}", paramObject);
-
         String url = String.format(
                 HttpClientUtil.HTTP_URL_FORMAT,
                 businessConfig.getMsgPublishUrl(),
                 businessConfig.getMsgPublishPort(),
                 "wpa/msg/sendPubMsg"
         );
-        log.info("url ==> {}", url);
 
-        String res = HttpClientUtil.doPost(url, JSON.toJSONString(paramObject));
-        log.info("res ==> {}", res);
-
-        JSONObject resObj = JSON.parseObject(res);
-
-        if (resObj == null || !resObj.getBoolean("state")) {
+        if (!WeChatUtil.pushMassage(guid, weChatID, url, paramObject, data)) {
             throw new RuntimeException("推送消息失败");
         }
     }

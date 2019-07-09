@@ -201,12 +201,29 @@ public class ScenesController {
         return new ResultVO<>(this.scenesService.getTagAndScoreTwice(jsonObject));
     }
 
+
+    /**
+     * 根据前台的数据， 获取宣教表单list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 宣教表单list
+     */
     @ApiOperation("根据前台的数据， 获取宣教表单list")
     @PostMapping("/getMissionTwice")
     public ResultVO<List<String>> getMissionTwice(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(this.scenesService.getMissionTwice(jsonObject));
     }
 
+    /**
+     * 根据前台的数据， 获取调查问卷表单list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 调查问卷表单list
+     */
     @ApiOperation("根据前台的数据， 获取查问卷表单list")
     @PostMapping("/getSurveyTwice")
     public ResultVO<List<String>> getSurveyTwice(@RequestBody JSONObject jsonObject) {
@@ -240,4 +257,5 @@ public class ScenesController {
     public ResultVO<String> publishSurvey(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(this.scenesService.publishSurvey(jsonObject));
     }
+
 }

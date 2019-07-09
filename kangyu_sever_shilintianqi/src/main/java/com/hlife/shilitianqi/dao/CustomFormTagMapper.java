@@ -1,5 +1,6 @@
 package com.hlife.shilitianqi.dao;
 
+import com.alibaba.fastjson.JSONArray;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.model.CustomFormTag;
@@ -59,4 +60,14 @@ public interface CustomFormTagMapper {
      * @return 标签信息
      */
     CustomFormTag selectCustomFormTagById(String id);
+
+    /**
+     * 根据标签 list 查询对应的标签实体类 list
+     *
+     * @param tagList 标签 jsonArray <br/>
+     *                {tagName: 标签名 ”运动“
+     *                tagValue: 标签值 "不足"}
+     * @return 标签实体类 list
+     */
+    List<CustomFormTag> selectCustomFormTagListByJSONArray(JSONArray tagList);
 }

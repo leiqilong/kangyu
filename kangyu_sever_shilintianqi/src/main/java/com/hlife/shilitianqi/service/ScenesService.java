@@ -146,9 +146,24 @@ public interface ScenesService {
     Map<String, Object> getTagAndScoreTwice(JSONObject jsonObject);
 
 
+    /**
+     * 根据前台的数据， 获取宣教表单list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 宣教表单list
+     */
     List<String> getMissionTwice(JSONObject jsonObject);
 
-
+    /**
+     * 根据前台的数据， 获取调查问卷表单list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 调查问卷表单list
+     */
     List<String> getSurveyTwice(JSONObject jsonObject);
 
     /**

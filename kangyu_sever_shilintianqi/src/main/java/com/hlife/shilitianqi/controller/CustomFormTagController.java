@@ -6,6 +6,7 @@ import com.hlife.framework.base.ResultVO;
 import com.hlife.shilitianqi.model.CustomFormTag;
 import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.CustomFormTagService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,5 +143,22 @@ public class CustomFormTagController {
     @PostMapping(value = "/addMatchCustomFormAndTagList")
     public ResultVO<String> addMatchCustomFormAndTagList(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(customFormTagService.addMatchCustomFormAndTagList(jsonObject));
+    }
+
+    /**
+     * 商城购买服务，通知就诊
+     * @param jsonObject 商场参数 <br/>
+     *                   weChatId string 微信id <br/>
+     *                   tagList JSONArray 标签列表 <br/>
+     *                          { tagName string 标签名 ”运动“
+     *                              tagValue string 标签值 "不足"
+     *                          }
+     *
+     * @return  下达成功
+     */
+    @ApiOperation("商城购买服务，通知就诊")
+    @PostMapping(value = "/notificationVisit")
+    public ResultVO<String> notificationVisit(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.customFormTagService.notificationVisit(jsonObject));
     }
 }
