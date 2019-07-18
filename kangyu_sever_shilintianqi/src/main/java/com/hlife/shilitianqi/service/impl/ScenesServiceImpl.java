@@ -413,7 +413,7 @@ public class ScenesServiceImpl implements ScenesService {
                     .setChineseDescription(deviceName);
         }
 
-        log.info("remove==>{}", jsonArray.remove(data));
+        jsonArray.remove(data);
 
         BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult = scenesFun.getFunDeviceResult();
 
@@ -477,7 +477,6 @@ public class ScenesServiceImpl implements ScenesService {
                                 .getTagRemark()
                 );
             }
-
         }
 
         resultMap.put("resultList", tagList);
