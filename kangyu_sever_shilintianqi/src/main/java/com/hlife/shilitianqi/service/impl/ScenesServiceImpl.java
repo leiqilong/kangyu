@@ -361,10 +361,12 @@ public class ScenesServiceImpl implements ScenesService {
                 ? scenesFunKey : Constant.ScenesFun.COMMON_PARAMETER.getKey();
         Constant.ScenesFun scenesFun = Constant.ScenesFun.getInstance(scenesFunKey);
 
+        JSONObject data= new JSONObject();
+
         JSONObject datas = new JSONObject();
 
         for (int i = 0, size = jsonArray.size(); i < size; i++) {
-            JSONObject data = jsonArray.getJSONObject(i);
+            data = jsonArray.getJSONObject(i);
             String dataType = data.getString("dataType");
             String dataType0 = dataType.split("-")[0];
             log.info("dataType ==> {}", dataType);
@@ -411,6 +413,7 @@ public class ScenesServiceImpl implements ScenesService {
                     .setChineseDescription(deviceName);
         }
 
+        log.info("remove==>{}", jsonArray.remove(data));
 
         BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult = scenesFun.getFunDeviceResult();
 
@@ -641,6 +644,7 @@ public class ScenesServiceImpl implements ScenesService {
 
     /**
      * 重复验证
+     *
      * @param scenes
      */
     private void checkRepeat(Scenes scenes) {
