@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 场景服务层实现
@@ -46,12 +45,12 @@ public class ScenesServiceImpl implements ScenesService {
     @Autowired
     private BusinessConfig businessConfig;
 
-    @Autowired
-    private Map<String, BiFunction<JSONObject, List<JudgeStandard>, DeviceResult>> deviceResultFunMap;
-
     @Override
     public Scenes saveOrEditScenes(Scenes scenes) {
+        checkRepeat(scenes);
+
         String scenesId = scenes.getScenesId();
+
         if (StringUtil.stringIsNull(scenesId)) {
             String guid = GuidUtil.generateGuid();
             scenes.setScenesId(guid);
@@ -125,6 +124,11 @@ public class ScenesServiceImpl implements ScenesService {
     }
 
     @Override
+    public PageResult<DeviceOfScenes> searchDeviceOfScenesListByParam(JSONObject jsonObject) {
+        return this.deviceOfScenesService.searchDeviceOfScenesListByParam(jsonObject);
+    }
+
+    @Override
     public Long deleteDeviceOfScenes(String deviceOfScenesId) {
         return this.deviceOfScenesService.deleteByDeviceOfScenesId(deviceOfScenesId);
     }
@@ -165,7 +169,7 @@ public class ScenesServiceImpl implements ScenesService {
         String weChatID = ""; // 微信id
 
         if (StringUtil.stringIsNotNull(userDataStr)) {
-            log.info("userData ==> {}", userDataStr);
+            log.debug("userData ==> {}", userDataStr);
 
             JSONObject jsonObject = JSON.parseObject(userDataStr);
 
@@ -224,7 +228,7 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public String publishMission(JSONObject jsonObject) {
-        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==>{}",
+        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==> {}",
                 businessConfig.getMsgPublishUrl(),
                 businessConfig.getMsgPublishPort(),
                 jsonObject
@@ -286,6 +290,10 @@ public class ScenesServiceImpl implements ScenesService {
         return "推送调查问卷成功";
     }
 
+    public List<DeviceOfScenes> createDeviceOfScenesListByDevice() {
+        return deviceOfScenesService.createDeviceOfScenesListByDevice();
+    }
+
     /**
      * 获取 某设备 计算结果
      *
@@ -294,7 +302,7 @@ public class ScenesServiceImpl implements ScenesService {
      * @param device     某设备
      * @return 设备得分
      */
-    private double getScore(List<DeviceResult> resultList, JSONArray jsonArray, DeviceOfScenes device) {
+    /*private double getScore(List<DeviceResult> resultList, JSONArray jsonArray, DeviceOfScenes device) {
         String deviceCode = device.getDeviceCode();
         String deviceType = deviceCode.split("-")[0];
 
@@ -335,9 +343,90 @@ public class ScenesServiceImpl implements ScenesService {
         }
         resultList.add(deviceResult.setDataType(deviceCode));
         return deviceResult.getScore() * device.getWeights();
+    }*/
+    private double getScore(List<DeviceResult> resultList, JSONArray jsonArray, DeviceOfScenes device) {
+
+        List<JudgeStandard> judgeStandardList = device.getJudgeStandardList();
+        if (judgeStandardList == null || judgeStandardList.isEmpty()) {
+            throw new RuntimeException("请正确维护场景-设备（" + device.getDeviceName() + "）-规则");
+        }
+
+        String deviceCode = device.getDeviceCode();
+        String deviceType = deviceCode.split("-")[0];
+
+        String deviceName = device.getDeviceName();
+
+        String scenesFunKey = device.getScenesFunKey();
+        scenesFunKey = StringUtil.stringIsNotNull(scenesFunKey)
+                ? scenesFunKey : Constant.ScenesFun.COMMON_PARAMETER.getKey();
+        Constant.ScenesFun scenesFun = Constant.ScenesFun.getInstance(scenesFunKey);
+
+        JSONObject datas = new JSONObject();
+
+        for (int i = 0, size = jsonArray.size(); i < size; i++) {
+            JSONObject data = jsonArray.getJSONObject(i);
+            String dataType = data.getString("dataType");
+            String dataType0 = dataType.split("-")[0];
+            log.info("dataType ==> {}", dataType);
+
+            if (deviceCode.equals(dataType)) {
+                datas = data.getJSONObject("datas");
+                break;
+            }
+
+            if (deviceType.equals(dataType)) {
+                datas = data.getJSONObject("datas");
+                break;
+            }
+
+            if (deviceType.equals(dataType0)) {
+                datas = data.getJSONObject("datas");
+                break;
+            }
+        }
+
+        if (datas.isEmpty()) {
+            JudgeStandard defaultJudgeStandard = judgeStandardList.stream()
+                    .filter(judgeStandard -> judgeStandard.getScore() == 0d)
+                    .findFirst().orElse(judgeStandardList.get(0));
+            resultList.add(
+                    new DeviceResult()
+                            .setDataType(deviceCode)
+                            .setTagId(defaultJudgeStandard.getTagId())
+                            .setTagName(defaultJudgeStandard.getTagName())
+                            .setTagValue(defaultJudgeStandard.getTagValue())
+                            .setDatas(new DeviceResult.Record().setChineseDescription(deviceName))
+            );
+            return 0d;
+        }
+
+        DeviceResult.Record record;
+
+        if (datas.containsKey("twiceValue")) {
+            record = JSON.toJavaObject(datas, DeviceResult.Record.class);
+        } else {
+            BiFunction<JSONObject, Device.FieldPath[], DeviceResult.Record> funFlattenedData = scenesFun.getFunFlattenedData();
+            record = funFlattenedData
+                    .apply(datas, device.getFieldPaths())
+                    .setChineseDescription(deviceName);
+        }
+
+
+        BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult = scenesFun.getFunDeviceResult();
+
+        DeviceResult deviceResult =
+                funDeviceResult.apply(
+                        judgeStandardList,
+                        record.getTwiceValue()
+                ).setDatas(record);
+
+        if (deviceResult != null) {
+            resultList.add(deviceResult.setDataType(deviceCode));
+            return deviceResult.getScore() * device.getWeights();
+        }
+        resultList.add(deviceResult.setDataType(deviceCode));
+        return deviceResult.getScore() * device.getWeights();
     }
-
-
 
     /**
      * 根据场景 id 患都数据获取返回结果
@@ -347,7 +436,7 @@ public class ScenesServiceImpl implements ScenesService {
      * @return 计算结果
      */
     private Map<String, Object> getStringObjectMap(String scenesId, JSONArray jsonArray) {
-        List<DeviceOfScenes> deviceList = getDeviceOfScenes(scenesId);
+        List<DeviceOfScenes> deviceList = this.getDeviceOfScenes(scenesId);
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -546,6 +635,32 @@ public class ScenesServiceImpl implements ScenesService {
 
         if (!WeChatUtil.pushMassage(guid, weChatID, url, paramObject, data)) {
             throw new RuntimeException("推送消息失败");
+        }
+    }
+
+
+    /**
+     * 重复验证
+     * @param scenes
+     */
+    private void checkRepeat(Scenes scenes) {
+        Document queryDoc = new Document();
+        String scenesId = scenes.getScenesId();
+
+        if (StringUtil.stringIsNotNull(scenesId)) {
+            queryDoc.put("scenesId", new Document("$ne", scenesId));
+        }
+
+        queryDoc.put("scenesName", scenes.getScenesName());
+        if (this.scenesMapper.isExists(queryDoc)) {
+            throw new RuntimeException("场景名称重复");
+        }
+
+        queryDoc.remove("scenesName");
+
+        queryDoc.put("scenesCode", scenes.getScenesCode());
+        if (this.scenesMapper.isExists(queryDoc)) {
+            throw new RuntimeException("场景代码重复");
         }
     }
 }

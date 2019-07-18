@@ -62,7 +62,7 @@ public abstract class BaseMapper {
      */
     protected <T, R> PageResult<R> pageQuery(BasicQuery query, Class<T> entityClass, Function<T, R> mapper,
                                              Integer pageSize, Integer pageNum, String lastId) {
-        //分页逻辑
+        // 分页逻辑
         long total = mongoTemplate.count(query, entityClass);
         final Integer pages = (int) Math.ceil(total / (double) pageSize);
         if (pageNum <= 0 || pageNum > pages) {

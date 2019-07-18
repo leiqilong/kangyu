@@ -1,11 +1,16 @@
 package com.hlife.shilitianqi.model;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
+/**
+ * 设备计算结果实体类
+ */
 @Data
 @Accessors(chain = true)
 public class DeviceResult implements Serializable {
@@ -37,8 +42,24 @@ public class DeviceResult implements Serializable {
 
     private String tagRemark;
 
-    /**
-     *
-     */
-    private JSONObject datas;
+    private JSONObject jsonObject;
+
+    private Record datas;
+
+    @Data
+    @Accessors(chain = true)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Record {
+
+        /**
+         * 二次数据
+         */
+        private String twiceValue;
+
+        /**
+         * 中文描述
+         */
+        private String chineseDescription;
+    }
 }

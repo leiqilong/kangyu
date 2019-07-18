@@ -3,13 +3,14 @@ package com.hlife.shilitianqi.constant;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.shilitianqi.handler.devicehandler.DeviceResultHandler;
 import com.hlife.shilitianqi.handler.devicehandler.FlattenedDataHandler;
+import com.hlife.shilitianqi.model.Device;
 import com.hlife.shilitianqi.model.DeviceResult;
+import com.hlife.shilitianqi.model.JudgeStandard;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * 常量类
@@ -100,8 +101,8 @@ public class Constant {
      * 相关表单类型
      */
     public enum RelatedFormType {
-        CUSTOM_FORM("02", "formTagPush","调查问卷", "请点击详情完成调查问卷"),
-        MISSION("03", "pdAndEduTagPush","宣教", "请点击详情完成宣教");
+        CUSTOM_FORM("02", "formTagPush", "调查问卷", "请点击详情完成调查问卷"),
+        MISSION("03", "pdAndEduTagPush", "宣教", "请点击详情完成宣教");
 
         @Getter
         private String key;
@@ -129,39 +130,62 @@ public class Constant {
     public enum ScenesFun {
         /**
          * 通用算法分支
+         * <p>
+         * 平行化算法 表达式为 X=value1;Y=value2;  匹配算法 用eval(表达式+规则)
          */
-        COMMON_PARAMETER("commonParameter", FlattenedDataHandler::getParameterCommon, DeviceResultHandler::getDeviceResultBySingleParameter);
+        COMMON_PARAMETER("common", DeviceResultHandler::getDeviceResultCommon),
+
+        /**
+         * 自定义表单算法
+         * 平行化算法 返回值字符串; 匹配算法 用equals
+         */
+        FORM_PARAMETER("form", DeviceResultHandler::getDeviceResultForm),
+
+        /**
+         * 情绪类算法
+         * 平行化算法 返回值字符串; 匹配算法 用contents
+         */
+        MOOD_PARAMETER("mood", DeviceResultHandler::getDeviceResultMood);
 
         /**
          * key
          */
+        @Getter
         private String key;
 
         /**
          * 平行化数据算法
          */
         @Getter
-        private BiFunction<JSONObject, String[], List<String>> funFlattenedData;
+        private BiFunction<JSONObject, Device.FieldPath[], DeviceResult.Record> funFlattenedData;
 
         /**
          * 规则计算
          */
         @Getter
-        private Function<List<String>, DeviceResult> funDeviceResult;
+        private BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult;
 
-        ScenesFun(String key, BiFunction<JSONObject, String[], List<String>> funFlattenedData, Function<List<String>, DeviceResult> funDeviceResult) {
+        ScenesFun(String key, BiFunction<JSONObject, Device.FieldPath[], DeviceResult.Record> funFlattenedData,
+                  BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult) {
             this.key = key;
             this.funFlattenedData = funFlattenedData;
             this.funDeviceResult = funDeviceResult;
         }
 
+        ScenesFun(String key, BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult) {
+            this(key, FlattenedDataHandler::getParameterCommon, funDeviceResult);
+        }
+
+
+
         /**
          * 根据key 获取枚举实例
+         *
          * @param key key
          * @return 枚举实例
          */
         public static ScenesFun getInstance(String key) {
-            for (ScenesFun scenesFun: ScenesFun.values()) {
+            for (ScenesFun scenesFun : ScenesFun.values()) {
                 if (scenesFun.key.equals(key)) {
                     return scenesFun;
                 }

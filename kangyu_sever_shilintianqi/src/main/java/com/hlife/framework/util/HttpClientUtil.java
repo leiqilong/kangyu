@@ -158,10 +158,10 @@ public class HttpClientUtil {
             log.info("MalformedURLException == > {}", e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            log.info("IOException == > {}", e.getMessage());
+            log.error("IOException == > {}", e.getMessage());
             e.printStackTrace();
         } finally {
-            log.info("finally == > {}", result);
+            log.debug("finally == > {}", result);
             // 关闭资源
             if (null != br) {
                 try {

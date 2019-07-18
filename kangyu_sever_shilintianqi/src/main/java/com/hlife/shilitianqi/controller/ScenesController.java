@@ -91,6 +91,17 @@ public class ScenesController {
     }
 
     /**
+     * 根据场景id 查询对应的设备列表 （分页）
+     *
+     * @param jsonObject 场景id
+     * @return resultVO.resultData 场景设备列表
+     */
+    @PostMapping(value = "/searchDeviceOfScenesListByParam")
+    public ResultVO<PageResult<DeviceOfScenes>> searchDeviceOfScenesListByParam(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.searchDeviceOfScenesListByParam(jsonObject));
+    }
+
+    /**
      * 保存/修改 场景设备规则
      *
      * @param judgeStandard 场景设备规则信息
@@ -258,4 +269,14 @@ public class ScenesController {
         return new ResultVO<>(this.scenesService.publishSurvey(jsonObject));
     }
 
+    /**
+     * 查询数据库中的设备列表
+     *
+     * @return 设备列表
+     */
+    @ApiOperation("查询数据库中的设备列表")
+    @GetMapping("/createDeviceOfScenesListByDevice/{rand}")
+    public ResultVO<List<DeviceOfScenes>> createDeviceOfScenesListByDevice() {
+        return new ResultVO<>(this.scenesService.createDeviceOfScenesListByDevice());
+    }
 }

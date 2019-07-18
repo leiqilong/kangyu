@@ -11,6 +11,7 @@ import com.hlife.framework.util.WeChatUtil;
 import com.hlife.shilitianqi.business_config.BusinessConfig;
 import com.hlife.shilitianqi.constant.Constant;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
+import com.hlife.shilitianqi.handler.checkhandler.ICheckAdapter;
 import com.hlife.shilitianqi.model.CustomFormTag;
 import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.AdditionalTagService;
@@ -41,6 +42,9 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
     @Autowired
     private BusinessConfig businessConfig;
+
+    @Autowired
+    private List<ICheckAdapter> tagRemoveListeners;
 
     @Override
     public CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag) {
@@ -164,6 +168,14 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
             throw new IllegalArgumentException("传入标签id为空");
         }
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("tagId", id);
+
+        for (ICheckAdapter iCheckAdapter: tagRemoveListeners) {
+            if (!iCheckAdapter.check(jsonObject)) {
+                throw new IllegalArgumentException("标签已被引用");
+            }
+        }
         Document queryDoc = new Document("id", id);
         if (!this.customFormTagMapper.isExists(queryDoc)) {
             throw new RuntimeException("该数据不存在");

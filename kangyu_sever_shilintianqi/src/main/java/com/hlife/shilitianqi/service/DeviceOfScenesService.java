@@ -1,5 +1,7 @@
 package com.hlife.shilitianqi.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.model.DeviceOfScenes;
 import org.bson.Document;
 
@@ -50,4 +52,12 @@ public interface DeviceOfScenesService {
      * @return 对应的设备用其判别规则List
      */
     List<DeviceOfScenes> searchDeviceOfScenesWithJudgeStandardList(String scenesId);
+
+    /**
+     *
+     * @return
+     */
+    List<DeviceOfScenes> createDeviceOfScenesListByDevice();
+
+    PageResult<DeviceOfScenes> searchDeviceOfScenesListByParam(JSONObject jsonObject);
 }

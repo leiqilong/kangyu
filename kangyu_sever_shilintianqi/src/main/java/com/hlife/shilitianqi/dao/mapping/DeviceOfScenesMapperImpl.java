@@ -1,6 +1,8 @@
 package com.hlife.shilitianqi.dao.mapping;
 
 import com.hlife.framework.base.BaseMapper;
+import com.hlife.framework.base.PageParam;
+import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.dao.DeviceOfScenesMapper;
 import com.hlife.shilitianqi.model.DeviceOfScenes;
 import org.bson.Document;
@@ -40,7 +42,9 @@ public class DeviceOfScenesMapperImpl extends BaseMapper implements DeviceOfScen
         Update update = Update.update("deviceCode", deviceOfScenes.getDeviceCode())
                 .set("deviceName", deviceOfScenes.getDeviceName())
                 .set("Priority", deviceOfScenes.getPriority())
-                .set("weights", deviceOfScenes.getWeights());
+                .set("weights", deviceOfScenes.getWeights())
+                .set("fieldPaths", deviceOfScenes.getFieldPaths())
+                .set("scenesFunKey", deviceOfScenes.getScenesFunKey());
         this.mongoTemplate.updateFirst(
                 new BasicQuery(
                         new Document("deviceOfScenesId", deviceOfScenes.getDeviceOfScenesId())
@@ -54,5 +58,10 @@ public class DeviceOfScenesMapperImpl extends BaseMapper implements DeviceOfScen
     @Override
     public Long deleteByScenesId(String scenesId) {
         return this.mongoTemplate.remove(new BasicQuery(new Document("scenesId", scenesId)), DeviceOfScenes.class).getDeletedCount();
+    }
+
+    @Override
+    public PageResult<DeviceOfScenes> searchDeviceOfScenesListByParam(Document queryDoc, PageParam pageParam) {
+        return this.pageQuery(new BasicQuery(queryDoc), DeviceOfScenes.class, pageParam.getPageSize(), pageParam.getPageNum());
     }
 }

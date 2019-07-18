@@ -56,5 +56,5 @@ public class JudgeStandard {
      * 正常 0 <br/>
      * 不正常 100 <br/>
      */
-    private double score;
+    private Double score;
 }

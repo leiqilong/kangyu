@@ -1,0 +1,44 @@
+server:
+  port: 8090
+  servlet:
+    context-path: '/kangyu_server'
+
+spring:
+  data:
+    mongodb:
+      #uri: mongodb://db_kangyu:db_kangyu_11@localhost:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.111:39007/stl_form?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.51:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+  aop:
+    proxy-target-class: true
+  output:
+    ansi:
+      enabled: always # 彩色控制台
+  http:
+    encoding:
+      charset: UTF-8
+
+
+#spring.data.mongodb.uri=mongodb://user:pwd@ip1:port1,ip2:port2/database  多个节点集群配置
+logging:
+  file: D:/logs/logs.log
+  level:
+    root: info
+    com:
+      hlife:
+        shilitianqi: debug
+    org:
+      springframework:
+        data:
+          mongodb:
+            core: debug
+
+# 获取用户数据
+user-data:
+  url: 10.10.10.51
+  port: 5000
+
+# 发送模版消息接口
+msg-publish:
+  url: localhost
+  port: 8088

@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public class DeviceHandler {
         // 页面修改后的数据
         String stepTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(stepTwice)) {
-            return getDeviceResult(judgeStandards, stepTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, stepTwice).setJsonObject(jsonObject);
         }
 
 
@@ -66,7 +65,7 @@ public class DeviceHandler {
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, "0", "0")
-                    .setDatas(new JSONObject() {{
+                    .setJsonObject(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
                         this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -77,7 +76,7 @@ public class DeviceHandler {
         String sbpAndDbpTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(sbpAndDbpTwice)) {
             String[] sbpAndDbpTwiceArr = sbpAndDbpTwice.split("/");
-            return getDeviceResult(judgeStandards, sbpAndDbpTwiceArr[0], sbpAndDbpTwiceArr[1]).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, sbpAndDbpTwiceArr[0], sbpAndDbpTwiceArr[1]).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -87,7 +86,7 @@ public class DeviceHandler {
         String dbp = bloodPressureData.getString("dbp");
 
         return getDeviceResult(judgeStandards, sbp, dbp)
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, sbp + "/" + dbp);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -129,7 +128,7 @@ public class DeviceHandler {
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, "0")
-                    .setDatas(new JSONObject() {{
+                    .setJsonObject(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, "0/0");
                         this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -140,7 +139,7 @@ public class DeviceHandler {
         if (StringUtil.stringIsNotNull(sleepTwice)) {
             int ss = Integer.valueOf(sleepTwice.split("/")[0]);
             int qs = Integer.valueOf(sleepTwice.split("/")[1]);
-            return getDeviceResult(judgeStandards, String.valueOf((ss + qs) / 60)).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, String.valueOf((ss + qs) / 60)).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -148,7 +147,7 @@ public class DeviceHandler {
         int qs = jsonObject.getInteger("qs");
 
         return getDeviceResult(judgeStandards, String.valueOf((ss + qs) / 60))
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, ss + "/" + qs);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -172,7 +171,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String tzhlTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(tzhlTwice)) {
-            return getDeviceResult(judgeStandards, tzhlTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, tzhlTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -199,7 +198,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String waterValueTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(waterValueTwice)) {
-            return getDeviceResult(judgeStandards, waterValueTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, waterValueTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -225,7 +224,7 @@ public class DeviceHandler {
         // 前台二次处理的数据
         String energyTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(energyTwice)) {
-            return getDeviceResult(judgeStandards, energyTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, energyTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -252,7 +251,7 @@ public class DeviceHandler {
         // 前台二次处理的数据
         String proteinTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(proteinTwice)) {
-            return getDeviceResult(judgeStandards, proteinTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, proteinTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -279,7 +278,7 @@ public class DeviceHandler {
         // 前台二次处理的数据
         String fatTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(fatTwice)) {
-            return getDeviceResult(judgeStandards, fatTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, fatTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -294,7 +293,7 @@ public class DeviceHandler {
      * 膳食营养-碳水化合物
      */
     public static DeviceResult cfTjspLd_choDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
-        String path = "datas.Fat.Actual/Recommend";
+        String path = "datas.Cho.Actual/Recommend";
         String defaultTwiceValue = "0/1";
         String chineseDescription = "膳食营养-碳水化合物-实际值/推荐值";
 
@@ -305,7 +304,7 @@ public class DeviceHandler {
         // 前台二次处理的数据
         String choTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(choTwice)) {
-            return getDeviceResult(judgeStandards, choTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, choTwice).setJsonObject(jsonObject);
         }
 
 
@@ -332,7 +331,7 @@ public class DeviceHandler {
         // 前台二次处理的数据
         String BMITwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(BMITwice)) {
-            return getDeviceResult(judgeStandards, BMITwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, BMITwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -340,7 +339,7 @@ public class DeviceHandler {
         double weight = jsonObject.getInteger("weight") == 0 ? 1 : jsonObject.getInteger("weight");
 
         return getDeviceResult(judgeStandards, String.valueOf(height / weight))
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, height + "/" + weight);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -363,7 +362,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String sleepTimeTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(sleepTimeTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, sleepTimeTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, sleepTimeTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -387,7 +386,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String outdoorTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(outdoorTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, outdoorTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, outdoorTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -411,7 +410,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String heartTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(heartTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, heartTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, heartTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -436,7 +435,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String jkTyhdTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkTyhdTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, jkTyhdTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkTyhdTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -462,7 +461,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String jkSylTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkSylTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, jkSylTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkSylTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -488,7 +487,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String jkSmsjTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkSmsjTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, jkSmsjTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkSmsjTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -515,7 +514,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String jkXlTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(jkXlTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, jkXlTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, jkXlTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -541,7 +540,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String BMITwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(BMITwice)) {
-            return getDeviceResult(judgeStandards, BMITwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, BMITwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -569,7 +568,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String bodyTemperatureTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(bodyTemperatureTwice)) {
-            return getDeviceResult(judgeStandards, bodyTemperatureTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, bodyTemperatureTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -590,7 +589,7 @@ public class DeviceHandler {
         // 无数据
         if (jsonObject.isEmpty()) {
             return getDeviceResult(judgeStandards, "0", "0")
-                    .setDatas(new JSONObject() {{
+                    .setJsonObject(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
                         this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -601,7 +600,7 @@ public class DeviceHandler {
         String sbpAndDbpTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(sbpAndDbpTwice)) {
             String[] sbpAndDbpTwiceArr = sbpAndDbpTwice.split("/");
-            return getDeviceResult(judgeStandards, sbpAndDbpTwiceArr[0], sbpAndDbpTwiceArr[1]).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, sbpAndDbpTwiceArr[0], sbpAndDbpTwiceArr[1]).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -610,7 +609,7 @@ public class DeviceHandler {
         String[] yqjcdaxxXyArr = yqjcdaxx_xy.split("/");
 
         return getDeviceResult(judgeStandards, yqjcdaxxXyArr[0], yqjcdaxxXyArr[1])
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, yqjcdaxx_xy);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -634,7 +633,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String yqjcdaxxYhxtTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxYhxtTwice)) {
-            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYhxtTwice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYhxtTwice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -659,7 +658,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String yqjcdaxxYd2Twice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxYd2Twice)) {
-            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYd2Twice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYd2Twice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -684,7 +683,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String yqjcdaxxYs1Twice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxYs1Twice)) {
-            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYs1Twice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxYs1Twice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -705,7 +704,7 @@ public class DeviceHandler {
         // 无数据
         if (jsonObject.isEmpty()) {
             return getModDeviceResult(judgeStandards, defaultTwiceValue)
-                    .setDatas(new JSONObject() {{
+                    .setJsonObject(new JSONObject() {{
                         this.put(PATH, path);
                         this.put(TWICE_VALUE, defaultTwiceValue);
                         this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -715,14 +714,14 @@ public class DeviceHandler {
         // 前台处理后的数据
         String yqjcdaxxYbxl1Twice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxYbxl1Twice)) {
-            return getModDeviceResult(judgeStandards, yqjcdaxxYbxl1Twice).setDatas(jsonObject);
+            return getModDeviceResult(judgeStandards, yqjcdaxxYbxl1Twice).setJsonObject(jsonObject);
         }
 
         // 原数据
         String yqjcdaxxYbxl1 = StringUtil.stringIsNotNull(jsonObject.getString("yqjcdaxx_ybxl1"))
                 ? jsonObject.getString("yqjcdaxx_ybxl1") : defaultTwiceValue;
         return getModDeviceResult(judgeStandards, yqjcdaxxYbxl1)
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, yqjcdaxxYbxl1);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -744,7 +743,7 @@ public class DeviceHandler {
 
         String yqjcdaxxSleep3Twice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(yqjcdaxxSleep3Twice)) {
-            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxSleep3Twice).setDatas(jsonObject);
+            return getDiagnoseDeviceResult(judgeStandards, yqjcdaxxSleep3Twice).setJsonObject(jsonObject);
         }
 
         // 原数据
@@ -764,33 +763,7 @@ public class DeviceHandler {
      * @return 返回结果
      */
     private static DeviceResult getModDeviceResult(List<JudgeStandard> judgeStandards, String param) {
-        if (StringUtil.stringIsNull(param)) {
-            return new DeviceResult().setScore(100d);
-        }
-        param = param.trim();
-        for (JudgeStandard judgeStandard : judgeStandards) {
-            String ruler = judgeStandard.getRuler();
-
-            if (StringUtil.stringIsNull(ruler)) {
-                continue;
-            }
-
-            List modeList = Arrays.asList(ruler.trim().split(" "));
-
-            boolean match = modeList.contains(param);
-
-            log.info("ruler:{}, param:{}, match:{}", ruler, param, match);
-
-            if (match) {
-                return new DeviceResult()
-                        .setTagName(judgeStandard.getTagName())
-                        .setTagValue(judgeStandard.getTagValue())
-                        .setTagId(judgeStandard.getTagId())
-                        .setScore(judgeStandard.getScore());
-            }
-        }
-
-        return new DeviceResult().setScore(100d);
+        return DeviceResultHandler.getDeviceResultMood(judgeStandards, param);
     }
 
     /**
@@ -799,37 +772,13 @@ public class DeviceHandler {
      * 数据为字符串,采用 equals 对比
      */
     private static DeviceResult getDiagnoseDeviceResult(List<JudgeStandard> judgeStandards, String param) {
-        if (StringUtil.stringIsNull(param)) {
-            return new DeviceResult().setScore(100d);
-        }
-        param = param.trim();
-        for (JudgeStandard judgeStandard : judgeStandards) {
-            String ruler = judgeStandard.getRuler();
-
-            if (StringUtil.stringIsNull(ruler)) {
-                continue;
-            }
-
-            boolean match = ruler.trim().equals(param);
-
-            log.info("ruler:{}, param:{}, match:{}", ruler, param, match);
-
-            if (match) {
-                return new DeviceResult()
-                        .setTagName(judgeStandard.getTagName())
-                        .setTagValue(judgeStandard.getTagValue())
-                        .setTagId(judgeStandard.getTagId())
-                        .setScore(judgeStandard.getScore());
-            }
-        }
-
-        return new DeviceResult().setScore(100d);
+        return DeviceResultHandler.getDeviceResultForm(judgeStandards, param);
     }
 
 
     private static DeviceResult getDiagnoseDeviceResult(List<JudgeStandard> judgeStandards, String path, String param, String chineseDescription) {
         return getDiagnoseDeviceResult(judgeStandards, param)
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, param);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -876,7 +825,7 @@ public class DeviceHandler {
      */
     private static DeviceResult getDeviceResult(List<JudgeStandard> judgeStandards, String path, String param, String chineseDescription) {
         return getDeviceResult(judgeStandards, param)
-                .setDatas(new JSONObject() {{
+                .setJsonObject(new JSONObject() {{
                     this.put(PATH, path);
                     this.put(TWICE_VALUE, param);
                     this.put(CHINESE_DESCRIPTION, chineseDescription);
@@ -925,7 +874,7 @@ public class DeviceHandler {
         // 前台处理后的数据
         String xygenTwice = jsonObject.getString(TWICE_VALUE);
         if (StringUtil.stringIsNotNull(xygenTwice)) {
-            return getDeviceResult(judgeStandards, xygenTwice).setDatas(jsonObject);
+            return getDeviceResult(judgeStandards, xygenTwice).setJsonObject(jsonObject);
         }
 
         // 原数据

@@ -1,5 +1,7 @@
 package com.hlife.shilitianqi.dao;
 
+import com.hlife.framework.base.PageParam;
+import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.model.DeviceOfScenes;
 import org.bson.Document;
 
@@ -58,4 +60,13 @@ public interface DeviceOfScenesMapper {
      * @return 删除的条数
      */
     Long deleteByScenesId(String scenesId);
+
+    /**
+     * 根据场景id 查询对应的 设备信息 列表(分页)
+     *
+     * @param queryDoc 查询条件
+     * @param pageParam 分页条件
+     * @return
+     */
+    PageResult<DeviceOfScenes> searchDeviceOfScenesListByParam(Document queryDoc, PageParam pageParam);
 }

@@ -1,12 +1,17 @@
 package com.hlife.shilitianqi.business_config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hlife.shilitianqi.handler.checkhandler.ICheckAdapter;
 import com.hlife.shilitianqi.handler.devicehandler.DeviceHandler;
 import com.hlife.shilitianqi.model.DeviceResult;
 import com.hlife.shilitianqi.model.JudgeStandard;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +22,11 @@ import java.util.function.BiFunction;
  */
 @Configuration
 public class BeanConfig {
+
+    @Resource(name = "judgeStandardServiceImpl")
+    private ICheckAdapter judgeStandardImpl;
+    /*@Resource(name = "testService")
+    private ICheckAdapter test;*/
 
     /**
      * 场景设备计算分支
@@ -82,5 +92,13 @@ public class BeanConfig {
         deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_sleep3", DeviceHandler::form_yqjcdaxx_sleep3Dispart);
 
         return deviceResultFunMap;
+    }
+
+    @Bean
+    public List<ICheckAdapter> tagRemoveListeners() {
+        List<ICheckAdapter> tagRemoveListeners = new ArrayList<>();
+        tagRemoveListeners.add(judgeStandardImpl);
+        // tagRemoveListeners.add(test);
+        return tagRemoveListeners;
     }
 }

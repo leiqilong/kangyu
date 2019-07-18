@@ -66,6 +66,14 @@ public interface ScenesService {
     List<DeviceOfScenes> searchDeviceOfScenesList(String scenesId);
 
     /**
+     * 根据场景id 查询对应的设备列表分页
+     *
+     * @param jsonObject
+     * @return
+     */
+    PageResult<DeviceOfScenes> searchDeviceOfScenesListByParam(JSONObject jsonObject);
+
+    /**
      * 根据设备id 删除设备
      *
      * @param deviceOfScenesId 设备id
@@ -185,4 +193,13 @@ public interface ScenesService {
      * @return 推送成功
      */
     String publishSurvey(JSONObject jsonObject);
+
+    /**
+     * 查询数据库中的 设备列表
+     *
+     * @return 设备列表
+     */
+    List<DeviceOfScenes> createDeviceOfScenesListByDevice();
+
+
 }
