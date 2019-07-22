@@ -406,14 +406,13 @@ public class ScenesServiceImpl implements ScenesService {
 
         if (datas.containsKey("twiceValue")) {
             record = JSON.toJavaObject(datas, DeviceResult.Record.class);
+            jsonArray.remove(data);
         } else {
             BiFunction<JSONObject, Device.FieldPath[], DeviceResult.Record> funFlattenedData = scenesFun.getFunFlattenedData();
             record = funFlattenedData
                     .apply(datas, device.getFieldPaths())
                     .setChineseDescription(deviceName);
         }
-
-        jsonArray.remove(data);
 
         BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult = scenesFun.getFunDeviceResult();
 
