@@ -25,8 +25,6 @@ public class BeanConfig {
 
     @Resource(name = "judgeStandardServiceImpl")
     private ICheckAdapter judgeStandardImpl;
-    /*@Resource(name = "testService")
-    private ICheckAdapter test;*/
 
     /**
      * 场景设备计算分支
@@ -98,7 +96,6 @@ public class BeanConfig {
     public List<ICheckAdapter> tagRemoveListeners() {
         List<ICheckAdapter> tagRemoveListeners = new ArrayList<>();
         tagRemoveListeners.add(judgeStandardImpl);
-        // tagRemoveListeners.add(test);
         return tagRemoveListeners;
     }
 }

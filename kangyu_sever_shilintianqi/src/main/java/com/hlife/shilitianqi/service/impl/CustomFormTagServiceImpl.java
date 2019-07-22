@@ -20,8 +20,10 @@ import com.hlife.shilitianqi.service.MatchCustomFormAndTagService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     @Autowired
     private BusinessConfig businessConfig;
 
-    @Autowired
+    @Resource(name = "tagRemoveListeners")
     private List<ICheckAdapter> tagRemoveListeners;
 
     @Override

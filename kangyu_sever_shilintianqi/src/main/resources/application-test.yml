@@ -35,8 +35,8 @@ logging:
 
 # 获取用户数据
 user-data:
-  url: localhost
-  port: 5000
+  url: 123456.hlifestl.com
+  port: 80
 
 # 发送模版消息接口
 msg-publish:
