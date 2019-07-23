@@ -5,6 +5,8 @@ import com.hlife.shilitianqi.dao.JudgeStandardMapper;
 import com.hlife.shilitianqi.model.JudgeStandard;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,5 +40,10 @@ public class JudgeStandardMapperImpl extends BaseMapper implements JudgeStandard
     @Override
     public Long deleteJudgeStandardByDeviceOfScenesId(String deviceOfScenesId) {
         return this.mongoTemplate.remove(new BasicQuery(new Document("deviceOfScenesId", deviceOfScenesId)), JudgeStandard.class).getDeletedCount();
+    }
+
+    @Override
+    public void update(Document queryDoc, Update update) {
+        this.mongoTemplate.updateMulti(new BasicQuery(queryDoc), update, JudgeStandard.class);
     }
 }

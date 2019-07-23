@@ -3,6 +3,7 @@ package com.hlife.shilitianqi.business_config;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.shilitianqi.handler.checkhandler.ICheckAdapter;
 import com.hlife.shilitianqi.handler.devicehandler.DeviceHandler;
+import com.hlife.shilitianqi.handler.updatehandler.IUpdateAdapter;
 import com.hlife.shilitianqi.model.DeviceResult;
 import com.hlife.shilitianqi.model.JudgeStandard;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,11 @@ public class BeanConfig {
     @Resource(name = "judgeStandardServiceImpl")
     private ICheckAdapter judgeStandardImpl;
 
+    @Resource(name = "judgeStandardServiceImpl")
+    private IUpdateAdapter judgeStandardImplU;
+
     /**
-     * 场景设备计算分支
+     * 场景设备计算分支 （不用了）
      *
      * @return 场景设备计算全部分支
      */
@@ -92,10 +96,23 @@ public class BeanConfig {
         return deviceResultFunMap;
     }
 
+    /**
+     * 标签删除监听
+     */
     @Bean
     public List<ICheckAdapter> tagRemoveListeners() {
         List<ICheckAdapter> tagRemoveListeners = new ArrayList<>();
         tagRemoveListeners.add(judgeStandardImpl);
         return tagRemoveListeners;
+    }
+
+    /**
+     * 标签修改监听
+     */
+    @Bean
+    public List<IUpdateAdapter> tagUpdateListeners() {
+        List<IUpdateAdapter> tagUpdateListeners = new ArrayList<>();
+        tagUpdateListeners.add(judgeStandardImplU);
+        return tagUpdateListeners;
     }
 }

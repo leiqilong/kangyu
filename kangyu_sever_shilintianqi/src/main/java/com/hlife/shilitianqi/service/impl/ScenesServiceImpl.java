@@ -150,8 +150,9 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public Map<String, Object> getTagAndScore(String guid, String scenesId) {
-        log.info("userDataUrl ==> {}, userDataPort ==> {}", businessConfig.getUserDataUrl(), businessConfig.getUserDataPort());
+        log.debug("userDataUrl ==> {}, userDataPort ==> {}", businessConfig.getUserDataUrl(), businessConfig.getUserDataPort());
 
+        long time = System.currentTimeMillis();
         // 远程获取当前人所额设备数据
         String userDataStr =
                 HttpClientUtil.doPost(
@@ -163,6 +164,8 @@ public class ScenesServiceImpl implements ScenesService {
                         ),
                         JSON.toJSONString(new JSONObject().fluentPut("queryID", guid))
                 );
+
+        log.debug("time1==>{}", System.currentTimeMillis() - time);
 
         JSONArray jsonArray = new JSONArray();
 
@@ -183,6 +186,7 @@ public class ScenesServiceImpl implements ScenesService {
         resultMap.put("userId", guid);
         resultMap.put("weChatID", weChatID);
 
+        log.debug("time5==>{}", System.currentTimeMillis() - time);
         return resultMap;
     }
 
@@ -228,7 +232,7 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public String publishMission(JSONObject jsonObject) {
-        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==> {}",
+        log.debug("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==> {}",
                 businessConfig.getMsgPublishUrl(),
                 businessConfig.getMsgPublishPort(),
                 jsonObject
@@ -261,7 +265,7 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public String publishSurvey(JSONObject jsonObject) {
-        log.info("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==>{}",
+        log.debug("msgPublishUrl ==> {}, msgPublishPort ==> {}, jsonObject==>{}",
                 businessConfig.getMsgPublishUrl(),
                 businessConfig.getMsgPublishPort(),
                 jsonObject
@@ -314,7 +318,7 @@ public class ScenesServiceImpl implements ScenesService {
             JSONObject data = jsonArray.getJSONObject(i);
             String dataType = data.getString("dataType");
             String dataType0 = dataType.split("-")[0];
-            log.info("dataType ==> {}", dataType);
+            log.debug("dataType ==> {}", dataType);
 
             if (deviceCode.equals(dataType)) {
                 datas = data.getJSONObject("datas");
@@ -369,7 +373,7 @@ public class ScenesServiceImpl implements ScenesService {
             data = jsonArray.getJSONObject(i);
             String dataType = data.getString("dataType");
             String dataType0 = dataType.split("-")[0];
-            log.info("dataType ==> {}", dataType);
+            log.debug("dataType ==> {}", dataType);
 
             if (deviceCode.equals(dataType)) {
                 datas = data.getJSONObject("datas");
@@ -438,7 +442,9 @@ public class ScenesServiceImpl implements ScenesService {
      * @return 计算结果
      */
     private Map<String, Object> getStringObjectMap(String scenesId, JSONArray jsonArray) {
+        long time = System.currentTimeMillis();
         List<DeviceOfScenes> deviceList = this.getDeviceOfScenes(scenesId);
+        log.debug("time2 ==> {}", System.currentTimeMillis() - time);
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -446,6 +452,7 @@ public class ScenesServiceImpl implements ScenesService {
 
         double score = 0d;
 
+        long time2 = System.currentTimeMillis();
         for (DeviceOfScenes device : deviceList) {
             String deviceCode = device.getDeviceCode();
             if (StringUtil.stringIsNull(deviceCode)) {
@@ -454,10 +461,13 @@ public class ScenesServiceImpl implements ScenesService {
             score += getScore(resultList, jsonArray, device);
         }
 
+        log.debug("time3 ==> {}", System.currentTimeMillis() - time2);
+
         if (resultList.isEmpty()) {
             throw new RuntimeException("暂无数据");
         }
 
+        long time3 = System.currentTimeMillis();
         List<DeviceResult> tagList = new ArrayList<>();
 
         int resultListSize = resultList.size();
@@ -477,6 +487,8 @@ public class ScenesServiceImpl implements ScenesService {
                 );
             }
         }
+
+        log.debug("time4 ==> {}", System.currentTimeMillis() - time3);
 
         resultMap.put("resultList", tagList);
         resultMap.put("allResultList", resultList);
@@ -499,7 +511,7 @@ public class ScenesServiceImpl implements ScenesService {
             throw new RuntimeException("请正确维护场景信息！");
         }
 
-        log.info("deviceList ==> {}", JSON.toJSONString(deviceList));
+        log.debug("deviceList ==> {}", JSON.toJSONString(deviceList));
 
         // 设备排序
         deviceList.sort((device1, device2) -> {
@@ -509,7 +521,7 @@ public class ScenesServiceImpl implements ScenesService {
             return device1.getPriority().compareTo(device2.getPriority());
         });
 
-        log.info("deviceListSort ==> {}", JSON.toJSONString(deviceList));
+        log.debug("deviceListSort ==> {}", JSON.toJSONString(deviceList));
         return deviceList;
     }
 
@@ -609,7 +621,7 @@ public class ScenesServiceImpl implements ScenesService {
      */
     private List<String> getMassageContent(List<String> tagIdList, String type) {
         List<String> formIdList = this.customFormTagService.selectCustomFormIdsByTagIdList(tagIdList, type);
-        log.info("formIdList:{}", formIdList);
+        log.debug("formIdList:{}", formIdList);
 
         if (formIdList == null || formIdList.isEmpty()) {
             return Collections.emptyList();

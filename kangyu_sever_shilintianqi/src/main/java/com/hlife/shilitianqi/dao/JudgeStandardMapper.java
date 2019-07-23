@@ -2,6 +2,7 @@ package com.hlife.shilitianqi.dao;
 
 import com.hlife.shilitianqi.model.JudgeStandard;
 import org.bson.Document;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
@@ -49,4 +50,6 @@ public interface JudgeStandardMapper {
      * @return 删除的条数
      */
     Long deleteJudgeStandardByDeviceOfScenesId(String deviceOfScenesId);
+
+    void update(Document queryDoc, Update update);
 }

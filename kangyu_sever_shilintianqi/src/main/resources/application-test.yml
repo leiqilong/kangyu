@@ -7,8 +7,9 @@ spring:
   data:
     mongodb:
       #uri: mongodb://db_kangyu:db_kangyu_11@localhost:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
-      uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.111:39007/stl_form?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.111:39007/stl_form?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
       #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.51:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      uri: mongodb://db_kangyu:db_kangyu_11@39.107.249.175:39007/stl_beidarenmin?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
   aop:
     proxy-target-class: true
   output:
@@ -26,12 +27,12 @@ logging:
     root: info
     com:
       hlife:
-        shilitianqi: debug
+        shilitianqi: info
     org:
       springframework:
         data:
           mongodb:
-            core: debug
+            core: info
 
 # 获取用户数据
 user-data:

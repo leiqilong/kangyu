@@ -12,6 +12,7 @@ import com.hlife.shilitianqi.business_config.BusinessConfig;
 import com.hlife.shilitianqi.constant.Constant;
 import com.hlife.shilitianqi.dao.CustomFormTagMapper;
 import com.hlife.shilitianqi.handler.checkhandler.ICheckAdapter;
+import com.hlife.shilitianqi.handler.updatehandler.IUpdateAdapter;
 import com.hlife.shilitianqi.model.CustomFormTag;
 import com.hlife.shilitianqi.model.MatchCustomFormAndTag;
 import com.hlife.shilitianqi.service.AdditionalTagService;
@@ -48,6 +49,9 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     @Resource(name = "tagRemoveListeners")
     private List<ICheckAdapter> tagRemoveListeners;
 
+    @Resource(name = "tagUpdateListeners")
+    private List<IUpdateAdapter> tagUpdateListeners;
+
     @Override
     public CustomFormTag addOrEditCustomFormTag(CustomFormTag customFormTag) {
         checkTagNameAndTagCode(customFormTag);
@@ -55,7 +59,15 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         if (StringUtil.stringIsNotNull(customFormTag.getId())) {
             String id = customFormTag.getId();
             CustomFormTag record = this.customFormTagMapper.selectCustomFormTagById(id);
-            this.deleteCustomFormTagById(id);
+            this.deleteCustomFormTagMainById(id);
+
+            JSONObject jsonObject =
+                    new JSONObject().fluentPut("tagId", id)
+                            .fluentPut("tagName", customFormTag.getTagName())
+                            .fluentPut("tagValue", customFormTag.getTagValue());
+            for (IUpdateAdapter iUpdateAdapter : tagUpdateListeners) {
+                iUpdateAdapter.update(jsonObject);
+            }
             customFormTag.setCreateTime(record.getCreateTime());
         } else {
             customFormTag.setId(GuidUtil.generateGuid())
@@ -73,7 +85,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
                         .setAdditionalTags(additionalTags);
 
         // 保存标签自定义表单匹配信息
-        this.matchCustomFormAndTagService.saveMatchCustomFormAndTagBatch(correspondingForms, customFormTag.getId());
+        //this.matchCustomFormAndTagService.saveMatchCustomFormAndTagBatch(correspondingForms, customFormTag.getId());
         // 保存附加标签信息
         this.additionalTagService.saveAdditionalTagsBatch(additionalTags, customFormTag.getId());
 
@@ -173,7 +185,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tagId", id);
 
-        for (ICheckAdapter iCheckAdapter: tagRemoveListeners) {
+        for (ICheckAdapter iCheckAdapter : tagRemoveListeners) {
             if (!iCheckAdapter.check(jsonObject)) {
                 throw new IllegalArgumentException("标签已被引用");
             }
@@ -195,6 +207,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         }
         return "操作成功";
     }
+
 
     @Override
     public List<JSONObject> getCorrespondingFromList() {
@@ -271,7 +284,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         List<String> formIdList = this.matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(this.selectTagIdListByJSONArray(tagList));
 
-        for (Constant.RelatedFormType relatedFormType: Constant.RelatedFormType.values()) {
+        for (Constant.RelatedFormType relatedFormType : Constant.RelatedFormType.values()) {
             this.pushMessage(weChatId, formIdList, relatedFormType);
         }
 
@@ -322,7 +335,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     /**
      * 判断 表单 是否拥有所有传入的标签
      *
-     * @param value 表单相关标签
+     * @param value     表单相关标签
      * @param tagIdList 传入的标签
      * @return true/false
      */
@@ -362,8 +375,9 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
     /**
      * 推送消息
-     * @param weChatId 微信id
-     * @param formIdList 表单id list
+     *
+     * @param weChatId        微信id
+     * @param formIdList      表单id list
      * @param relatedFormType 表单类
      */
     private void pushMessage(String weChatId, List<String> formIdList, Constant.RelatedFormType relatedFormType) {
@@ -391,5 +405,26 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
                 "wpa/msg/sendPubMsg"
         );
         WeChatUtil.pushMassage("", weChatId, url, paramObject, data);
+    }
+
+    /**
+     * 修改时删除标签主信息
+     *
+     * @param id 标签
+     * @return
+     */
+    private void deleteCustomFormTagMainById(String id) {
+        Document queryDoc = new Document("id", id);
+        if (!this.customFormTagMapper.isExists(queryDoc)) {
+            throw new RuntimeException("该数据不存在");
+        }
+
+        // 删除附加标签信息
+        this.additionalTagService.deleteAdditionalTagByMainTagId(id);
+
+        // 删除主信息
+        if (this.customFormTagMapper.deleteCustomFormTagById(id) < 1) {
+            throw new RuntimeException("操作失败");
+        }
     }
 }

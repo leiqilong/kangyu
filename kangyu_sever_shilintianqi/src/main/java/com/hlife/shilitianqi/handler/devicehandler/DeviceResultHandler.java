@@ -26,7 +26,7 @@ public class DeviceResultHandler {
      * @return 设备计算结果
      */
     public static DeviceResult getDeviceResultCommon(List<JudgeStandard> judgeStandardList, String values) {
-        log.info("values ==> {}", values);
+        log.debug("values ==> {}", values);
 
         checkStandard(judgeStandardList);
 
@@ -59,7 +59,7 @@ public class DeviceResultHandler {
      * 数据为字符串,采用 equals 对比
      */
     public static DeviceResult getDeviceResultForm(List<JudgeStandard> judgeStandardList, String param) {
-        log.info("param ==> {}", param);
+        log.debug("param ==> {}", param);
 
         checkStandard(judgeStandardList);
 
@@ -78,7 +78,7 @@ public class DeviceResultHandler {
 
             boolean match = ruler.trim().replaceAll(BLANK_SPACE, EMPTY_STR).equals(param);
 
-            log.info("ruler:{}, param:{}, match:{}", ruler, param, match);
+            log.debug("ruler:{}, param:{}, match:{}", ruler, param, match);
 
             if (match) {
                 return new DeviceResult()
@@ -103,7 +103,7 @@ public class DeviceResultHandler {
      * @return 返回结果
      */
     public static DeviceResult getDeviceResultMood(List<JudgeStandard> judgeStandardList, String param) {
-        log.info("param ==> {}", param);
+        log.debug("param ==> {}", param);
 
         checkStandard(judgeStandardList);
 
@@ -124,7 +124,7 @@ public class DeviceResultHandler {
 
             boolean match = modeList.contains(param);
 
-            log.info("ruler:{}, param:{}, match:{}", ruler, param, match);
+            log.debug("ruler:{}, param:{}, match:{}", ruler, param, match);
 
             if (match) {
                 return new DeviceResult()
@@ -152,7 +152,7 @@ public class DeviceResultHandler {
             expr.append(getSingleExpression(vars[i], values[i])).append(SEMICOLON);
         }
         String expression = String.format("%s%s", expr.toString(), ruler.replaceAll(PERCENT, EMPTY_STR)).toUpperCase();
-        log.info("expression ==> {}", expression);
+        log.debug("expression ==> {}", expression);
         return expression;
     }
 

@@ -58,7 +58,7 @@ public class DeviceHandler {
      * 手环-血压
      */
     public static DeviceResult bandBloodpressureDispart(JSONObject jsonObject, List<JudgeStandard> judgeStandards) {
-        log.info("jsonObject==>{}", jsonObject);
+        log.debug("jsonObject==>{}", jsonObject);
         String path = "datas.data[0].sbp/dbp";
         String defaultTwiceValue = "0/0";
         String chineseDescription = "手环-血压-收缩压/舒张压";

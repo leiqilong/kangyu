@@ -5,13 +5,17 @@ import com.hlife.framework.util.GuidUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.shilitianqi.dao.JudgeStandardMapper;
 import com.hlife.shilitianqi.handler.checkhandler.ICheckAdapter;
+import com.hlife.shilitianqi.handler.updatehandler.IUpdateAdapter;
 import com.hlife.shilitianqi.model.JudgeStandard;
 import com.hlife.shilitianqi.service.JudgeStandardService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.security.cert.Certificate;
 import java.util.List;
 
 /**
@@ -19,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class JudgeStandardServiceImpl implements JudgeStandardService, ICheckAdapter {
+public class JudgeStandardServiceImpl implements JudgeStandardService, ICheckAdapter, IUpdateAdapter {
 
     @Autowired
     private JudgeStandardMapper judgeStandardMapper;
@@ -59,6 +63,11 @@ public class JudgeStandardServiceImpl implements JudgeStandardService, ICheckAda
         return 0L;
     }
 
+    /**
+     * 标签删除检查
+     * @param jsonObject tagId 标签 id
+     * @return 能否删除
+     */
     @Override
     public boolean check(JSONObject jsonObject) {
         if (jsonObject.isEmpty()) {
@@ -69,5 +78,27 @@ public class JudgeStandardServiceImpl implements JudgeStandardService, ICheckAda
             throw new RuntimeException("该标签有对应的场景-设备-规则不能删除！");
         }
         return true;
+    }
+
+    /**
+     * 标签修改检查
+     * @param jsonObject
+     *                  tagId 标签 id
+     *                  tagName 标签名称
+     *                  tagValue 标签值
+     */
+    @Override
+    public void update(JSONObject jsonObject) {
+        if (jsonObject.isEmpty()) {
+            return;
+        }
+
+        log.debug("我是设备规则分支！");
+        Document queryDoc = new Document("tagId", jsonObject.getString("tagId"));
+        if (this.judgeStandardMapper.isExists(queryDoc)) {
+            Update update = Update.update("tagName", jsonObject.getString("tagName"))
+                    .set("tagValue", jsonObject.getString("tagValue"));
+            this.judgeStandardMapper.update(queryDoc, update);
+        }
     }
 }

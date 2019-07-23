@@ -55,7 +55,7 @@ public class HttpClientUtil {
             // 发送请求
             connection.connect();
 
-            log.info("doGet:responseCode == > {}", connection.getResponseCode());
+            log.debug("doGet:responseCode == > {}", connection.getResponseCode());
             // 通过connection连接，获取输入流
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
@@ -137,7 +137,7 @@ public class HttpClientUtil {
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的
             os.write(param.getBytes());
 
-            log.info("doPost:responseCode == > {}", connection.getResponseCode());
+            log.debug("doPost:responseCode == > {}", connection.getResponseCode());
             // 通过连接对象获取一个输入流，向远程读取
             if (connection.getResponseCode() == 200) {
 
@@ -155,7 +155,7 @@ public class HttpClientUtil {
                 result = sbf.toString();
             }
         } catch (MalformedURLException e) {
-            log.info("MalformedURLException == > {}", e.getMessage());
+            log.debug("MalformedURLException == > {}", e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
             log.error("IOException == > {}", e.getMessage());
@@ -191,7 +191,7 @@ public class HttpClientUtil {
     }
 
     public static void main(String[] args) {
-        log.info(
+        log.debug(
                 "result==>{}",
                 doPost(
                         "http://localhost:5000/api/LatestData/All",

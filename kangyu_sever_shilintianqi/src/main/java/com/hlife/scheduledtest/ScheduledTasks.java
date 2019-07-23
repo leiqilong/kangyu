@@ -18,6 +18,6 @@ public class ScheduledTasks {
     @Scheduled(initialDelay=1000, fixedRate = 5000)*/
     @Scheduled(cron = "0/5 * * ? 7 MON")
     public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
+        log.debug("The time is now {}", dateFormat.format(new Date()));
     }
 }

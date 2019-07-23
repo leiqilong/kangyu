@@ -33,12 +33,12 @@ public class WeChatUtil {
 
         paramObject.put("data", data);
 
-        log.info("paramObject ==> {}", paramObject);
+        log.debug("paramObject ==> {}", paramObject);
 
-        log.info("url ==> {}", url);
+        log.debug("url ==> {}", url);
 
         String res = HttpClientUtil.doPost(url, JSON.toJSONString(paramObject));
-        log.info("res ==> {}", res);
+        log.debug("res ==> {}", res);
 
         JSONObject resObj = JSON.parseObject(res);
 

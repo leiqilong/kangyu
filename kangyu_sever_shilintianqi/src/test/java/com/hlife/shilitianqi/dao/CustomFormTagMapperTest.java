@@ -28,7 +28,7 @@ public class CustomFormTagMapperTest {
         JSONObject jsonObject = new JSONObject();
         JSON.toJSONString(jsonObject);
         List<CustomFormTag> customFormTagList = this.customFormTagMapper.getCustomFormTagList(new Document("tagType", "04"));
-        log.info("customFormTagList ==> :", customFormTagList);
+        log.debug("customFormTagList ==> :", customFormTagList);
         assertTrue(customFormTagList.isEmpty());
     }
 }

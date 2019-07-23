@@ -21,7 +21,7 @@ public class JSONUtil {
     public static String getValue(JSONObject jsonObject, int i, String... paths) {
         String path = paths[i];
 
-        log.info("index ==> {}, path ==> {}, jsonObject ==> {}", i, path, jsonObject);
+        log.debug("index ==> {}, path ==> {}, jsonObject ==> {}", i, path, jsonObject);
         int lengh = paths.length;
         i++;
         if (lengh == i && path.indexOf("[0]") == -1) {
@@ -46,7 +46,7 @@ public class JSONUtil {
     }
 
     public static String getValue(JSONArray jsonArray, int i, String... paths) {
-        log.info("index ==> {}, path ==> {},  jsonArray ==> {}", i, paths, jsonArray);
+        log.debug("index ==> {}, path ==> {},  jsonArray ==> {}", i, paths, jsonArray);
 
         if (jsonArray.get(0) instanceof JSONArray) {
             JSONArray jsonArray1 = jsonArray.getJSONArray(0);
@@ -86,10 +86,10 @@ public class JSONUtil {
         String path3 = "a_b[0]_e_f";
         String path4 = "a_b[0]_g[0][0]";
 
-        log.info("jsonObject==>{}", jsonObject);
-        log.info("p1==>{}", getValue(jsonObject, path1.split("_")));
-        log.info("p2==>{}", getValue(jsonObject, path2.split("_")));
-        log.info("p3==>{}", getValue(jsonObject, path3.split("_")));
-        log.info("p4==>{}", getValue(jsonObject, path4.split("_")));
+        log.debug("jsonObject==>{}", jsonObject);
+        log.debug("p1==>{}", getValue(jsonObject, path1.split("_")));
+        log.debug("p2==>{}", getValue(jsonObject, path2.split("_")));
+        log.debug("p3==>{}", getValue(jsonObject, path3.split("_")));
+        log.debug("p4==>{}", getValue(jsonObject, path4.split("_")));
     }
 }
