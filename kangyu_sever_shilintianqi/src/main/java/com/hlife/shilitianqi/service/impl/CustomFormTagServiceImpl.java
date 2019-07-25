@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -111,10 +112,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
             queryDoc.append("tagName", Pattern.compile("^.*" + tagName + ".*$", Pattern.CASE_INSENSITIVE));
         }
 
-        String tagType = jsonObject.getString("tagType");
-        if (StringUtil.stringIsNotNull(tagType)) {
-            queryDoc.append("tagType", tagType);
-        }
+        setQueryDoc(jsonObject, queryDoc);
 
         PageParam pageParam = new PageParam(jsonObject.getInteger(PageParam.PAGE_SIZE),
                 jsonObject.getInteger(PageParam.PAGE_NUM));
@@ -135,10 +133,8 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     @Override
     public List<CustomFormTag> getCustomFormTagList(JSONObject jsonObject) {
         Document queryDoc = new Document();
-        String tagType = jsonObject.getString("tagType");
-        if (StringUtil.stringIsNotNull(tagType)) {
-            queryDoc.append("tagType", tagType);
-        }
+
+        setQueryDoc(jsonObject, queryDoc);
 
         JSONArray tagTypeList = jsonObject.getJSONArray("tagTypeList");
         if (tagTypeList != null && tagTypeList.size() > 0) {
@@ -425,6 +421,27 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
         // 删除主信息
         if (this.customFormTagMapper.deleteCustomFormTagById(id) < 1) {
             throw new RuntimeException("操作失败");
+        }
+    }
+
+
+    /**
+     * 设置查询条件
+     * @param jsonObject
+     * @param queryDoc
+     */
+    private void setQueryDoc(JSONObject jsonObject, Document queryDoc) {
+        String tagType = jsonObject.getString("tagType");
+        if (StringUtil.stringIsNotNull(tagType)) {
+            queryDoc.append("tagType", tagType);
+        }
+
+        String node = jsonObject.getString("node");
+        if (StringUtil.stringIsNotNull(node)) {
+            List<Document> nodeList = new ArrayList<>();
+            nodeList.add(new Document("node", Integer.valueOf(node)));
+            nodeList.add(new Document("node", null));
+            queryDoc.append("$or", nodeList);
         }
     }
 }

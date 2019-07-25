@@ -39,6 +39,7 @@ public class CustomFormTagController {
      *
      * @param jsonObject 查询条件 <br/>
      *                   tagName 标签名称 <br/>
+     *                   node 角色
      *                   pageSize [必传] 每页条数 <br/>
      *                   pageNum [必传] 当前页 <br/>
      * @return resultVO.resultData 自定义表单标签列表

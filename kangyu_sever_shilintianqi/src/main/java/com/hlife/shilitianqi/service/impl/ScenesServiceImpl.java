@@ -61,6 +61,7 @@ public class ScenesServiceImpl implements ScenesService {
                             .setTagValue(scenes.getScenesName())
                             .setTagType("05")
                             .setCreateTime(new Date())
+                            .setNode(scenes.getNode())
             );
             return this.scenesMapper.saveScenes(scenes);
         }
@@ -76,6 +77,7 @@ public class ScenesServiceImpl implements ScenesService {
                         .setTagValue(scenes.getScenesName())
                         .setTagType("05")
                         .setCreateTime(new Date())
+                        .setNode(scenes.getNode())
         );
 
         return this.scenesMapper.updateScenes(scenes);
@@ -95,8 +97,8 @@ public class ScenesServiceImpl implements ScenesService {
     }
 
     @Override
-    public List<Scenes> searchScenesListAll() {
-        return this.scenesMapper.searchScenesListAll();
+    public List<Scenes> searchScenesListAll(int node) {
+        return this.scenesMapper.searchScenesListAll(node);
     }
 
     @Override
@@ -106,6 +108,11 @@ public class ScenesServiceImpl implements ScenesService {
         String scenesName = jsonObject.getString("scenesName");
         if (StringUtil.stringIsNotNull(scenesName)) {
             queryDoc.append("scenesName", Pattern.compile("^.*" + scenesName + ".*$", Pattern.CASE_INSENSITIVE));
+        }
+
+        String node = jsonObject.getString("node");
+        if (StringUtil.stringIsNotNull(node)) {
+            queryDoc.append("node", Integer.valueOf(node));
         }
 
         PageParam pageParam = new PageParam(jsonObject.getInteger(PageParam.PAGE_SIZE),
@@ -660,6 +667,11 @@ public class ScenesServiceImpl implements ScenesService {
     private void checkRepeat(Scenes scenes) {
         Document queryDoc = new Document();
         String scenesId = scenes.getScenesId();
+        Integer node = scenes.getNode();
+
+        if (node != null) {
+            queryDoc.put("node", node);
+        }
 
         if (StringUtil.stringIsNotNull(scenesId)) {
             queryDoc.put("scenesId", new Document("$ne", scenesId));

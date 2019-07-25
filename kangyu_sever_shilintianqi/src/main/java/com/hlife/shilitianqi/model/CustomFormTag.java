@@ -71,4 +71,6 @@ public class CustomFormTag implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    private Integer node;
 }

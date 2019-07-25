@@ -31,9 +31,9 @@ public class ScenesController {
      *
      * @return 所有场景列表信息
      */
-    @GetMapping(value = "/searchScenesList/{rand}")
-    public ResultVO<List<Scenes>> searchScenesList() {
-        return new ResultVO<>(this.scenesService.searchScenesListAll());
+    @GetMapping(value = "/searchScenesList/{node}/{rand}")
+    public ResultVO<List<Scenes>> searchScenesList(@PathVariable("node") int node) {
+        return new ResultVO<>(this.scenesService.searchScenesListAll(node));
     }
 
     /**

@@ -48,16 +48,17 @@ public class JSONUtil {
     public static String getValue(JSONArray jsonArray, int i, String... paths) {
         log.debug("index ==> {}, path ==> {},  jsonArray ==> {}", i, paths, jsonArray);
 
-        if (jsonArray.get(0) instanceof JSONArray) {
-            JSONArray jsonArray1 = jsonArray.getJSONArray(0);
+        int last = jsonArray.size() - 1;
+        if (jsonArray.get(last) instanceof JSONArray) {
+            JSONArray jsonArray1 = jsonArray.getJSONArray(last);
             return getValue(jsonArray1, i, paths);
         }
-        if (jsonArray.get(0) instanceof JSONObject) {
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
+        if (jsonArray.get(last) instanceof JSONObject) {
+            JSONObject jsonObject = jsonArray.getJSONObject(last);
             return getValue(jsonObject, i, paths);
         }
 
-        return jsonArray.getString(0);
+        return jsonArray.getString(last);
     }
 
     public static void main(String[] args) {

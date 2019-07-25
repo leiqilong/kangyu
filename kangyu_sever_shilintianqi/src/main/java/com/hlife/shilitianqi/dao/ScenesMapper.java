@@ -25,7 +25,7 @@ public interface ScenesMapper {
      *
      * @return 所有场景列表
      */
-    List<Scenes> searchScenesListAll();
+    List<Scenes> searchScenesListAll(int node);
 
     /**
      * 分页 查询场景列表

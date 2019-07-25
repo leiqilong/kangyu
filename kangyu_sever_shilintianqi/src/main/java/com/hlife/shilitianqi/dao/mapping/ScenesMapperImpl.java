@@ -4,10 +4,12 @@ import com.hlife.framework.base.BaseMapper;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.dao.ScenesMapper;
-import com.hlife.shilitianqi.model.DeviceOfScenes;
 import com.hlife.shilitianqi.model.Scenes;
+import com.jayway.jsonpath.Criteria;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
@@ -25,8 +27,9 @@ public class ScenesMapperImpl extends BaseMapper implements ScenesMapper {
     }
 
     @Override
-    public List<Scenes> searchScenesListAll() {
-        return this.mongoTemplate.findAll(Scenes.class);
+    public List<Scenes> searchScenesListAll(int node) {
+        //return this.mongoTemplate.findAll(Scenes.class);
+        return this.mongoTemplate.find(new BasicQuery(new Document("node", node)) , Scenes.class);
     }
 
     @Override

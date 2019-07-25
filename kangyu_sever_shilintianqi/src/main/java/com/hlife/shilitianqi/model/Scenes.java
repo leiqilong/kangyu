@@ -30,4 +30,9 @@ public class Scenes implements Serializable {
      * 场景代码
      */
     private String scenesCode;
+
+    /**
+     * 角色 0 母亲 1 儿童
+     */
+    private Integer node;
 }
