@@ -5,11 +5,8 @@ import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.shilitianqi.dao.ScenesMapper;
 import com.hlife.shilitianqi.model.Scenes;
-import com.jayway.jsonpath.Criteria;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
