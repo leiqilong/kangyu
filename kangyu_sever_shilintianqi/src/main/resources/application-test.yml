@@ -42,4 +42,4 @@ user-data:
 # 发送模版消息接口
 msg-publish:
   url: localhost
-  port: 8088
+  port: 8080

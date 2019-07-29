@@ -38,9 +38,9 @@ logging:
 user-data:
   #url: 10.10.10.51
   url: 123456.hlifestl.com
-  port: 5000
+  port: 80
 
 # 发送模版消息接口
 msg-publish:
   url: localhost
-  port: 8088
+  port: 56

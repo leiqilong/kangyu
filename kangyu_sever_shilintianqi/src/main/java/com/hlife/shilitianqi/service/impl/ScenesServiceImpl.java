@@ -372,7 +372,7 @@ public class ScenesServiceImpl implements ScenesService {
                 ? scenesFunKey : Constant.ScenesFun.COMMON_PARAMETER.getKey();
         Constant.ScenesFun scenesFun = Constant.ScenesFun.getInstance(scenesFunKey);
 
-        JSONObject data= new JSONObject();
+        JSONObject data = new JSONObject();
 
         JSONObject datas = new JSONObject();
 
@@ -399,15 +399,15 @@ public class ScenesServiceImpl implements ScenesService {
         }
 
         if (datas.isEmpty()) {
-            JudgeStandard defaultJudgeStandard = judgeStandardList.stream()
+            /*JudgeStandard defaultJudgeStandard = judgeStandardList.stream()
                     .filter(judgeStandard -> judgeStandard.getScore() == 0d)
-                    .findFirst().orElse(judgeStandardList.get(0));
+                    .findFirst().orElse(judgeStandardList.get(0));*/
             resultList.add(
                     new DeviceResult()
                             .setDataType(deviceCode)
-                            .setTagId(defaultJudgeStandard.getTagId())
+                            /*.setTagId(defaultJudgeStandard.getTagId())
                             .setTagName(defaultJudgeStandard.getTagName())
-                            .setTagValue(defaultJudgeStandard.getTagValue())
+                            .setTagValue(defaultJudgeStandard.getTagValue())*/
                             .setDatas(new DeviceResult.Record().setChineseDescription(deviceName))
             );
             return 0d;

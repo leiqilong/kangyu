@@ -1,5 +1,6 @@
 package com.hlife.shilitianqi.handler.devicehandler;
 
+import com.hlife.framework.util.StringUtil;
 import com.hlife.shilitianqi.model.DeviceResult;
 import com.hlife.shilitianqi.model.JudgeStandard;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,19 @@ public class DeviceResultHandler {
         }
 
         for (JudgeStandard judgeStandard : judgeStandardList) {
+            String ruler = judgeStandard.getRuler();
+            if (StringUtil.stringIsNull(ruler)) {
+                continue;
+            }
             boolean match = false;
             try {
-                match = (boolean) scriptEngine.eval(getExpression(values, judgeStandard.getRuler()));
+                Object obj = scriptEngine.eval(getExpression(values, ruler));
+                if (obj instanceof Boolean) {
+                    match = (boolean) obj;
+                } else {
+                    match = false;
+                }
+                //match = (boolean) scriptEngine.eval(getExpression(values, judgeStandard.getRuler()));
             } catch (ScriptException e) {
                 e.printStackTrace();
             }
@@ -185,13 +196,13 @@ public class DeviceResultHandler {
      * @return 默认值
      */
     private static DeviceResult getDeviceResult(List<JudgeStandard> judgeStandardList) {
-        JudgeStandard defaultJudgeStandard = judgeStandardList.stream()
+       /* JudgeStandard defaultJudgeStandard = judgeStandardList.stream()
                 .filter(judgeStandard -> judgeStandard.getScore() == 0d)
-                .findFirst().orElse(judgeStandardList.get(0));
+                .findFirst().orElse(judgeStandardList.get(0));*/
         return new DeviceResult()
-                .setTagId(defaultJudgeStandard.getTagId())
+                /*.setTagId(defaultJudgeStandard.getTagId())
                 .setTagName(defaultJudgeStandard.getTagName())
-                .setTagValue(defaultJudgeStandard.getTagValue())
+                .setTagValue(defaultJudgeStandard.getTagValue())*/
                 .setScore(0d);
     }
 }
