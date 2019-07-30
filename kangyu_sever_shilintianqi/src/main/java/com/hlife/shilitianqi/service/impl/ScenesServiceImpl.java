@@ -487,12 +487,18 @@ public class ScenesServiceImpl implements ScenesService {
         }
 
         for (DeviceResult deviceResult : tagList) {
-            if (deviceResult != null && StringUtil.stringIsNotNull(deviceResult.getTagId())) {
-                deviceResult.setTagRemark(
-                        this.customFormTagService.selectCustomFormTagById(deviceResult.getTagId())
-                                .getTagRemark()
-                );
+            if (deviceResult == null) {
+                continue;
             }
+            if (StringUtil.stringIsNull(deviceResult.getTagId())) {
+                deviceResult.setTagRemark("暂无数据");
+                continue;
+            }
+
+            deviceResult.setTagRemark(
+                    this.customFormTagService.selectCustomFormTagById(deviceResult.getTagId())
+                            .getTagRemark()
+            );
         }
 
         log.debug("time4 ==> {}", System.currentTimeMillis() - time3);
@@ -616,7 +622,9 @@ public class ScenesServiceImpl implements ScenesService {
         List<String> tagIdList = new ArrayList<>();
         tagIdList.add(jsonObject.getString("scenesId"));
         for (DeviceResult deviceResult : resultList) {
-            tagIdList.add(deviceResult.getTagId());
+            if (deviceResult != null && StringUtil.stringIsNotNull(deviceResult.getTagId())) {
+                tagIdList.add(deviceResult.getTagId());
+            }
         }
         return tagIdList;
     }
