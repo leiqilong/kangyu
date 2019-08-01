@@ -478,28 +478,37 @@ public class ScenesServiceImpl implements ScenesService {
         List<DeviceResult> tagList = new ArrayList<>();
 
         int resultListSize = resultList.size();
-        if (resultListSize < 4) {
+        /*if (resultListSize < 4) {
             tagList = resultList;
         } else {
             for (int i = 0; i < 3; i++) {
                 tagList.add(resultList.get(i));
             }
+        }*/
+        int y = 0;
+        for (DeviceResult deviceResult : resultList) {
+            if (deviceResult != null && StringUtil.stringIsNotNull(deviceResult.getTagId())) {
+                tagList.add(deviceResult);
+                y ++;
+            }
+            if (y >= 3) {
+                break;
+            }
         }
 
-        for (DeviceResult deviceResult : tagList) {
-            if (deviceResult == null) {
-                continue;
-            }
-            if (StringUtil.stringIsNull(deviceResult.getTagId())) {
-                deviceResult.setTagRemark("暂无数据");
-                continue;
-            }
+        if (tagList != null && !tagList.isEmpty()) {
+            for (DeviceResult deviceResult : tagList) {
+                if (deviceResult == null) {
+                    continue;
+                }
 
-            deviceResult.setTagRemark(
-                    this.customFormTagService.selectCustomFormTagById(deviceResult.getTagId())
-                            .getTagRemark()
-            );
+                deviceResult.setTagRemark(
+                        this.customFormTagService.selectCustomFormTagById(deviceResult.getTagId())
+                                .getTagRemark()
+                );
+            }
         }
+
 
         log.debug("time4 ==> {}", System.currentTimeMillis() - time3);
 
