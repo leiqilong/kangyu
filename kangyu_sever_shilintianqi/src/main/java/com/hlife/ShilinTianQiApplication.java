@@ -1,5 +1,6 @@
 package com.hlife;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -15,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RestController
 //@EnableTransactionManagement
 @SpringBootApplication
+//@Slf4j
 public class ShilinTianQiApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

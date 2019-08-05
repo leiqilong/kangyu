@@ -15,10 +15,16 @@ public class JSONUtil {
     }
 
     public static String getValue(JSONObject jsonObject, String... paths) {
+        if (jsonObject == null) {
+            return null;
+        }
         return getValue(jsonObject, 0, paths);
     }
 
     public static String getValue(JSONObject jsonObject, int i, String... paths) {
+        if (jsonObject == null) {
+            return null;
+        }
         String path = paths[i];
 
         log.debug("index ==> {}, path ==> {}, jsonObject ==> {}", i, path, jsonObject);
@@ -46,6 +52,9 @@ public class JSONUtil {
     }
 
     public static String getValue(JSONArray jsonArray, int i, String... paths) {
+        if (jsonArray == null) {
+            return null;
+        }
         log.debug("index ==> {}, path ==> {},  jsonArray ==> {}", i, paths, jsonArray);
 
         int last = jsonArray.size() - 1;

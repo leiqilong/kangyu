@@ -782,6 +782,15 @@ public class DeviceServiceImpl implements DeviceService {
                                             }
                                     )
                             );
+                            this.add(
+                                    new Device.CalculationType(
+                                            "年龄",
+                                            "common",
+                                            new Device.FieldPath[]{
+                                                    new Device.FieldPath("subArchives.age", Device.X)
+                                            }
+                                    )
+                            );
                         }})
         );
     }
