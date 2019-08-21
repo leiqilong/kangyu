@@ -4,5 +4,13 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="kangyu.kangyu_data_collection.main" target="1.8" />
+      <module name="kangyu.kangyu_data_collection.test" target="1.8" />
+      <module name="kangyu.kangyu_form_designer.main" target="1.8" />
+      <module name="kangyu.kangyu_form_designer.test" target="1.8" />
+      <module name="kangyu.kangyu_sever.main" target="1.8" />
+      <module name="kangyu.kangyu_sever.test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
