@@ -137,7 +137,7 @@ public class DateUtil {
         public String getAgeDetail() {
 
             if (year > 0) {
-                return year + "年" + month + "月" + day + "天";
+                return year + "岁" + month + "月" + day + "天";
             }
 
             if (month > 0) {
