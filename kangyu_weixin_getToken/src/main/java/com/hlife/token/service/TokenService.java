@@ -1,6 +1,6 @@
-package com.hlife.token.service;
+package com.hlife.task_manager.service;
 
-import com.hlife.token.model.AppInfo;
+import com.hlife.task_manager.model.AppInfo;
 
 public interface TokenService {
 

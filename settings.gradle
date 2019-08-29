@@ -9,4 +9,4 @@
 
 rootProject.name = 'kangyu'
 
-include 'kangyu_data_collection','kangyu_form_designer', 'kangyu_sever'
+include 'kangyu_data_collection','kangyu_form_designer', 'kangyu_sever', 'kangyu_task_manager'

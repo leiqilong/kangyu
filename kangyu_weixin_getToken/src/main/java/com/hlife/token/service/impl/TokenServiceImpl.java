@@ -1,8 +1,8 @@
-package com.hlife.token.service.impl;
+package com.hlife.task_manager.service.impl;
 
 import com.hlife.framework.util.HttpClientUtil;
-import com.hlife.token.model.AppInfo;
-import com.hlife.token.service.TokenService;
+import com.hlife.task_manager.model.AppInfo;
+import com.hlife.task_manager.service.TokenService;
 import org.springframework.stereotype.Service;
 
 @Service

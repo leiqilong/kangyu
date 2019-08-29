@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlife.task_manager.dao.JobAndTriggerMapper">
+
+    <select id="getJobAndTriggerDetails" resultType="com.hlife.task_manager.model.JobAndTrigger">
+        SELECT QJD.JOB_NAME,
+               QJD.JOB_GROUP,
+               QJD.JOB_CLASS_NAME,
+               QT.TRIGGER_NAME,
+               QT.TRIGGER_GROUP,
+               QCT.CRON_EXPRESSION,
+               QCT.TIME_ZONE_ID
+        FROM QRTZ_JOB_DETAILS QJD
+                 JOIN QRTZ_TRIGGERS QT
+                      ON QJD.JOB_NAME = QT.JOB_NAME
+                          AND QJD.JOB_GROUP = QT.JOB_GROUP
+                 JOIN QRTZ_CRON_TRIGGERS QCT
+                      ON QT.TRIGGER_NAME = QCT.TRIGGER_NAME
+                          AND QT.TRIGGER_GROUP = QCT.TRIGGER_GROUP
+    </select>
+</mapper>

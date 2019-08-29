@@ -1,4 +1,4 @@
-package com.hlife.token.model;
+package com.hlife.task_manager.model;
 
 import lombok.Data;
 

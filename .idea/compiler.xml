@@ -3,6 +3,11 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="kangyu.kangyu_data_collection.main" target="1.8" />
@@ -11,6 +16,18 @@
       <module name="kangyu.kangyu_form_designer.test" target="1.8" />
       <module name="kangyu.kangyu_sever.main" target="1.8" />
       <module name="kangyu.kangyu_sever.test" target="1.8" />
+      <module name="kangyu.kangyu_ta.main" target="1.8" />
+      <module name="kangyu.kangyu_ta.test" target="1.8" />
+      <module name="kangyu.kangyu_task_management.main" target="1.8" />
+      <module name="kangyu.kangyu_task_management.test" target="1.8" />
+      <module name="kangyu.kangyu_task_manager.main" target="1.8" />
+      <module name="kangyu.kangyu_task_manager.test" target="1.8" />
+      <module name="kangyu_task_management" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="kangyu_task_management" options="-parameters" />
+    </option>
   </component>
 </project>

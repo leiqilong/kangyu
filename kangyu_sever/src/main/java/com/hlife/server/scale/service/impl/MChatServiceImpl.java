@@ -49,7 +49,7 @@ public class MChatServiceImpl implements MChatService {
         MChat mc = mChatMapper.saveMChat(mChat);
 
         if (StringUtil.stringIsNull(mc.getResult())) {
-
+            return mc;
         }
 
         new Thread(() ->this.sendMessage(mc)).start();

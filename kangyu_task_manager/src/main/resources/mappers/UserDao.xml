@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hlife.task_manager.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.hlife.task_manager.model.User">
+        <id column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM USER
+    </select>
+</mapper>

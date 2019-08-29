@@ -12,6 +12,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.test.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_sever/kangyu.kangyu_sever.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.test.iml" filepath="$PROJECT_DIR$/.idea/modules/kangyu_task_manager/kangyu.kangyu_task_manager.test.iml" />
     </modules>
   </component>
 </project>

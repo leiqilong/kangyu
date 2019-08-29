@@ -26,8 +26,7 @@ logging:
   level:
     root: info
     com:
-      hlife:
-        server: debug
+      hlife: debug
     org:
       springframework:
         data:
@@ -36,11 +35,11 @@ logging:
 
 # 获取用户数据
 user-data:
-  #url: 10.10.10.51
-  url: 123456.hlifestl.com
-  port: 80
+  url: 10.10.10.51
+  #url: 123456.hlifestl.com
+  port: 6666
 
 # 发送模版消息接口
 msg-publish:
-  url: localhost
-  port: 5566
+  url: 10.10.10.51
+  port: 6666

@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/kangyu_data_collection" />
             <option value="$PROJECT_DIR$/kangyu_form_designer" />
             <option value="$PROJECT_DIR$/kangyu_sever" />
+            <option value="$PROJECT_DIR$/kangyu_task_manager" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />

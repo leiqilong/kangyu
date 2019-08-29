@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="kangyu_task_management:war">
+    <output-path>$PROJECT_DIR$/kangyu_task_management/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>kangyu_task_management</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="kangyu_task_management-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="kangyu_task_management:war exploded" />
+    </root>
+  </artifact>
+</component>

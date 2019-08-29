@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: com.zaxxer:HikariCP-java6:2.3.13">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

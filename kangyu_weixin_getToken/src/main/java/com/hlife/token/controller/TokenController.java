@@ -1,7 +1,7 @@
-package com.hlife.token.controller;
+package com.hlife.task_manager.controller;
 
-import com.hlife.token.model.AppInfo;
-import com.hlife.token.service.TokenService;
+import com.hlife.task_manager.model.AppInfo;
+import com.hlife.task_manager.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
