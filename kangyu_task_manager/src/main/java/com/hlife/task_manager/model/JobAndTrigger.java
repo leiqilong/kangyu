@@ -4,53 +4,58 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.math.BigInteger;
+import java.util.Map;
 
 @Data
 @Accessors(chain = true)
 public class JobAndTrigger {
-
     /**
      * 任务名称
      */
-    private String JOB_NAME;
+    private String jobName;
 
     /**
      * 任务所在组
      */
-    private String JOB_GROUP;
+    private String jobGroup;
 
     /**
      * 任务类名
      */
-    private String JOB_CLASS_NAME;
+    private String jobClassName;
+
+    /**
+     * 任务内容
+     */
+    private Map<String, Object> jobData;
 
     /**
      * 触发器名称
      */
-    private String TRIGGER_NAME;
+    private String triggerName;
 
     /**
      * 触发器所在组
      */
-    private String TRIGGER_GROUP;
+    private String triggerGroup;
 
     /**
      *
      */
-    private BigInteger REPEAT_INTERVAL;
+    private BigInteger repeatInterval;
 
     /**
      *
      */
-    private BigInteger TIMES_TRIGGERED;
+    private BigInteger timesTriggered;
 
     /**
      * 表达式
      */
-    private String CRON_EXPRESSION;
+    private String cronExpression;
 
     /**
      * 时区
      */
-    private String TIME_ZONE_ID;
+    private String timeZoneId;
 }

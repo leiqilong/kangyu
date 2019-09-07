@@ -7,7 +7,7 @@ import com.hlife.task_manager.model.JobAndTrigger;
 
 public interface IJobAndTriggerService {
 	PageInfo<JobAndTrigger> getJobAndTriggerDetails(int pageNum, int pageSize);
-	
+
 	void addJob(JSONObject jsonObject);
 
     void pauseJob(JSONObject jsonObject);

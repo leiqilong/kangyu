@@ -20,19 +20,18 @@ import java.util.List;
 @Service
 public class JobAndTriggerImpl implements IJobAndTriggerService {
 
-	@Resource
-	private JobAndTriggerMapper jobAndTriggerMapper;
+    @Resource
+    private JobAndTriggerMapper jobAndTriggerMapper;
 
     @Autowired
     @Qualifier("Scheduler")
     private Scheduler scheduler;
 
-	public PageInfo<JobAndTrigger> getJobAndTriggerDetails(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<JobAndTrigger> list = jobAndTriggerMapper.getJobAndTriggerDetails();
-		PageInfo<JobAndTrigger> page = new PageInfo<>(list);
-		return page;
-	}
+    public PageInfo<JobAndTrigger> getJobAndTriggerDetails(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<JobAndTrigger> list = jobAndTriggerMapper.getJobAndTriggerDetails();
+        return new PageInfo<>(list);
+    }
 
     @Override
     public void addJob(JSONObject jsonObject) {

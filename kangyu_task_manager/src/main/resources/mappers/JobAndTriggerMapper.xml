@@ -2,10 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hlife.task_manager.dao.JobAndTriggerMapper">
 
-    <select id="getJobAndTriggerDetails" resultType="com.hlife.task_manager.model.JobAndTrigger">
+    <resultMap id="BaseResultMap" type="com.hlife.task_manager.model.JobAndTrigger">
+        <result property="jobData"  column="JOB_DATA"  jdbcType="BLOB"  typeHandler="com.hlife.task_manager.typehandler.BlobMapTypeHandler"/>
+        <result property="jobName"  column="JOB_NAME"  jdbcType="VARCHAR" />
+        <result property="jobGroup"  column="JOB_GROUP"  jdbcType="VARCHAR" />
+        <result property="jobClassName"  column="JOB_CLASS_NAME"  jdbcType="VARCHAR" />
+        <result property="triggerName"  column="TRIGGER_NAME"  jdbcType="VARCHAR" />
+        <result property="triggerGroup"  column="TRIGGER_GROUP"  jdbcType="VARCHAR" />
+        <result property="cronExpression"  column="CRON_EXPRESSION"  jdbcType="VARCHAR" />
+        <result property="timeZoneId"  column="TIME_ZONE_ID"  jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getJobAndTriggerDetails" resultMap="BaseResultMap">
         SELECT QJD.JOB_NAME,
                QJD.JOB_GROUP,
                QJD.JOB_CLASS_NAME,
+               QJD.JOB_DATA,
                QT.TRIGGER_NAME,
                QT.TRIGGER_GROUP,
                QCT.CRON_EXPRESSION,
