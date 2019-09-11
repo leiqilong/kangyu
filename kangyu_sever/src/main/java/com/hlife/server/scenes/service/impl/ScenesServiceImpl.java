@@ -232,13 +232,11 @@ public class ScenesServiceImpl implements ScenesService {
 
     @Override
     public List<String> getMissionTwice(JSONObject jsonObject) {
-        // return getMassageContent(getTagIdListTwice(jsonObject), ScenesConstant.RelatedFormType.MISSION.getKey());
         return getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.MISSION.getKey()));
     }
 
     @Override
     public List<String> getSurveyTwice(JSONObject jsonObject) {
-        //return getMassageContent(getTagIdListTwice(jsonObject), ScenesConstant.RelatedFormType.CUSTOM_FORM.getKey());
         return getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.CUSTOM_FORM.getKey()));
     }
 
@@ -246,6 +244,9 @@ public class ScenesServiceImpl implements ScenesService {
     public List<String> getPrescriptionTwice(JSONObject jsonObject) {
         List<String> prescriptionIds = this.getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.PRESCRIPTION.getKey()));
         log.debug("prescription==>{}", prescriptionIds);
+        if (prescriptionIds.isEmpty()) {
+            throw new RuntimeException("没有匹配到处方！");
+        }
         return prescriptionService.findPrescriptionPictureList(new JSONObject().fluentPut("idList", prescriptionIds));
     }
 
