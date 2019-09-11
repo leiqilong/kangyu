@@ -1,14 +1,17 @@
 package com.hlife.server.program.service.impl;
 
+import com.hlife.framework.config.BusinessConfig;
+import com.hlife.framework.util.DateUtil;
 import com.hlife.framework.util.GuidUtil;
 import com.hlife.server.program.constant.ProgramConstant;
 import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.service.FileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Encoder;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -17,8 +20,16 @@ import java.util.Objects;
 @Service
 public class FileServiceImpl implements FileService {
 
+    @Autowired
+    private BusinessConfig businessConfig;
+
     @Override
-    public MyFile uploadFile(MultipartFile file, String dirPath) {
+    public MyFile uploadFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new RuntimeException("传入文件为空");
+        }
+
+        String dirPath = businessConfig.getFilePath() + File.separator + DateUtil.getTodayStr(DateUtil.DATE_FMT) + File.separator;
         File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -37,6 +48,8 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException();
         }
     }
+
+
 
     @Override
     public boolean removeFile(String filePath) {
@@ -74,7 +87,8 @@ public class FileServiceImpl implements FileService {
             bufferedInputStream = new BufferedInputStream(new FileInputStream(path));
             byte[] buff = new byte[bufferedInputStream.available()];
             bufferedInputStream.read(buff);
-            return new BASE64Encoder().encode(buff);
+            //return new BASE64Encoder().encode(buff);
+            return Base64.getEncoder().encodeToString(buff);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

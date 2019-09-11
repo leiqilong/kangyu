@@ -43,3 +43,7 @@ user-data:
 msg-publish:
   url: localhost
   port: 5566
+
+# filePath
+file-config:
+  path: D:/uploadFiles

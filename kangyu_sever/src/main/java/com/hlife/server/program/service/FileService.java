@@ -12,10 +12,9 @@ public interface FileService {
      * 文件上传
      *
      * @param file 原文件
-     * @param dirPath 新文件路径
      * @return 新文件
      */
-    MyFile uploadFile(MultipartFile file, String dirPath);
+    MyFile uploadFile(MultipartFile file);
 
     /**
      * 文件删除
@@ -32,4 +31,5 @@ public interface FileService {
      * @return 文件64位
      */
     String preview(String path);
+
 }

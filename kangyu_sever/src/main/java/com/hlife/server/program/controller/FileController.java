@@ -1,14 +1,11 @@
 package com.hlife.server.program.controller;
 
 import com.hlife.framework.base.ResultVO;
-import com.hlife.framework.util.DateUtil;
 import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 文件 controller
@@ -23,21 +20,13 @@ public class FileController {
     /**
      * 文件上传
      * @param file 文件
-     * @param request request
      * @return 文件
      */
     @PostMapping("/upload")
     @ResponseBody
-    public ResultVO<MyFile> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (file.isEmpty()) {
-            throw new RuntimeException("传入文件为空");
-        }
+    public ResultVO<MyFile> upload(@RequestParam("file") MultipartFile file) {
 
-        String.format("uploadFiles/%s/", DateUtil.getTodayStr(DateUtil.DATE_FMT));
-
-        String dirPath = request.getSession().getServletContext().getRealPath(String.format("uploadFiles/%s/", DateUtil.getTodayStr(DateUtil.DATE_FMT)));
-
-        return new ResultVO<>(fileService.uploadFile(file, dirPath));
+        return new ResultVO<>(fileService.uploadFile(file));
     }
 
     /**

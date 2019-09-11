@@ -31,4 +31,8 @@ public class BusinessConfig {
      */
     @Value("${msg-publish.port}")
     private String msgPublishPort;
+
+
+    @Value("${file-config.path}")
+    private String filePath;
 }

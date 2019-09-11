@@ -42,3 +42,8 @@ user-data:
 msg-publish:
   url: localhost
   port: 8088
+
+# filePath
+file-config:
+  path: D:/uploadFiles
+
