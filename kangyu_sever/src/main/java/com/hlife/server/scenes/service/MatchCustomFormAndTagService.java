@@ -78,8 +78,10 @@ public interface MatchCustomFormAndTagService {
     /**
      * 删除 标签 表单关联数据
      *
-     * @param formId 表单id
-     * @param tagId  标签 id
+     * @param jsonObject <br/>
+     *                   formId 表单id <br/>
+     * @                 tagId  标签 id
+     *                   formIdList
      * @return 影响的行数
      */
     Long deleteMatchCustomFormAndTag(JSONObject jsonObject);

@@ -1,5 +1,7 @@
 package com.hlife.framework.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,17 @@ import java.util.Date;
 public class DateUtil {
 
     private DateUtil() {
+    }
+
+    public static final String DATE_FMT = "yyyy-MM-dd";
+
+    public static String getTodayStr(String fmt) {
+        return getDateStr(new Date(), fmt);
+    }
+
+    public static String getDateStr(Date date, String fmt) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fmt);
+        return simpleDateFormat.format(date);
     }
 
     /**
@@ -86,6 +99,20 @@ public class DateUtil {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, value);
         return cal.getTime();
+    }
+
+    public static JSONObject parseDateRange(JSONArray daterange) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FMT);
+        JSONObject jsonObject = new JSONObject();
+        String startStr = daterange.getString(0);
+        String endStr = daterange.getString(1);
+        try {
+            jsonObject.fluentPut("$gte", simpleDateFormat.parse(startStr))
+                    .fluentPut("$lte", simpleDateFormat.parse(endStr));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     /**

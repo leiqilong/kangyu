@@ -175,6 +175,16 @@ public interface ScenesService {
     List<String> getSurveyTwice(JSONObject jsonObject);
 
     /**
+     * 根据前台的数据， 获取处方list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 处方list
+     */
+    List<String> getPrescriptionTwice(JSONObject jsonObject);
+
+    /**
      * 摧送宣教list
      *
      * @param jsonObject <br/>

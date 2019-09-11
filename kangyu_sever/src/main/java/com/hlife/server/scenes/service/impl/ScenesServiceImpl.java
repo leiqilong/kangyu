@@ -10,6 +10,7 @@ import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.framework.util.WeChatUtil;
 import com.hlife.framework.config.BusinessConfig;
+import com.hlife.server.program.service.PrescriptionService;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.dao.ScenesMapper;
 import com.hlife.server.scenes.model.*;
@@ -41,6 +42,8 @@ public class ScenesServiceImpl implements ScenesService {
     private JudgeStandardService judgeStandardService;
     @Autowired
     private CustomFormTagService customFormTagService;
+    @Autowired
+    private PrescriptionService prescriptionService;
 
     @Autowired
     private BusinessConfig businessConfig;
@@ -237,6 +240,13 @@ public class ScenesServiceImpl implements ScenesService {
     public List<String> getSurveyTwice(JSONObject jsonObject) {
         //return getMassageContent(getTagIdListTwice(jsonObject), ScenesConstant.RelatedFormType.CUSTOM_FORM.getKey());
         return getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.CUSTOM_FORM.getKey()));
+    }
+
+    @Override
+    public List<String> getPrescriptionTwice(JSONObject jsonObject) {
+        List<String> prescriptionIds = this.getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.PRESCRIPTION.getKey()));
+        log.debug("prescription==>{}", prescriptionIds);
+        return prescriptionService.findPrescriptionPictureList(new JSONObject().fluentPut("idList", prescriptionIds));
     }
 
     @Override

@@ -102,7 +102,9 @@ public class ScenesConstant {
      */
     public enum RelatedFormType {
         CUSTOM_FORM("02", "formTagPush", "调查问卷", "请点击详情完成调查问卷"),
-        MISSION("03", "pdAndEduTagPush", "宣教", "请点击详情完成宣教");
+        MISSION("03", "pdAndEduTagPush", "宣教", "请点击详情完成宣教"),
+        PRESCRIPTION("04",  "处方"),
+        DOCTOR("10",  "医生");
 
         @Getter
         private String key;
@@ -121,6 +123,14 @@ public class ScenesConstant {
             this.pushType = pushType;
             this.title = title;
             this.content = content;
+        }
+
+        RelatedFormType(String key, String title) {
+            this(key, null, title, null);
+        }
+
+        public String getNewFormId(String formId) {
+            return String.format("%s;%s", formId, key);
         }
     }
 

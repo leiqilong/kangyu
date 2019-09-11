@@ -28,6 +28,11 @@ public class StringUtil {
     public final static String SLASH = "/";
 
     /**
+     * 点
+     */
+    public final static String POINT = ".";
+
+    /**
      * 竖线正则
      */
     public final static String REG_VERTICAL_LINE = "[|]";

@@ -242,6 +242,19 @@ public class ScenesController {
     }
 
     /**
+     * 根据前台的数据， 获取处方list
+     *
+     * @param jsonObject <br/>
+     *                   scenesId 场景id <br/>
+     *                   userArray 前台传来的 患者数据
+     * @return 处方list
+     */
+    @ApiOperation("根据前台的数据， 获取处方list")
+    @PostMapping("/getPrescriptionTwice")
+    public ResultVO<List<String>> getPrescriptionTwice(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getPrescriptionTwice(jsonObject));
+    }
+    /**
      * 推送宣教list
      *
      * @param jsonObject <br>
