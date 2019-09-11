@@ -19,10 +19,13 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public MyFile uploadFile(MultipartFile file, String dirPath) {
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
         String targetPath = dirPath + GuidUtil.generateGuid() + ProgramConstant.FileType.getInstance(file.getContentType()).getSuffix();
         File targetFile = new File(targetPath);
-
-        targetFile.mkdirs();
 
         try {
             file.transferTo(targetFile);
