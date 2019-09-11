@@ -46,4 +46,4 @@ msg-publish:
 
 # filePath
 file-config:
-  path: D:/uploadFiles
+  path: D:\uploadFiles
