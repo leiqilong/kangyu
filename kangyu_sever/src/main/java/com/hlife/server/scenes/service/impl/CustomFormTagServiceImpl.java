@@ -258,7 +258,7 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
 
         Map<String, List<MatchCustomFormAndTag>> formGroup = matchList.stream().collect(Collectors.groupingBy(MatchCustomFormAndTag::getCustomFormId));
 
-        for (int i = 0, size = tagIds.size(); i < size; i++) {
+        for (int i = tagIds.size() - 1; i >= 0; i--) {
             String tagId = tagIds.getString(i);
             List<String> formIdList = this.matchForm(formGroup, tagIdList, type);
             if (formIdList != null && formIdList.size() > 0) {

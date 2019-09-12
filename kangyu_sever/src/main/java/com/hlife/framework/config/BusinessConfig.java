@@ -21,18 +21,21 @@ public class BusinessConfig {
     private String userDataPort;
 
     /**
-     * 消息摧送url .net 服务
+     * 消息摧送url
      */
     @Value("${msg-publish.url}")
     private String msgPublishUrl;
 
     /**
-     * 消息摧送url .net 服务
+     * 消息摧送url
      */
     @Value("${msg-publish.port}")
     private String msgPublishPort;
 
 
+    /**
+     * 文件上传位置
+     */
     @Value("${file-config.path}")
     private String filePath;
 }
