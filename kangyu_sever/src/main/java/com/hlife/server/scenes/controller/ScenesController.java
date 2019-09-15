@@ -3,6 +3,7 @@ package com.hlife.server.scenes.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.base.ResultVO;
+import com.hlife.server.program.model.MyFile;
 import com.hlife.server.scenes.model.CustomFormTag;
 import com.hlife.server.scenes.model.DeviceOfScenes;
 import com.hlife.server.scenes.model.JudgeStandard;
@@ -251,7 +252,7 @@ public class ScenesController {
      */
     @ApiOperation("根据前台的数据， 获取处方list")
     @PostMapping("/getPrescriptionTwice")
-    public ResultVO<List<String>> getPrescriptionTwice(@RequestBody JSONObject jsonObject) {
+    public ResultVO<List<MyFile>> getPrescriptionTwice(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(this.scenesService.getPrescriptionTwice(jsonObject));
     }
     /**

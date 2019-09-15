@@ -30,6 +30,11 @@ public class MyFile implements Serializable {
     private String status;
 
     /**
+     *
+     */
+    private String base64Str;
+
+    /**
      * 状态枚举
      */
     public enum Status {

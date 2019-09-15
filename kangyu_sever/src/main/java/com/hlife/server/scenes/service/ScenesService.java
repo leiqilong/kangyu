@@ -2,6 +2,7 @@ package com.hlife.server.scenes.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
+import com.hlife.server.program.model.MyFile;
 import com.hlife.server.scenes.model.CustomFormTag;
 import com.hlife.server.scenes.model.DeviceOfScenes;
 import com.hlife.server.scenes.model.JudgeStandard;
@@ -182,7 +183,7 @@ public interface ScenesService {
      *                   userArray 前台传来的 患者数据
      * @return 处方list
      */
-    List<String> getPrescriptionTwice(JSONObject jsonObject);
+    List<MyFile> getPrescriptionTwice(JSONObject jsonObject);
 
     /**
      * 摧送宣教list

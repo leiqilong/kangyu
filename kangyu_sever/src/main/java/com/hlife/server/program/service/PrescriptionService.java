@@ -45,7 +45,7 @@ public interface PrescriptionService {
      *                      idList 处方idList</>
      * @return 处方图片 list
      */
-    List<String> findPrescriptionPictureList(JSONObject jsonObject);
+    List<MyFile> findPrescriptionPictureList(JSONObject jsonObject);
 
     /**
      * 删除 处方

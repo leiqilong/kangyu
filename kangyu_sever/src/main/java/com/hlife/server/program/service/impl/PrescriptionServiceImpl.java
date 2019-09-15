@@ -93,9 +93,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public List<String> findPrescriptionPictureList(JSONObject jsonObject) {
+    public List<MyFile> findPrescriptionPictureList(JSONObject jsonObject) {
         return this.findFileList(jsonObject).stream()
-                .map(MyFile::getPath)
+                //.map(MyFile::getPath)
                 .map(this::apply)
                 .collect(Collectors.toList());
     }
@@ -135,7 +135,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return record.getFileList();
     }
 
-    private String apply(String path) {
-        return fileService.preview(path);
+    private MyFile apply(MyFile myFile) {
+        return myFile.setBase64Str(fileService.preview(myFile.getPath()));
+        //return fileService.preview(path);
     }
 }

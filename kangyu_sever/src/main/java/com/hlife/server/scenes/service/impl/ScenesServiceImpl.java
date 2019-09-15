@@ -10,6 +10,7 @@ import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.framework.util.WeChatUtil;
 import com.hlife.framework.config.BusinessConfig;
+import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.service.PrescriptionService;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.dao.ScenesMapper;
@@ -241,7 +242,7 @@ public class ScenesServiceImpl implements ScenesService {
     }
 
     @Override
-    public List<String> getPrescriptionTwice(JSONObject jsonObject) {
+    public List<MyFile> getPrescriptionTwice(JSONObject jsonObject) {
         List<String> prescriptionIds = this.getMassageContent(getTagIdObject(jsonObject).fluentPut("type", ScenesConstant.RelatedFormType.PRESCRIPTION.getKey()));
         log.debug("prescription==>{}", prescriptionIds);
         if (prescriptionIds.isEmpty()) {
