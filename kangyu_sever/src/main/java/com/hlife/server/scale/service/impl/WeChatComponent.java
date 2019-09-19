@@ -1,8 +1,8 @@
 package com.hlife.server.scale.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hlife.framework.component.MessageComponent;
 import com.hlife.framework.util.StringUtil;
+import com.hlife.outinterface.component.MessageComponent;
 import com.hlife.server.core.model.Record;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.service.CustomFormTagService;
@@ -19,7 +19,7 @@ public class WeChatComponent {
     @Autowired
     private MessageComponent messageComponent;
 
-    private static final String fmt = "标签名称：%s, 标签值：%s, 标签不存在!";
+    private String fmt = "标签名称：%s, 标签值：%s, 标签不存在!";
 
     void putMessage(Record record, JSONObject tagJSONObject) {
         String tagId = this.customFormTagService.selectTagIdByTagName(tagJSONObject);

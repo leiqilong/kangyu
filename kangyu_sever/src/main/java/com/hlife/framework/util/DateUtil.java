@@ -21,6 +21,7 @@ public class DateUtil {
     }
 
     public static final String DATE_FMT = "yyyy-MM-dd";
+    public static final String DATE_TIME_FMT = "yyyy-MM-dd HH:mm:ss";
 
     public static String getTodayStr(String fmt) {
         return getDateStr(new Date(), fmt);

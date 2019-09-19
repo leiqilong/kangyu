@@ -56,9 +56,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Prescription savePrescription(Prescription prescription) {
         String id = prescription.getId();
         if (StringUtil.stringIsNotNull(id)) {
+            Prescription record = this.prescriptionMapper.findOne(id);
+            if (record == null) {
+                throw new RuntimeException("这条数据已不存在");
+            }
+            prescription.setId(prescription.getId())
+                    .setCreateTime(prescription.getCreateTime());
             this.deletePrescriptionSelf(id);
         } else {
-            prescription.setId(GuidUtil.generateGuid()).setCreateTime(new Date());
+            prescription.setId(GuidUtil.generateGuid())
+                    .setCreateTime(new Date());
         }
 
         Prescription resultData = prescriptionMapper.save(prescription);

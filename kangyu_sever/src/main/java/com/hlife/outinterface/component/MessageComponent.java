@@ -1,4 +1,4 @@
-package com.hlife.framework.component;
+package com.hlife.outinterface.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.config.BusinessConfig;
