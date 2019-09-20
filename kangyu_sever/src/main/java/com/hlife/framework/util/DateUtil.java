@@ -20,8 +20,20 @@ public class DateUtil {
     private DateUtil() {
     }
 
+    /**
+     * 日期格式
+     */
     public static final String DATE_FMT = "yyyy-MM-dd";
+
+    /**
+     * 时间格式
+     */
     public static final String DATE_TIME_FMT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 时区
+     */
+    public static final String TIME_ZONE = "GMT+8";
 
     public static String getTodayStr(String fmt) {
         return getDateStr(new Date(), fmt);

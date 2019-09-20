@@ -54,7 +54,7 @@ public class Record implements Serializable {
     /**
      * 出生日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtil.DATE_FMT, timezone = DateUtil.TIME_ZONE)
     private Date birthday;
 
     /**
@@ -71,7 +71,7 @@ public class Record implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtil.DATE_TIME_FMT, timezone = DateUtil.TIME_ZONE)
     private Date createTime;
 
     /**
@@ -82,7 +82,7 @@ public class Record implements Serializable {
     /**
      * 下次检查日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtil.DATE_FMT, timezone = DateUtil.TIME_ZONE)
     private Date nextCheckDate;
 
     /**

@@ -1,6 +1,7 @@
 package com.hlife.server.program.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hlife.framework.util.DateUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
@@ -43,6 +44,9 @@ public class Prescription implements Serializable {
     @Transient
     private List<String> customFormTags;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = DateUtil.DATE_FMT, timezone = DateUtil.TIME_ZONE)
     private Date createTime;
 }

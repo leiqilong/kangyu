@@ -1,4 +1,4 @@
-package com.hlife.outinterface.entity;
+package com.hlife.server.outinterface.entity;
 
 import lombok.Data;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.hlife.server.scale.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.util.StringUtil;
-import com.hlife.outinterface.component.MessageComponent;
+import com.hlife.server.outinterface.component.MessageComponent;
 import com.hlife.server.core.model.Record;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.service.CustomFormTagService;

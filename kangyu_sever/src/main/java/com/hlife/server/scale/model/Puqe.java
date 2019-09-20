@@ -1,6 +1,7 @@
 package com.hlife.server.scale.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hlife.framework.util.DateUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -45,6 +46,6 @@ public class Puqe implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = DateUtil.DATE_TIME_FMT, timezone = DateUtil.TIME_ZONE)
     private Date createTime;
 }

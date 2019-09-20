@@ -1,9 +1,9 @@
-package com.hlife.outinterface.component;
+package com.hlife.server.outinterface.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.config.BusinessConfig;
 import com.hlife.framework.util.HttpClientUtil;
-import com.hlife.outinterface.entity.EventData;
+import com.hlife.server.outinterface.entity.EventData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
