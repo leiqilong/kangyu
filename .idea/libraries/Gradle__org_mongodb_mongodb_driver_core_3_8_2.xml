@@ -2,8 +2,11 @@
   <library name="Gradle: org.mongodb:mongodb-driver-core:3.8.2">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/mongodb/mongodb-driver-core/3.8.2/mongodb-driver-core-3.8.2.jar!/" />
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/3.8.2/24b8708db42dde5686ed49fd2c614e66144fa28a/mongodb-driver-core-3.8.2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/3.8.2/eef1f5c81fda823c64be366daaa79ffb77bf48fa/mongodb-driver-core-3.8.2-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

@@ -26,4 +26,12 @@ public interface PuqeService {
      * @return 当前页数据
      */
     PageResult<Puqe> findPuqePagination(JSONObject jsonObject);
+
+    /**
+     * 根据主量表数据id 查询孕吐量表数据
+     * @param jsonObject <br>
+     *                   dataId 主量表数据id
+     * @return 孕吐量表数据
+     */
+    Puqe findPuqeByDataId(JSONObject jsonObject);
 }

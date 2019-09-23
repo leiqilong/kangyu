@@ -29,6 +29,11 @@ public class Puqe implements Serializable {
     private String guid;
 
     /**
+     * 主量表数据id
+     */
+    private String dataId;
+
+    /**
      * 分数列表
      */
     private Integer[] scores;

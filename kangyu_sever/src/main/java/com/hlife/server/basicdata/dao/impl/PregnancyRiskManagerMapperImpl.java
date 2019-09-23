@@ -52,16 +52,16 @@ public class PregnancyRiskManagerMapperImpl extends BaseMapper implements Pregna
         if (StringUtil.stringIsNotNull(pregnancyRiskManager.getName())) {
             update.set("name", pregnancyRiskManager.getName());
         }
-        if (StringUtil.stringIsNull(pregnancyRiskManager.getParentId())) {
+        if (StringUtil.stringIsNotNull(pregnancyRiskManager.getParentId())) {
             update.set("parentId", pregnancyRiskManager.getParentId());
         }
-        if (StringUtil.stringIsNull(pregnancyRiskManager.getTagId())) {
+        if (StringUtil.stringIsNotNull(pregnancyRiskManager.getTagId())) {
             update.set("tagId", pregnancyRiskManager.getTagId());
         }
-        if (StringUtil.stringIsNull(pregnancyRiskManager.getTagName())) {
+        if (StringUtil.stringIsNotNull(pregnancyRiskManager.getTagName())) {
             update.set("tagName", pregnancyRiskManager.getTagName());
         }
-        if (StringUtil.stringIsNull(pregnancyRiskManager.getTagValue())) {
+        if (StringUtil.stringIsNotNull(pregnancyRiskManager.getTagValue())) {
             update.set("tagValue", pregnancyRiskManager.getTagValue());
         }
         if (Objects.nonNull(pregnancyRiskManager.getState())) {

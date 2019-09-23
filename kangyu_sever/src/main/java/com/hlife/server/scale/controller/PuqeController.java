@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.base.ResultVO;
 import com.hlife.server.scale.model.Puqe;
-import com.hlife.server.scale.model.SnapIv;
 import com.hlife.server.scale.service.PuqeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,11 +36,23 @@ public class PuqeController {
      *
      * @param jsonObject pagesize 每页大小
      *                   pagenum 页数
+     *                   guid 患者guid
      *
      * @return resultVO.restultData 当前页数据
      */
     @PostMapping(value = "/findPuqePagination")
     public ResultVO<PageResult<Puqe>> findPuqePagination(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(this.puqeService.findPuqePagination(jsonObject));
+    }
+
+    /**
+     * 根据主量表数据id 查询孕吐量表数据
+     * @param jsonObject <br>
+     *                   dataId 主量表数据id
+     * @return resultVO.resultData 孕吐量表数据
+     */
+    @PostMapping(value = "/findPuqeByDataId")
+    public ResultVO<Puqe> findPuqeByDataId(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.puqeService.findPuqeByDataId(jsonObject));
     }
 }

@@ -33,4 +33,14 @@ public class PuqeMapperImpl extends BaseMapper implements PuqeMapper {
                 Sort.Order.desc("createTime")
         );
     }
+
+    @Override
+    public Puqe findOnePuqe(Document queryDoc) {
+        return this.mongoTemplate.findOne(new BasicQuery(queryDoc), Puqe.class);
+    }
+
+    @Override
+    public long deleteOne(Document queryDoc) {
+        return this.mongoTemplate.remove(new BasicQuery(queryDoc), Puqe.class).getDeletedCount();
+    }
 }

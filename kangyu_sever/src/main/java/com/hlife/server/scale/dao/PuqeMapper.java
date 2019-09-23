@@ -27,4 +27,14 @@ public interface PuqeMapper {
      * @return 当前页数据
      */
     PageResult<Puqe> findPuqePagination(Document queryDoc, PageParam pageParam);
+
+    /**
+     * 根据主量表数据id 查询孕吐量表数据
+     * @param queryDoc <br>
+     *                   dataId 主量表数据id
+     * @return 孕吐量表数据
+     */
+    Puqe findOnePuqe(Document queryDoc);
+
+    long deleteOne(Document queryDoc);
 }

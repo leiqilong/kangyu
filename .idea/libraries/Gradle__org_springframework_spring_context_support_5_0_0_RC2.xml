@@ -2,8 +2,11 @@
   <library name="Gradle: org.springframework:spring-context-support:5.0.0.RC2">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context-support/5.0.0.RC2/spring-context-support-5.0.0.RC2.jar!/" />
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/5.0.0.RC2/392e54c1dca15563fb1c4f54dbbb96ad53a00edf/spring-context-support-5.0.0.RC2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/5.0.0.RC2/150bdd664e1f94655403535b7eba609b71d42dc3/spring-context-support-5.0.0.RC2-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

@@ -2,8 +2,11 @@
   <library name="Gradle: org.springframework.boot:spring-boot-starter-quartz:2.0.0.M2">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-quartz/2.0.0.M2/spring-boot-starter-quartz-2.0.0.M2.jar!/" />
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-quartz/2.0.0.M2/e1fdd6e9010075fdc1169b9b5a80d822101c5e04/spring-boot-starter-quartz-2.0.0.M2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://D:/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-quartz/2.0.0.M2/46c15114bff3cb294039f4137441772dcb0bc296/spring-boot-starter-quartz-2.0.0.M2-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

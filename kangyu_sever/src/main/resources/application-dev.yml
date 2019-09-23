@@ -11,6 +11,19 @@ spring:
       #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.111:39007/stl_form?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
       #uri: mongodb://db_kangyu:db_kangyu_11@10.10.10.51:27017/stl_yunqi?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
       uri: mongodb://db_kangyu:db_kangyu_11@39.107.249.175:39007/stl_beidarenmin?authSource=db_kangyu&authMechanism=SCRAM-SHA-1
+      option:
+        socket-keep-alive: true
+        max-connection-idle-time: 60000
+        connect-timeout: 36000
+        min-connection-per-host: 5
+        threads-allowed-to-block-for-connection-multiplier: 5
+        max-wait-time: 120000
+        socket-timeout: 1500
+        max-connection-life-time: 0
+        heartbeat-socket-timeout: 36000
+        heartbeat-connect-timeout: 36000
+        min-heartbeat-frequency: 5
+        heartbeat-frequency: 10
   aop:
     proxy-target-class: true
   output:

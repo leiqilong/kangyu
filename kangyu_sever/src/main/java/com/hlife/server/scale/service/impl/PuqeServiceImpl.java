@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 妊娠期恶心呕吐量表结果服务层实现
@@ -37,6 +38,11 @@ public class PuqeServiceImpl implements PuqeService {
         if (StringUtil.stringIsNull(puqe.getPuqeId())) {
             puqe.setPuqeId(GuidUtil.generateGuid())
                     .setCreateTime(new Date());
+        } else {
+            Document queryDoc = new Document("puqeId", puqe.getPuqeId());
+            Puqe oldPuqe = Objects.requireNonNull(this.pugeMapper.findOnePuqe(queryDoc), "数据不存在");
+            this.pugeMapper.deleteOne(queryDoc);
+            puqe.setCreateTime(oldPuqe.getCreateTime());
         }
         puqe = this.pugeMapper.savePuqe(puqe);
 
@@ -60,6 +66,18 @@ public class PuqeServiceImpl implements PuqeService {
         return this.pugeMapper.findPuqePagination(queryDoc, pageParam);
     }
 
+    @Override
+    public Puqe findPuqeByDataId(JSONObject jsonObject) {
+        Document queryDoc = new Document();
+        String dataId = jsonObject.getString("dataId");
+        if (StringUtil.stringIsNull(dataId)) {
+            throw new RuntimeException("传入主量表数据id为空");
+        }
+
+        queryDoc.put("dataId", dataId);
+
+        return this.pugeMapper.findOnePuqe(queryDoc);
+    }
 
 
     private void savePuqeRemote(Puqe puqe) {
