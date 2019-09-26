@@ -12,8 +12,19 @@ import java.util.List;
  */
 public interface SnapIvMapper {
 
+    /**
+     * 保存snapIv结果
+     *
+     * @param snapIv snapIv结果
+     * @return snapIv结果
+     */
     SnapIv saveSnapIv(SnapIv snapIv);
 
+    /**
+     *
+     * @param queryDoc
+     * @return
+     */
     SnapIv findOneSnapIv(Document queryDoc);
 
     long deleteSnapIv(Document queryDoc);

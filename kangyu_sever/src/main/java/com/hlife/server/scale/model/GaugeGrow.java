@@ -173,7 +173,7 @@ public class GaugeGrow implements Serializable {
     }
 
     /**
-     * 获取身高 月龄- 中位数
+     * 获取 身高 月龄- 中位数
      *
      * @return 月龄- 中位数
      */
@@ -181,41 +181,92 @@ public class GaugeGrow implements Serializable {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(sgmidnum);
     }
 
+    /**
+     * 获取 身高 月龄- +1SD
+     *
+     * @return 身高 月龄- +1SD
+     */
     public JSONArray getMonthOfAgeSgyisdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(sgyisd);
     }
 
+    /**
+     * 获取 身高 月龄- +2SD
+     *
+     * @return 身高 月龄- +2SD
+     */
     public JSONArray getMonthOfAgeSgersdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(sgersd);
     }
 
+    /**
+     * 获取 身高 月龄- +3SD
+     *
+     * @return 身高 月龄- +3SD
+     */
     public JSONArray getMonthOfAgeSgsansdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(sgsansd);
     }
 
+    /**
+     * 获取 体重 月龄- -3SD
+     *
+     * @return 体重 月龄- -3SD
+     */
     public JSONArray getMonthOfAgeWtfusansdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtfusansd);
     }
+
+    /**
+     * 获取  体重月龄- -2SD
+     *
+     * @return  体重月龄- -2SD
+     */
     public JSONArray getMonthOfAgeWtfuersdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtfuersd);
     }
 
+    /**
+     * 获取 身高 月龄- -1SD
+     *
+     * @return 身高 月龄- -1SD
+     */
     public JSONArray getMonthOfAgeWtfuyisdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtfuyisd);
     }
 
+    /**
+     * 获取 身高 月龄- 中位数
+     *
+     * @return 身高 月龄- 中位数
+     */
     public JSONArray getMonthOfAgeWtmidnumEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtmidnum);
     }
 
+    /**
+     * 获取 身高 月龄-  +1SD
+     *
+     * @return 身高 月龄-  +1SD
+     */
     public JSONArray getMonthOfAgeWtyisdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtyisd);
     }
 
+    /**
+     * 获取 身高 月龄-  +2SD
+     *
+     * @return 身高 月龄-  +2SD
+     */
     public JSONArray getMonthOfAgeWtersdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtersd);
     }
 
+    /**
+     * 获取 身高 月龄-  +3SD
+     *
+     * @return 身高 月龄-  +3SD
+     */
     public JSONArray getMonthOfAgeWtsansdEntry() {
         return new JSONArray().fluentAdd(monthofage).fluentAdd(wtsansd);
     }

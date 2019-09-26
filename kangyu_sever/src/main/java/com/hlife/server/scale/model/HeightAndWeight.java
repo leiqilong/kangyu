@@ -128,29 +128,58 @@ public class HeightAndWeight implements Serializable {
         return this;
     }
 
+    /**
+     * 获取月份-身高
+     *
+     * @return 月份-身高
+     */
     public JSONArray getMonthHeightEntry() {
         return new JSONArray().fluentAdd(this.monthAge).fluentAdd(this.height);
     }
 
+    /**
+     * 获取月份-体重
+     *
+     * @return 月份-体重
+     */
     public JSONArray getMonthWeightEntry() {
         return new JSONArray().fluentAdd(this.monthAge).fluentAdd(this.weight);
     }
 
+    /**
+     * 获取月份-体重
+     *
+     * @return 月份-体重
+     */
     public JSONArray getCorrectMonthHeightEntry() {
         return new JSONArray().fluentAdd(this.correctMonthAge).fluentAdd(this.height);
     }
 
+    /**
+     * 获取 修正月份-体重
+     *
+     * @return 修正月份-体重
+     */
     public JSONArray getCorrectMonthWeightEntry() {
         return new JSONArray().fluentAdd(this.correctMonthAge).fluentAdd(this.weight);
     }
 
-
     private final static String MONTH_VALUE_ENTRY_FORMAT = "[%f,%f]";
 
+    /**
+     * 获取 月份（整月-身高
+     *
+     * @return 月份（整月-身高
+     */
     public JSONArray getMonthIntHeightEntry() {
         return new JSONArray().fluentAdd(this.monthAgeInt).fluentAdd(this.height);
     }
 
+    /**
+     * 获取 月份（整月）-体重
+     *
+     * @return 月份（整月-体重
+     */
     public JSONArray getMonthIntWeightEntry() {
         return new JSONArray().fluentAdd(this.monthAgeInt).fluentAdd(this.weight);
     }
