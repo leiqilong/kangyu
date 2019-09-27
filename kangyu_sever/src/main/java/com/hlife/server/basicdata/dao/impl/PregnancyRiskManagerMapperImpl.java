@@ -75,4 +75,14 @@ public class PregnancyRiskManagerMapperImpl extends BaseMapper implements Pregna
     public List<PregnancyRiskManager> searchPregnancyRisk(Document document) {
         return this.mongoTemplate.find(new BasicQuery(document), PregnancyRiskManager.class);
     }
+
+    @Override
+    public boolean isExits(Document document) {
+        return this.mongoTemplate.exists(new BasicQuery(document), PregnancyRiskManager.class);
+    }
+
+    @Override
+    public void update(Document queryDoc, Update update) {
+        this.mongoTemplate.updateMulti(new BasicQuery(queryDoc), update, PregnancyRiskManager.class);
+    }
 }

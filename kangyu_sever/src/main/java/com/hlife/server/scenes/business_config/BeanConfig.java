@@ -25,8 +25,36 @@ public class BeanConfig {
     @Resource(name = "judgeStandardServiceImpl")
     private ICheckAdapter judgeStandardImpl;
 
+    @Resource(name = "pregnancyRiskManagerServiceImpl")
+    private ICheckAdapter pregnancyRiskManagerImpl;
+
     @Resource(name = "judgeStandardServiceImpl")
     private IUpdateAdapter judgeStandardImplU;
+
+    @Resource(name = "pregnancyRiskManagerServiceImpl")
+    private IUpdateAdapter pregnancyRiskManagerImplU;
+
+    /**
+     * 标签删除监听
+     */
+    @Bean
+    public List<ICheckAdapter> tagRemoveListeners() {
+        List<ICheckAdapter> tagRemoveListeners = new ArrayList<>();
+        tagRemoveListeners.add(judgeStandardImpl);
+        tagRemoveListeners.add(pregnancyRiskManagerImpl);
+        return tagRemoveListeners;
+    }
+
+    /**
+     * 标签修改监听
+     */
+    @Bean
+    public List<IUpdateAdapter> tagUpdateListeners() {
+        List<IUpdateAdapter> tagUpdateListeners = new ArrayList<>();
+        tagUpdateListeners.add(judgeStandardImplU);
+        tagUpdateListeners.add(pregnancyRiskManagerImplU);
+        return tagUpdateListeners;
+    }
 
     /**
      * 场景设备计算分支 （不用了）
@@ -92,25 +120,5 @@ public class BeanConfig {
         deviceResultFunMap.put("ky.stl.form.I5KE2SNR9UVGI3C4J5ZGMFWN237PDNWY-yqjcdaxx_sleep3", DeviceHandler::form_yqjcdaxx_sleep3Dispart);
 
         return deviceResultFunMap;
-    }
-
-    /**
-     * 标签删除监听
-     */
-    @Bean
-    public List<ICheckAdapter> tagRemoveListeners() {
-        List<ICheckAdapter> tagRemoveListeners = new ArrayList<>();
-        tagRemoveListeners.add(judgeStandardImpl);
-        return tagRemoveListeners;
-    }
-
-    /**
-     * 标签修改监听
-     */
-    @Bean
-    public List<IUpdateAdapter> tagUpdateListeners() {
-        List<IUpdateAdapter> tagUpdateListeners = new ArrayList<>();
-        tagUpdateListeners.add(judgeStandardImplU);
-        return tagUpdateListeners;
     }
 }

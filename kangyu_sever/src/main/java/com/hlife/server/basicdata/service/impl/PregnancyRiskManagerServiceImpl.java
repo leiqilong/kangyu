@@ -7,8 +7,12 @@ import com.hlife.framework.util.TreeUtil;
 import com.hlife.server.basicdata.dao.PregnancyRiskManagerMapper;
 import com.hlife.server.basicdata.model.PregnancyRiskManager;
 import com.hlife.server.basicdata.service.PregnancyRiskManagerService;
+import com.hlife.server.scenes.handler.checkhandler.ICheckAdapter;
+import com.hlife.server.scenes.handler.updatehandler.IUpdateAdapter;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,8 +22,9 @@ import java.util.Objects;
 /**
  * 孕产妇妊娠风险管理业务层实现
  */
+@Slf4j
 @Service
-public class PregnancyRiskManagerServiceImpl implements PregnancyRiskManagerService {
+public class PregnancyRiskManagerServiceImpl implements PregnancyRiskManagerService, ICheckAdapter, IUpdateAdapter {
 
     @Autowired
     private PregnancyRiskManagerMapper pregnancyRiskManagerMapper;
@@ -68,6 +73,37 @@ public class PregnancyRiskManagerServiceImpl implements PregnancyRiskManagerServ
         return TreeUtil.createTree(this.searchPregnancyRisk(jsonObject));
     }
 
+    @Override
+    public boolean check(JSONObject jsonObject) {
+        if (jsonObject.isEmpty()) {
+            return false;
+        }
+        if (this.isExits(new Document("tagId", jsonObject.getString("tagId")))) {
+            log.debug("我是高危分支！");
+            throw new RuntimeException("孕产妇妊娠风险管理引用， 不能删除！");
+        }
+        return true;
+    }
+
+
+
+    @Override
+    public void update(JSONObject jsonObject) {
+        if (jsonObject.isEmpty()) {
+            return;
+        }
+
+        log.debug("我是高危分支！");
+        Document queryDoc = new Document("tagId", jsonObject.getString("tagId"));
+        if (this.isExits(queryDoc)) {
+            Update update = Update.update("tagName", jsonObject.getString("tagName"))
+                    .set("tagValue", jsonObject.getString("tagValue"));
+            this.pregnancyRiskManagerMapper.update(queryDoc, update);
+        }
+    }
+
+
+
     /**
      * 数据不存在
      *
@@ -89,6 +125,16 @@ public class PregnancyRiskManagerServiceImpl implements PregnancyRiskManagerServ
     }
 
     /**
+     * 数据存在
+     *
+     * @param document 查询条伯
+     * @return
+     */
+    private boolean isExits(Document document) {
+        return this.pregnancyRiskManagerMapper.isExits(document);
+    }
+
+    /**
      * 存在子节点
      *
      * @param prmId
@@ -97,4 +143,5 @@ public class PregnancyRiskManagerServiceImpl implements PregnancyRiskManagerServ
     private boolean isExitsChildren(String prmId) {
         return this.pregnancyRiskManagerMapper.isExitsChildren(prmId);
     }
+
 }

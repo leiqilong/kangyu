@@ -2,6 +2,7 @@ package com.hlife.server.basicdata.dao;
 
 import com.hlife.server.basicdata.model.PregnancyRiskManager;
 import org.bson.Document;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
@@ -65,4 +66,8 @@ public interface PregnancyRiskManagerMapper {
      * @return 妊娠风险信息列表
      */
     List<PregnancyRiskManager> searchPregnancyRisk(Document document);
+
+    boolean isExits(Document document);
+
+    void update(Document queryDoc, Update update);
 }
