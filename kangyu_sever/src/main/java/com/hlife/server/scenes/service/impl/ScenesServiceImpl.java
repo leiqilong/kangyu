@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
+import com.hlife.framework.config.BusinessConfig;
 import com.hlife.framework.util.GuidUtil;
 import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.framework.util.WeChatUtil;
-import com.hlife.framework.config.BusinessConfig;
 import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.service.PrescriptionService;
+import com.hlife.server.rpc.service.RpcService;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.dao.ScenesMapper;
 import com.hlife.server.scenes.model.*;
@@ -45,6 +46,8 @@ public class ScenesServiceImpl implements ScenesService {
     private CustomFormTagService customFormTagService;
     @Autowired
     private PrescriptionService prescriptionService;
+    @Autowired
+    private RpcService rpcService;
 
     @Autowired
     private BusinessConfig businessConfig;
@@ -319,6 +322,61 @@ public class ScenesServiceImpl implements ScenesService {
         return deviceOfScenesService.createDeviceOfScenesListByDevice();
     }
 
+    @Override
+    public JSONArray getTjspByLabels(JSONObject jsonObject) {
+        Map<String, Object> labels = this.getTagAndScoreTwice(jsonObject);
+        log.debug("labels==>{}", labels);
+        @SuppressWarnings("unchecked")
+        List<DeviceResult> resultList = (List<DeviceResult>) labels.get("resultList");
+        @SuppressWarnings("unchecked")
+        List<DeviceResult> allResultList = (List<DeviceResult>) labels.get("allResultList");
+        CustomFormTag customFormTag = this.customFormTagService.selectCustomFormTagById(jsonObject.getString("scenesId"));
+        JSONArray jsonArray = new JSONArray()
+                .fluentAdd(
+                        new JSONObject()
+                                .fluentPut("name", customFormTag.getTagName())
+                                .fluentPut("value", customFormTag.getTagValue())
+                );
+
+        for (DeviceResult deviceResult : resultList) {
+            if (this.filter(deviceResult)) {
+                jsonArray.add(
+                        new JSONObject()
+                                .fluentPut("name", customFormTag.getTagName())
+                                .fluentPut("value", customFormTag.getTagValue()));
+            }
+        }
+
+        for (DeviceResult deviceResult : allResultList) {
+            if (this.filter(deviceResult) && deviceResult.getBase()) {
+                jsonArray.add(
+                        new JSONObject()
+                                .fluentPut("name", customFormTag.getTagName())
+                                .fluentPut("value", customFormTag.getTagValue()));
+            }
+        }
+        /*JSONArray jsonArray = new JSONArray()
+                .fluentAdd(
+                        new JSONObject().fluentPut("name", "a")
+                                .fluentPut("value", "a")
+                ).fluentAdd(
+                        new JSONObject().fluentPut("name", "b")
+                                .fluentPut("value", "b")
+                ).fluentAdd(
+                        new JSONObject().fluentPut("name", "c")
+                                .fluentPut("value", "c")
+                ).fluentAdd(
+                        new JSONObject().fluentPut("name", "d")
+                                .fluentPut("value", "d")
+                );*/
+        return rpcService.GetTjspByLabels(jsonArray);
+    }
+
+    private boolean filter(DeviceResult deviceResult) {
+        return Objects.nonNull(deviceResult) && StringUtil.stringIsNotNull(deviceResult.getTagName())
+                && StringUtil.stringIsNotNull(deviceResult.getTagValue());
+    }
+
     /**
      * 获取 某设备 计算结果
      *
@@ -587,7 +645,6 @@ public class ScenesServiceImpl implements ScenesService {
     }
 
 
-
     /**
      * 获取调查问卷list 并给微信id 赋值
      *
@@ -678,7 +735,7 @@ public class ScenesServiceImpl implements ScenesService {
             }
         }
 
-        return  new JSONObject().fluentPut("tagIdList", tagIdList)
+        return new JSONObject().fluentPut("tagIdList", tagIdList)
                 .fluentPut("baseTagIdList", baseTagIdList)
                 .fluentPut("scenesId", scenesId);
     }

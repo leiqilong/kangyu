@@ -1,11 +1,14 @@
 package com.hlife.server.scenes.business_config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hlife.server.rpc.service.RpcService;
 import com.hlife.server.scenes.handler.checkhandler.ICheckAdapter;
 import com.hlife.server.scenes.handler.devicehandler.DeviceHandler;
 import com.hlife.server.scenes.handler.updatehandler.IUpdateAdapter;
 import com.hlife.server.scenes.model.DeviceResult;
 import com.hlife.server.scenes.model.JudgeStandard;
+import hprose.client.HproseClient;
+import hprose.client.HproseHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,6 +59,12 @@ public class BeanConfig {
         return tagUpdateListeners;
     }
 
+    @Bean
+    public RpcService rpcService() {
+        HproseClient client = new HproseHttpClient();
+        client.useService("http://127.0.0.1:30000/");
+        return client.useService(RpcService.class);
+    }
     /**
      * 场景设备计算分支 （不用了）
      *

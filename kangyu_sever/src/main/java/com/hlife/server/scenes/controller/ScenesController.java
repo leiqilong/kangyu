@@ -1,5 +1,6 @@
 package com.hlife.server.scenes.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.base.ResultVO;
@@ -213,7 +214,6 @@ public class ScenesController {
         return new ResultVO<>(this.scenesService.getTagAndScoreTwice(jsonObject));
     }
 
-
     /**
      * 根据前台的数据， 获取宣教表单list
      *
@@ -255,6 +255,13 @@ public class ScenesController {
     public ResultVO<List<MyFile>> getPrescriptionTwice(@RequestBody JSONObject jsonObject) {
         return new ResultVO<>(this.scenesService.getPrescriptionTwice(jsonObject));
     }
+
+    @ApiOperation("根据前台的数据， 获取上位机处方list")
+    @PostMapping("/getTjspByLabels")
+    public ResultVO<JSONArray> getTjspByLabels(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.scenesService.getTjspByLabels(jsonObject));
+    }
+
     /**
      * 推送宣教list
      *

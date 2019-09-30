@@ -1,5 +1,6 @@
 package com.hlife.server.scenes.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.server.program.model.MyFile;
@@ -213,4 +214,5 @@ public interface ScenesService {
     List<DeviceOfScenes> createDeviceOfScenesListByDevice();
 
 
+    JSONArray getTjspByLabels(JSONObject jsonObject);
 }

@@ -101,10 +101,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<MyFile> findPrescriptionPictureList(JSONObject jsonObject) {
-        return this.findFileList(jsonObject).stream()
+        /*return this.findFileList(jsonObject).stream()
                 //.map(MyFile::getPath)
-                .map(this::apply)
-                .collect(Collectors.toList());
+                //.map(this::apply)
+                .collect(Collectors.toList());*/
+        return this.findFileList(jsonObject);
     }
 
     public long deletePrescription(String id) {

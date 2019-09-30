@@ -54,6 +54,7 @@ public class DeviceResult implements Serializable {
     public boolean isNotBase() {
         return !Optional.of(this.base).orElse(false);
     }
+
     @Data
     @Accessors(chain = true)
     @NoArgsConstructor
