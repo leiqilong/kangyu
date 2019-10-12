@@ -12,17 +12,19 @@ import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.model.Prescription;
 import com.hlife.server.program.service.FileService;
 import com.hlife.server.program.service.PrescriptionService;
-import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.service.MatchCustomFormAndTagService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.hlife.server.scenes.constant.ScenesConstant.VALUE_FORMART;
 
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
@@ -60,8 +62,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             if (record == null) {
                 throw new RuntimeException("这条数据已不存在");
             }
-            prescription.setId(prescription.getId())
-                    .setCreateTime(prescription.getCreateTime());
+            prescription.setId(record.getId())
+                    .setCreateTime(record.getCreateTime());
             this.deletePrescriptionSelf(id);
         } else {
             prescription.setId(GuidUtil.generateGuid())
@@ -72,7 +74,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         this.matchCustomFormAndTagService.addMatchCustomFormAndTagList(
                 new JSONObject()
-                        .fluentPut("customFormId", ScenesConstant.RelatedFormType.PRESCRIPTION.getNewFormId(prescription.getId()))
+                        //.fluentPut("customFormId", ScenesConstant.RelatedFormType.PRESCRIPTION.getNewFormId(prescription.getId()))
+                        .fluentPut("customFormId", String.format(VALUE_FORMART, prescription.getId(), prescription.getType()))
                         .fluentPut("tagIdList", prescription.getCustomFormTags())
 
         );
@@ -90,8 +93,40 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
+    public List<Prescription> findPrescriptionArray(JSONObject jsonObject) {
+        @SuppressWarnings("unchecked")
+        List<String> tagIdList = (List<String>) jsonObject.get("tagIdList");
+        String relatedFormType =  jsonObject.getString("relatedFormType");
+
+        List<String> list = matchCustomFormAndTagService.selectCustomFormIdsByTagIdList(tagIdList).stream()
+                .filter(formId -> formId.split(";")[1].equals(relatedFormType))
+                .map(formId -> formId.split(";")[0])
+                .collect(Collectors.toList());
+
+        Document queryDoc = new Document();
+
+        if (list.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        queryDoc.append("id", new Document("$in", list));
+
+        return this.prescriptionMapper.findPrescriptionList(queryDoc);
+    }
+
+    @Override
     public List<MyFile> findFileList(JSONObject jsonObject) {
         return this.findPrescriptionList(jsonObject).stream()
+                .filter(Objects::nonNull)
+                .map(Prescription::getFileList)
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MyFile> findMyFileArray(JSONObject jsonObject) {
+        return this.findPrescriptionArray(jsonObject).stream()
                 .filter(Objects::nonNull)
                 .map(Prescription::getFileList)
                 .filter(Objects::nonNull)
@@ -112,7 +147,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         List<MyFile> fileList = this.deletePrescriptionSelf(id);
 
         if (fileList != null && fileList.size() > 0) {
-            for (MyFile myFile: fileList) {
+            for (MyFile myFile : fileList) {
                 fileService.removeFile(myFile.getPath());
             }
         }
@@ -138,7 +173,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         }
 
 
-        this.matchCustomFormAndTagService.deleteMatchCustomFormAndTagListByFormId(ScenesConstant.RelatedFormType.PRESCRIPTION.getNewFormId(id));
+        this.matchCustomFormAndTagService.deleteMatchCustomFormAndTagListByFormId(
+                // ScenesConstant.RelatedFormType.PRESCRIPTION.getNewFormId(id))
+                String.format(VALUE_FORMART, record.getId(), record.getType())
+        );
         this.prescriptionMapper.delete(id);
         return record.getFileList();
     }

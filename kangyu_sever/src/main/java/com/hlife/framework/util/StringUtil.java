@@ -1,5 +1,7 @@
 package com.hlife.framework.util;
 
+import java.util.Objects;
+
 /**
  * 自实现字符串工具类
  */
@@ -83,5 +85,13 @@ public class StringUtil {
             stringBuilder.append(str).append(join);
         }
         return stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
+    }
+
+    public static String formatExpression(String str) {
+        return Objects.requireNonNull(str, "表达式为空").replaceAll("[＞﹥]", ">")
+                .replaceAll("[＜﹤]", "<")
+                .replaceAll("[≤≦]", "<=")
+                .replaceAll("[≧≥]", ">=")
+                .replaceAll(BLANK_SPACE, EMPTY_STR).trim();
     }
 }

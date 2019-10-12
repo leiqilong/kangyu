@@ -34,6 +34,13 @@ public class Prescription implements Serializable {
     private String title;
 
     /**
+     * 类别
+     * 04 处方
+     * 99 其它
+     */
+    private String type;
+
+    /**
      * 附件list
      */
     private List<MyFile> fileList;

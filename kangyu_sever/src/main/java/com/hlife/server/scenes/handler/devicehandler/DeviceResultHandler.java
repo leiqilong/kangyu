@@ -1,5 +1,6 @@
 package com.hlife.server.scenes.handler.devicehandler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.server.scenes.model.DeviceResult;
 import com.hlife.server.scenes.model.JudgeStandard;
@@ -9,7 +10,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static com.hlife.framework.util.StringUtil.*;
 
@@ -40,9 +43,10 @@ public class DeviceResultHandler {
             if (StringUtil.stringIsNull(ruler)) {
                 continue;
             }
+
             boolean match = false;
             try {
-                Object obj = scriptEngine.eval(getExpression(values, ruler));
+                Object obj = scriptEngine.eval(getExpression(values, StringUtil.formatExpression(ruler)));
                 if (obj instanceof Boolean) {
                     match = (boolean) obj;
                 } else {
@@ -87,7 +91,7 @@ public class DeviceResultHandler {
                 continue;
             }
 
-            boolean match = ruler.trim().replaceAll(BLANK_SPACE, EMPTY_STR).equals(param);
+            boolean match = StringUtil.formatExpression(ruler).equals(param);
 
             log.debug("ruler:{}, param:{}, match:{}", ruler, param, match);
 
@@ -131,7 +135,7 @@ public class DeviceResultHandler {
                 continue;
             }
 
-            List modeList = Arrays.asList(ruler.trim().split(BLANK_SPACE));
+            List<String> modeList = Arrays.asList(ruler.trim().split(BLANK_SPACE));
 
             boolean match = modeList.contains(param);
 
@@ -147,6 +151,46 @@ public class DeviceResultHandler {
         }
 
         return getDeviceResult(judgeStandardList);
+    }
+
+    public static DeviceResult getDeviceResultPendi(List<JudgeStandard> judgeStandardList, String param) {
+        log.info("paramPendi ==> {}", param);
+
+        checkStandard(judgeStandardList);
+
+        JSONArray jsonArray = JSONArray.parseArray(param.trim());
+
+        JudgeStandard judgeStandard = judgeStandardList.stream()
+                .filter(Objects::nonNull)
+                /*.sorted(Comparator.comparing(JudgeStandard::getScore).reversed())*/
+                .filter(standard -> apply(standard, jsonArray))
+                .max(Comparator.comparing(JudgeStandard::getScore))
+                .orElse(judgeStandardList.get(0));
+
+
+        return Objects.nonNull(judgeStandard)
+                ? new DeviceResult()
+                .setTagName(judgeStandard.getTagName())
+                .setTagValue(judgeStandard.getTagValue())
+                .setTagId(judgeStandard.getTagId())
+                .setScore(judgeStandard.getScore())
+                : getDeviceResult(judgeStandardList);
+    }
+
+    private static boolean apply(JudgeStandard standard, JSONArray jsonArray) {
+        String ruler = standard.getRuler();
+
+        if (stringIsNull(ruler)) {
+            return false;
+        }
+
+        List<String> symptomList = Arrays.asList(ruler.trim().split(BLANK_SPACE));
+        for (String symptom : symptomList) {
+            if (jsonArray.contains(symptom)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -192,6 +236,7 @@ public class DeviceResultHandler {
 
     /**
      * 默认值
+     *
      * @param judgeStandardList 规则列表
      * @return 默认值
      */

@@ -4,9 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.hlife.framework.util.StringUtil.BLANK_SPACE;
-import static com.hlife.framework.util.StringUtil.EMPTY_STR;
-
 
 @Slf4j
 public class JSONUtil {
@@ -35,11 +32,12 @@ public class JSONUtil {
             if (StringUtil.stringIsNull(result)) {
                 return result;
             }
-            return jsonObject.getString(path).replaceAll("[＞﹥]", ">")
+            /*return jsonObject.getString(path).replaceAll("[＞﹥]", ">")
                     .replaceAll("[＜﹤]", "<")
                     .replaceAll("[≤≦]", "<=")
                     .replaceAll("[≧≥]", ">=")
-                    .replaceAll(BLANK_SPACE, EMPTY_STR).trim();
+                    .replaceAll(BLANK_SPACE, EMPTY_STR).trim();*/
+            return StringUtil.formatExpression(jsonObject.getString(path));
 
         }
         if (path.indexOf("[0]") > -1) {

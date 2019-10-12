@@ -3,10 +3,13 @@ package com.hlife.server.program.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageResult;
 import com.hlife.framework.base.ResultVO;
+import com.hlife.server.program.model.MyFile;
 import com.hlife.server.program.model.Prescription;
 import com.hlife.server.program.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 处方管理controller
@@ -35,6 +38,17 @@ public class PrescriptionController {
     }
 
     /**
+     * 查询
+     *
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping(value = "/findPrescriptionFileArray")
+    public ResultVO<List<MyFile>> findPrescriptionFileArray(@RequestBody JSONObject jsonObject) {
+        return new ResultVO<>(this.prescriptionService.findMyFileArray(jsonObject));
+    }
+
+    /**
      * 保存
      *
      * @param prescription 处方实例
@@ -55,4 +69,5 @@ public class PrescriptionController {
     public ResultVO<Long> deletePrescription(@PathVariable(value = "id") String id) {
         return new ResultVO<>(this.prescriptionService.deletePrescription(id));
     }
+
 }

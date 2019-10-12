@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
+import com.hlife.framework.config.BusinessConfig;
 import com.hlife.framework.util.GuidUtil;
 import com.hlife.framework.util.HttpClientUtil;
 import com.hlife.framework.util.StringUtil;
 import com.hlife.framework.util.WeChatUtil;
-import com.hlife.framework.config.BusinessConfig;
 import com.hlife.server.scenes.constant.ScenesConstant;
 import com.hlife.server.scenes.dao.CustomFormTagMapper;
 import com.hlife.server.scenes.handler.checkhandler.ICheckAdapter;
@@ -104,11 +104,6 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
     @Override
     public PageResult<CustomFormTag> getCustomFormTagPageResult(JSONObject jsonObject) {
         Document queryDoc = new Document();
-
-        String tagName = jsonObject.getString("tagName");
-        if (StringUtil.stringIsNotNull(tagName)) {
-            queryDoc.append("tagName", Pattern.compile("^.*" + tagName + ".*$", Pattern.CASE_INSENSITIVE));
-        }
 
         setQueryDoc(jsonObject, queryDoc);
 
@@ -511,6 +506,16 @@ public class CustomFormTagServiceImpl implements CustomFormTagService {
      * @param queryDoc
      */
     private void setQueryDoc(JSONObject jsonObject, Document queryDoc) {
+        String tagName = jsonObject.getString("tagName");
+        if (StringUtil.stringIsNotNull(tagName)) {
+            queryDoc.append("tagName", Pattern.compile("^.*" + tagName + ".*$", Pattern.CASE_INSENSITIVE));
+        }
+
+        String tagValue = jsonObject.getString("tagValue");
+        if (StringUtil.stringIsNotNull(tagValue)) {
+            queryDoc.append("tagValue", Pattern.compile("^.*" + tagValue + ".*$", Pattern.CASE_INSENSITIVE));
+        }
+
         String tagType = jsonObject.getString("tagType");
         if (StringUtil.stringIsNotNull(tagType)) {
             queryDoc.append("tagType", tagType);

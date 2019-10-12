@@ -30,6 +30,9 @@ public interface PrescriptionService {
      */
     List<Prescription> findPrescriptionList(JSONObject jsonObject);
 
+
+    List<Prescription> findPrescriptionArray(JSONObject jsonObject);
+
     /**
      * 获取处方File list
      * @param jsonObject <br/>
@@ -70,4 +73,5 @@ public interface PrescriptionService {
      */
     boolean isExist(String id);
 
+    List<MyFile> findMyFileArray(JSONObject jsonObject);
 }

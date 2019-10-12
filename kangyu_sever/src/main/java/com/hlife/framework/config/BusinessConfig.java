@@ -38,4 +38,10 @@ public class BusinessConfig {
      */
     @Value("${file-config.path}")
     private String filePath;
+
+    /**
+     * rpc 服务链接字符串
+     */
+    @Value("${rpc.url}")
+    private String rpcUrl;
 }

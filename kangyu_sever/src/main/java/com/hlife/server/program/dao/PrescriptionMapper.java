@@ -1,5 +1,6 @@
 package com.hlife.server.program.dao;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hlife.framework.base.PageParam;
 import com.hlife.framework.base.PageResult;
 import com.hlife.server.program.model.Prescription;
@@ -31,6 +32,8 @@ public interface PrescriptionMapper {
      */
     List<Prescription> findPrescriptionList(Document queryDoc);
 
+    List<Prescription> findPrescriptionArray(JSONObject jsonObject);
+
     /**
      * 查询处方是否存在
      *
@@ -48,5 +51,4 @@ public interface PrescriptionMapper {
     long delete(String id);
 
     Prescription findOne(String id);
-
 }

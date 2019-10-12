@@ -103,8 +103,9 @@ public class ScenesConstant {
     public enum RelatedFormType {
         CUSTOM_FORM("02", "formTagPush", "调查问卷", "请点击详情完成调查问卷"),
         MISSION("03", "pdAndEduTagPush", "宣教", "请点击详情完成宣教"),
-        PRESCRIPTION("04",  "处方"),
-        DOCTOR("10",  "医生");
+        PRESCRIPTION("04", "处方"),
+        DOCTOR("10", "医生"),
+        OTHER("99", "其它");
 
         @Getter
         private String key;
@@ -130,7 +131,7 @@ public class ScenesConstant {
         }
 
         public String getNewFormId(String formId) {
-            return String.format("%s;%s", formId, key);
+            return String.format(VALUE_FORMART, formId, key);
         }
     }
 
@@ -153,9 +154,14 @@ public class ScenesConstant {
 
         /**
          * 情绪类算法
-         * 平行化算法 返回值字符串; 匹配算法 用contents
+         * 平行化算法 返回值字符串; 匹配算法 用contains
          */
-        MOOD_PARAMETER("mood", DeviceResultHandler::getDeviceResultMood);
+        MOOD_PARAMETER("mood", DeviceResultHandler::getDeviceResultMood),
+
+        /**
+         * 盆底类
+         */
+        PENDI_PARAMETER("pendi", DeviceResultHandler::getDeviceResultPendi);
 
         /**
          * key
@@ -185,7 +191,6 @@ public class ScenesConstant {
         ScenesFun(String key, BiFunction<List<JudgeStandard>, String, DeviceResult> funDeviceResult) {
             this(key, FlattenedDataHandler::getParameterCommon, funDeviceResult);
         }
-
 
 
         /**

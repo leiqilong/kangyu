@@ -78,6 +78,10 @@ dependencies {
     // https://mvnrepository.com/artifact/cn.izern/sequence
     compile group: 'cn.izern', name: 'sequence', version: '1.0.0'
 
+    // https://mvnrepository.com/artifact/org.hprose/hprose-java
+    compile group: 'org.hprose', name: 'hprose-java', version: '2.0.38'
+
+
 
     // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     //compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.1'
