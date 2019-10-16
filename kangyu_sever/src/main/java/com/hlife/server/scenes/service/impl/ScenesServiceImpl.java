@@ -336,23 +336,27 @@ public class ScenesServiceImpl implements ScenesService {
                         new JSONObject()
                                 .fluentPut("name", customFormTag.getTagName())
                                 .fluentPut("value", customFormTag.getTagValue())
+                                .fluentPut("essential", true)
                 );
-
-        for (DeviceResult deviceResult : resultList) {
-            if (this.filter(deviceResult)) {
-                jsonArray.add(
-                        new JSONObject()
-                                .fluentPut("name", customFormTag.getTagName())
-                                .fluentPut("value", customFormTag.getTagValue()));
-            }
-        }
 
         for (DeviceResult deviceResult : allResultList) {
             if (this.filter(deviceResult) && deviceResult.getBase()) {
                 jsonArray.add(
                         new JSONObject()
                                 .fluentPut("name", customFormTag.getTagName())
-                                .fluentPut("value", customFormTag.getTagValue()));
+                                .fluentPut("value", customFormTag.getTagValue())
+                                .fluentPut("essential", true)
+                );
+            }
+        }
+
+        for (DeviceResult deviceResult : resultList) {
+            if (this.filter(deviceResult)) {
+                jsonArray.add(
+                        new JSONObject()
+                                .fluentPut("name", customFormTag.getTagName())
+                                .fluentPut("value", customFormTag.getTagValue())
+                );
             }
         }
         /*JSONArray jsonArray = new JSONArray()
@@ -368,6 +372,13 @@ public class ScenesServiceImpl implements ScenesService {
                 ).fluentAdd(
                         new JSONObject().fluentPut("name", "d")
                                 .fluentPut("value", "d")
+                );*/
+        /*JSONArray jsonArray = new JSONArray()
+                .fluentAdd(
+                        new JSONObject().fluentPut("name", "绝对骨质")
+                                .fluentPut("value", "正常")
+                                .fluentPut("weight", "1")
+                                .fluentPut("essential", true)
                 );*/
         return rpcService.GetTjspByLabels(jsonArray);
     }
