@@ -14,8 +14,8 @@ public class NewJob implements BaseJob {
         //log.error("New Job执行时间: {}", new Date());
         JobDetailImpl jobDetail = (JobDetailImpl) context.getJobDetail();
         log.info("group: {}", jobDetail.getGroup());
-        log.info("description: {}", jobDetail.getDescription());
-        log.info("mergedJobDataMap: {}", context.getMergedJobDataMap());
+        /*log.info("description: {}", jobDetail.getDescription());
+        log.info("mergedJobDataMap: {}", context.getMergedJobDataMap());*/
 
         //ApplicationContext applicationContext = new W
     }

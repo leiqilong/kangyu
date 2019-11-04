@@ -34,7 +34,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: "${springBootVersion}"
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-quartz
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: "2.0.0.M2"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: "${springBootVersion}"
+    // https://mvnrepository.com/artifact/com.mchange/c3p0
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.4'
+
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.6'
 
@@ -48,6 +51,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
     compile group: 'com.github.pagehelper', name: 'pagehelper', version: '5.1.10'
+
+
+    // https://mvnrepository.com/artifact/org.hprose/hprose-java
+    compile group: 'org.hprose', name: 'hprose-java', version: '2.0.38'// https://mvnrepository.com/artifact/org.hprose/hprose-java
+    compile group: 'org.hprose', name: 'hprose-java', version: '2.0.38'
 
 
     // fastjson

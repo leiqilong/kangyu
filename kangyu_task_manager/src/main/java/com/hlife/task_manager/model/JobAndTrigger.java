@@ -58,4 +58,9 @@ public class JobAndTrigger {
      * 时区
      */
     private String timeZoneId;
+
+    /**
+     * 任务状态
+     */
+    private String triggerState;
 }

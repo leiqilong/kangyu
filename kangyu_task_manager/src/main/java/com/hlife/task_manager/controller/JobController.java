@@ -16,35 +16,40 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/job")
+@RequestMapping(value = "task/job")
 public class JobController {
     @Autowired
     private IJobAndTriggerService iJobAndTriggerService;
 
     @PostMapping(value = "/addjob")
-    public void addJob(@RequestBody JSONObject jsonObject) throws Exception {
+    public ResultVO<String> addJob(@RequestBody JSONObject jsonObject) {
         this.iJobAndTriggerService.addJob(jsonObject);
+        return new ResultVO<>("操作成功");
     }
 
     @PostMapping(value = "/pausejob")
-    public void pauseJob(@RequestBody JSONObject jsonObject) throws Exception {
+    public ResultVO<String> pauseJob(@RequestBody JSONObject jsonObject) {
         this.iJobAndTriggerService.pauseJob(jsonObject);
+        return new ResultVO<>("操作成功");
     }
 
 
     @PostMapping(value = "/resumejob")
-    public void resumeJob(@RequestBody JSONObject jsonObject) {
+    public ResultVO<String> resumeJob(@RequestBody JSONObject jsonObject) {
         this.iJobAndTriggerService.resumeJob(jsonObject);
+        return new ResultVO<>("操作成功");
     }
 
     @PostMapping(value = "/reschedulejob")
-    public void rescheduleJob(@RequestBody JSONObject jsonObject) {
+    public ResultVO<String> rescheduleJob(@RequestBody JSONObject jsonObject) {
         this.iJobAndTriggerService.rescheduleJob(jsonObject);
+        return new ResultVO<>("操作成功");
     }
 
     @PostMapping(value = "/deletejob")
-    public void deleteJob(@RequestBody JSONObject jsonObject) {
+    public ResultVO<String> deleteJob(@RequestBody JSONObject jsonObject) {
         this.iJobAndTriggerService.deleteJob(jsonObject);
+        return new ResultVO<>("操作成功");
     }
 
 
