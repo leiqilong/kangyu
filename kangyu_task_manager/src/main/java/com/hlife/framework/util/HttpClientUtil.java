@@ -1,5 +1,6 @@
 package com.hlife.framework.util;
 
+import com.hlife.task_manager.config.SchedulerConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -25,7 +26,12 @@ public class HttpClientUtil {
      */
     public static final String HTTPS_URL_FORMAT = "https://%s:%s/%s";
 
+    public static final String MSG_CONFIG_URL;
 
+    static {
+        SchedulerConfig config = SpringContextUtil.getBean(SchedulerConfig.class);
+        MSG_CONFIG_URL = config.getMsgConfigUrl();
+    }
     /**
      * get请求
      *

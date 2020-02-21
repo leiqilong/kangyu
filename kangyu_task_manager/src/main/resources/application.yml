@@ -19,3 +19,6 @@ logging:
   level:
     root: info
     com.hlife.task_manager.dao: debug
+
+msg-config:
+  url: localhost:20021/

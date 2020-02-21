@@ -1,7 +1,9 @@
 package com.hlife.task_manager.config;
 
+import lombok.Getter;
 import org.quartz.Scheduler;
 import org.quartz.ee.servlet.QuartzInitializerListener;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +18,9 @@ import java.util.Properties;
  */
 @Configuration
 public class SchedulerConfig {
-
+    @Getter
+    @Value("${msg-config.url}")
+    private String msgConfigUrl;
     /*
      * 通过SchedulerFactoryBean获取Scheduler的实例
      */
